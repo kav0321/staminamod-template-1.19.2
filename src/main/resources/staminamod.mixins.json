@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "net.kav.staminamod.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+      "server.ModEntityDataSaverMixin",
+		"server.doAttackMixin"
+	],
+	"client": [
+		"client.RenderOverlayMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

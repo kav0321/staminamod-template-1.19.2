@@ -1,0 +1,10 @@
+{
+  "key.category.staminamod.category": "Stamina Mod",
+  "key.staminamod.ability": "Ability 1",
+  "key.staminamod.ability1":"Ability 2",
+  "key.staminamod.ability2":"Ability 3",
+
+  "effect.staminamod.stamina_boost": "Stamina Boost",
+  "item.staminamod.honey_fruit_punch": "Honey Fruit Punch"
+
+}
