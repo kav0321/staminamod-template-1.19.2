@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.kav.staminamod.INIT.AbilityManager;
+import net.kav.staminamod.api.multiple_animations;
 import net.kav.staminamod.data.Equipdata;
 import net.kav.staminamod.networking.packet.Packets;
 import net.kav.staminamod.screen.AbilityScreen;
@@ -85,38 +86,99 @@ public class KeyInputHandler {
 
         registerKeyInputs();
     }
+    private static void send_ability(int id, String ability_slot)
+    {
+        if(((IEntityDataSaver) MinecraftClient.getInstance().player).getPersistentData().contains(ability_slot) && Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),ability_slot)!=0)
+        {
+            if(client_tick.getGetTick(ability_slot) ==-1)
+            {
+                client_tick.setGetTick(ability_slot,AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),ability_slot)).cooldown);
+            }
+            if(client_tick.getGetTick(ability_slot) <=0)
+            {
+
+                if(AbilityManager.abiltyregister.get(id).conditions(MinecraftClient.getInstance().player))
+                {
+                    AbilityManager.abiltyregister.get(id).ClientSideExecution();
+
+
+                        client_tick.setGetTick(ability_slot,-1);
+                        ClientPlayNetworking.send(
+                                Packets.AbilityAni.ID,
+                                new Packets.AbilityAni(MinecraftClient.getInstance().player.getId(), id).write());
+                        AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),ability_slot)).staminaconsume();
+
+                }
+
+
+            }
+        }
+        else {
+
+        }
+    }
     public static void usingabilities()
     {
         if(ability1.isPressed())
         {
-            if(((IEntityDataSaver) MinecraftClient.getInstance().player).getPersistentData().contains("ability1") && Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability1")!=0)
-            {
-             int id=    AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability1")).ID;
-             String name  =AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability1")).animationname;
-                float stamina  =AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability1")).stamina;
-                if(client_tick.getTick==-1)
+                if( AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability1"))!=null)
                 {
-                    client_tick.getTick=AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability1")).cooldown;
-                }
-                if(client_tick.getTick<=0)
-                {
-                    client_tick.getTick=-1;
-                    ClientPlayNetworking.send(
-                            Packets.AbilityAni.ID,
-                            new Packets.AbilityAni(MinecraftClient.getInstance().player.getId(), id).write());
-                    AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability1")).staminaconsume();
-                }
-            }
-            else {
+                    int id=    AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability1")).ID;
 
-            }
+                    if(id!=0);
+                    {
+                        send_ability(id,"ability1");
+                    }
+                }
+
+
         }
         else if(ability2.isPressed())
         {
+            if(AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability2"))!=null)
+            {
+                int id=    AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability2")).ID;
+                if(id!=0);
+                {
+                    send_ability(id,"ability2");
+                }
+            }
+
 
         }else if(ability3.isPressed())
         {
+            if(AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability3"))!=null)
+            {
+                int id=    AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability3")).ID;
+                if(id!=0)
+                {
+                    send_ability(id,"ability3");
+                }
+            }
+
 
         }
     }
 }
+/*if(((IEntityDataSaver) MinecraftClient.getInstance().player).getPersistentData().contains("ability2") && Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability2")!=0)
+            {
+                int id=    AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability2")).ID;
+                String name  =AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability2")).animationname;
+                float stamina  =AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability2")).stamina;
+                if(client_tick.getTick2 ==-1)
+                {
+                    client_tick.getTick2 =AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability2")).cooldown;
+                }
+                if(client_tick.getTick2 <=0)
+                {
+                    AbilityManager.abiltyregister.get(id).ClientSideExecution();
+                    client_tick.getTick2 =-1;
+                    ClientPlayNetworking.send(
+                            Packets.AbilityAni.ID,
+                            new Packets.AbilityAni(MinecraftClient.getInstance().player.getId(), id).write());
+                    AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),"ability2")).staminaconsume();
+                }
+            }
+            else {
+
+            }*/

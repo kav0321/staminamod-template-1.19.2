@@ -61,6 +61,7 @@ public class StaminaData {
     public static float getMAXSTAMINA(IEntityDataSaver player) {
         NbtCompound nbt = player.getPersistentData();
         MAXSTAMINA =nbt.getFloat("Maxstamina");
+
         if(MAXSTAMINA<=0)
         {
             MAXSTAMINA=20;
@@ -75,18 +76,25 @@ public class StaminaData {
 
         nbt.putFloat("Maxstamina",amount);
     }
+    public static void setMAXSTAMINAtemp(IEntityDataSaver player, float amount)
+    {
+        NbtCompound nbt = player.getPersistentData();
 
+        nbt.putFloat("Maxstamina_t",amount);
+    }
+    public static float getMAXSTAMINAtemp(IEntityDataSaver player) {
+        NbtCompound nbt = player.getPersistentData();
+
+        return nbt.getFloat("Maxstamina_t");
+    }
     public static void incrementMAXSTAMINA(IEntityDataSaver player, float amount)
     {
         NbtCompound nbt = player.getPersistentData();
 
-
-
         MAXSTAMINA=nbt.getFloat("Maxstamina");
         MAXSTAMINA+=amount;
-
+        System.out.println(MAXSTAMINA);
         //recovery rate to be ajusted
-
         nbt.putFloat("Maxstamina",MAXSTAMINA);
         nbt.putFloat("Recoveryrate",RECOVERYRATE);
     }
@@ -107,25 +115,20 @@ public class StaminaData {
         //recovery rate to be ajusted
 
         nbt.putFloat("Maxstamina",MAXSTAMINA);
-        nbt.putFloat("Recoveryrate",RECOVERYRATE);
+
     }
 
     public static float getRECOVERYRATE(IEntityDataSaver player)
     {
         NbtCompound nbt = player.getPersistentData();
-        RECOVERYRATE=nbt.getFloat("Recoveryrate");
+
+        MAXSTAMINA=nbt.getFloat("Maxstamina");
+        RECOVERYRATE=MAXSTAMINA/120;
 
         return RECOVERYRATE;
     }
 
-    public static void setRECOVERYRATE(IEntityDataSaver player, float amount)
-    {
-        NbtCompound nbt = player.getPersistentData();
-        RECOVERYRATE=nbt.getFloat("Recoveryrate");
 
-        RECOVERYRATE=amount;
-        nbt.putFloat("Recoveryrate",RECOVERYRATE);
-    }
 
 
 }

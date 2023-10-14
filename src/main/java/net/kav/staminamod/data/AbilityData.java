@@ -6,6 +6,7 @@ import net.kav.staminamod.util.IEntityDataSaver;
 import net.minecraft.nbt.NbtCompound;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class AbilityData {
@@ -29,7 +30,10 @@ public class AbilityData {
 
 
         NbtCompound nbtCompound= player.getPersistentData();
-
+        if(nbtCompound.contains(abilityCores.filename))
+        {
+            return;
+        }
 
         nbtCompound.putInt(abilityCores.filename,abilityCores.ID);
 
@@ -39,13 +43,15 @@ public class AbilityData {
     {
         List<AbilityCore> abilityCores = new ArrayList<>();
         NbtCompound nbtCompound= player.getPersistentData();
-
+        int i =0;
         for(AbilityCore ap: AbilityManager.abilityCoreList)
         {
-            if(nbtCompound.contains(ap.filename))
+            System.out.println( AbilityManager.abilityCoreList.size());
+            if(nbtCompound.contains(ap.filename) && !abilityCores.contains(ap))
             {
                 abilityCores.add(ap);
             }
+            i++;
         }
 
         return abilityCores;

@@ -25,6 +25,9 @@ public class ModMessages {
     public static final Identifier DEATH_TRANSFER_MAXSTAMINA = new Identifier(StaminaMod.MODID,"death_transfer_maxstamina");
     public static final Identifier SHIELD = new Identifier(StaminaMod.MODID,"shield");
     public static final Identifier SHIELDING = new Identifier(StaminaMod.MODID,"shielding");
+    public static final Identifier LEAVING = new Identifier(StaminaMod.MODID,"leaving");
+    public static final Identifier JOIN = new Identifier(StaminaMod.MODID,"joining_ability");
+    public static final Identifier EFFECTS = new Identifier(StaminaMod.MODID,"effects");
     public static void registerC2SPackets()
     {
         ServerPlayNetworking.registerGlobalReceiver(HANDSWING, playerstaminapacketC2S::sendweaponcost);
@@ -34,17 +37,24 @@ public class ModMessages {
         ServerPlayNetworking.registerGlobalReceiver(INITIALIZEC2S_MAXSTAMINA, playerstaminapacketC2S::initialize_variable_stamina);
         ServerPlayNetworking.registerGlobalReceiver(SHIELDING, playerstaminapacketC2S::disable_shield);
         ServerPlayNetworking.registerGlobalReceiver(ABILITYSYNC, playerstaminapacketC2S::ability_sync);
+        ServerPlayNetworking.registerGlobalReceiver(LEAVING, playerstaminapacketC2S::leaving);
 
     }
 
     public static void registerS2CPackets()
     {
         ClientPlayNetworking.registerGlobalReceiver(WEAPON_COST, playerstaminapacketS2C::weapon_cost);
+
+        ClientPlayNetworking.registerGlobalReceiver(EFFECTS, playerstaminapacketS2C::ABSORBTION);
+
         ClientPlayNetworking.registerGlobalReceiver(INITIALIZES2C, playerstaminapacketS2C::initializes2c);
         ClientPlayNetworking.registerGlobalReceiver(INITIALIZES2C_MAXSTAMINA, playerstaminapacketS2C::initializes2c_stamina);
         ClientPlayNetworking.registerGlobalReceiver(INITIALIZEABILITY, playerstaminapacketS2C::initializeability);
         ClientPlayNetworking.registerGlobalReceiver(ABILITY_ADDED,playerstaminapacketS2C::ability_added);
         ClientPlayNetworking.registerGlobalReceiver(SHIELD,playerstaminapacketS2C::shield_info);
         ClientPlayNetworking.registerGlobalReceiver(ABILITYSYNC2,playerstaminapacketS2C::abilitysync);
+        ClientPlayNetworking.registerGlobalReceiver(DEATH_TRANSFER_MAXSTAMINA,playerstaminapacketS2C::death_transfer_maxstamina);
+        ClientPlayNetworking.registerGlobalReceiver(JOIN,playerstaminapacketS2C::tick_equip);
+        ClientPlayNetworking.registerGlobalReceiver(Packets.AbilityAni.ID, playerstaminapacketS2C::ability_animation);
     }
 }

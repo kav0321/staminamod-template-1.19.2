@@ -51,7 +51,7 @@ public class staminaboost extends StatusEffect {
                     {
                         float recoveryrate= StaminaData.getRECOVERYRATE(((IEntityDataSaver) MinecraftClient.getInstance().player));
 
-                        StaminaData.incrementSTAMINA(((IEntityDataSaver) MinecraftClient.getInstance().player), (float) (recoveryrate+0.25f+0.5*amplifier+0.1));
+                        StaminaData.incrementSTAMINA(((IEntityDataSaver) MinecraftClient.getInstance().player), (float) (recoveryrate+0.1*amplifier+0.2));
                     }
 
 

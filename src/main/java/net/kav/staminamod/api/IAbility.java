@@ -1,6 +1,7 @@
 package net.kav.staminamod.api;
 
 import net.kav.staminamod.util.IEntityDataSaver;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
@@ -14,4 +15,5 @@ public interface IAbility {
     void NBTsave(IEntityDataSaver player);
     void NBTLoad(IEntityDataSaver player);
     void ServerSideExecution(MinecraftServer server, ServerPlayerEntity player);
+    boolean conditions(PlayerEntity player);
 }

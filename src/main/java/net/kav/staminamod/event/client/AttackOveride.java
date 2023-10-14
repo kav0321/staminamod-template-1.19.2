@@ -17,23 +17,7 @@ public class AttackOveride {
             ClientPlayNetworking.send(ModMessages.HANDSWING, PacketByteBufs.empty());
             //CLIENT TO SERVER
 
-            /*if(!(MinecraftClient.getInstance().player.isCreative()||MinecraftClient.getInstance().player.isSpectator()))
-        {
-            con=true;
-            //CLIENT TO SERVER
 
-            ClientPlayNetworking.send(ModMessages.HANDSWING, PacketByteBufs.empty());
-
-            String name= Registry.ITEM.getId(MinecraftClient.getInstance().player.getMainHandStack().getItem()).toString();
-            //System.out.println(!is_item_req(MinecraftClient.getInstance().player,name));
-           if(is_item_req(MinecraftClient.getInstance().player,name)==false)
-           {
-
-               PacketByteBuf buf =PacketByteBufs.create();
-               buf.writeBoolean(true);
-               ClientPlayNetworking.send(ModMessages.LOWSTA,buf);
-           }
-        }*/
         }
     }
     public static void setCon(boolean cons)

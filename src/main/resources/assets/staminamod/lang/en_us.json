@@ -5,6 +5,25 @@
   "key.staminamod.ability2":"Ability 3",
 
   "effect.staminamod.stamina_boost": "Stamina Boost",
-  "item.staminamod.honey_fruit_punch": "Honey Fruit Punch"
-
+  "item.staminamod.honey_fruit_punch": "Honey Fruit Punch",
+  "item.staminamod.kick_learner": "Kick Learner Book",
+  "item.staminamod.parry_learner": "Parry Learner Book",
+  "item.staminamod.dodge_learner": "Dodge Learner Book",
+  "item.staminamod.dash_learner": "Sword Slash Book",
+  "staminamod.dash_sword" : "Dash Attack",
+  "item.staminamod.stomp_learner": "Stomp Learner Book",
+  "item.staminamod.flip_attack_sword_learner": "Backflip sword attack Learner Book",
+  "death.dash.mob": "%1$s could not react to %2$s",
+  "ability.kick": "Kick Ability",
+  "ability.parry": "Parry Ability",
+  "ability.dodge": "Dodge Ability",
+  "ability.dash": "Dash Ability",
+  "ability.stomp": "Earth Stomp Ability",
+  "ability.flip_attack_sword": "Backflip Attack Ability",
+  "ability.kick.description": "An incredibly potent kick, so unstoppable that no shield can withstand its force",
+  "ability.parry.description":"Master the art of swift parries, a technique to disarm even the mightiest adversaries. But remember, time is of the essence; your foes have busy schedules too!",
+  "ability.dodge.description": "Dodge your problems just like your parents dodge your existence",
+  "ability.dash.description": "An explosive, rapid dash, cutting through your foes with style and precision",
+  "ability.stomp.description":"A mighty stomp, powerful enough to create spikes that halt your enemies in their tracks",
+  "ability.flip_attack_sword.description":"A technique crafted for striking and swiftly evading enemies"
 }

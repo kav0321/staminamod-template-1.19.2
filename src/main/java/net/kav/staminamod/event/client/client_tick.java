@@ -15,23 +15,56 @@ import net.minecraft.network.PacketByteBuf;
 
 public class client_tick implements ClientTickEvents.EndWorldTick{
     int x1 = 0;
-    public static int getTick = 0;
+    public static int getTick1 = 0;
+    public static int getTick2 = 0;
+    public static int getTick3 = 0;
     @Override
     public void onEndTick(ClientWorld world) {
-        if(getTick>-1)
+        if(getTick1 >-1)
         {
-            if(getTick==0)
+            if(getTick1 ==0)
             {
-                // System.out.println(getTick);
+                //
             }
 
-            getTick--;
-            if(getTick==-1)
+            getTick1--;
+            if(getTick1 ==-1)
             {
-                getTick=0;
+                getTick1 =0;
             }
 
         }
+
+        if(getTick2 >-1)
+        {
+            if(getTick2 ==0)
+            {
+
+            }
+
+            getTick2--;
+            if(getTick2 ==-1)
+            {
+                getTick2 =0;
+            }
+
+        }
+
+        if(getTick3 >-1)
+        {
+            if(getTick3 ==0)
+            {
+
+            }
+
+            getTick3--;
+            if(getTick3 ==-1)
+            {
+                getTick3 =0;
+            }
+
+        }
+
         x1++;
         if (x1 >= 5) {
             x1 = 0;
@@ -66,10 +99,64 @@ public class client_tick implements ClientTickEvents.EndWorldTick{
             }
             if(!MinecraftClient.getInstance().player.getActiveStatusEffects().containsKey(ModStatusEffects.staminaboost))
             {
-                StaminaData.incrementSTAMINA(((IEntityDataSaver) MinecraftClient.getInstance().player),recoveryrate+0.25f);
+                StaminaData.incrementSTAMINA(((IEntityDataSaver) MinecraftClient.getInstance().player),recoveryrate);
             }
 
         }
         AttackOveride.setCon(false);
+    }
+    public static int getGetTick(String tick)
+    {
+        if(tick=="ability1")
+        {
+            return client_tick.getTick1;
+        }
+        else if(tick=="ability2")
+        {
+            return  client_tick.getTick2;
+        }
+        else if(tick=="ability3")
+        {
+            return  client_tick.getTick3;
+        }
+
+        return  client_tick.getTick1;
+    }
+
+
+    public static void setGetTick(String tick,int ticks)
+    {
+        if(tick=="ability1")
+        {
+             client_tick.getTick1=ticks;
+        }
+        else if(tick=="ability2")
+        {
+            client_tick.getTick2=ticks;
+        }
+        else if(tick=="ability3")
+        {
+            client_tick.getTick3=ticks;
+        }
+
+
+    }
+
+    public static void decreaseTick(String tick,int amount)
+    {
+        if(tick=="ability1")
+        {
+            client_tick.getTick1-=amount;
+        }
+        else if(tick=="ability2")
+        {
+            client_tick.getTick2-=amount;
+        }
+        else if(tick=="ability3")
+        {
+            client_tick.getTick3-=amount;
+        }
+
+
     }
 }

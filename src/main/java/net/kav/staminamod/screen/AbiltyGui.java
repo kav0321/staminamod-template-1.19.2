@@ -3,6 +3,7 @@ package net.kav.staminamod.screen;
 import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
+import io.github.cottonmc.cotton.gui.widget.data.Color;
 import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -19,8 +20,11 @@ import net.kav.staminamod.screen.panels.AbilityPanel;
 import net.kav.staminamod.screen.togels.slotselect;
 import net.kav.staminamod.util.IEntityDataSaver;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 
 import static io.github.cottonmc.cotton.gui.client.BackgroundPainter.createLightDarkVariants;
 import static io.github.cottonmc.cotton.gui.client.BackgroundPainter.createNinePatch;
@@ -35,13 +39,15 @@ public class AbiltyGui extends LightweightGuiDescription {
     private static Identifier SLOT3 = new Identifier(StaminaMod.MODID,"textures/gui/slot/empty.png");
 
     private static int SLOT1_temp;
-    private static Identifier SLOT_TEMP = new Identifier(StaminaMod.MODID,"textures/gui/slot/empty.png");
-    private static Identifier SLOT_TEMP_empty = new Identifier(StaminaMod.MODID,"textures/gui/slot/empty.png");
-    private static final Identifier BACKGROUND= new Identifier(StaminaMod.MODID,"textures/gui/panel/purple_panel.png");
-    private static final Identifier scroll_panel= new Identifier(StaminaMod.MODID,"textures/gui/panel/panel_sprite.png");
+    private static Text description_temp = Text.translatable("");
+    public static Identifier SLOT_TEMP = new Identifier(StaminaMod.MODID,"textures/gui/slot/empty.png");
+    public static Identifier SLOT_TEMP_empty = new Identifier(StaminaMod.MODID,"textures/gui/slot/empty.png");
+    private static final Identifier BACKGROUND= new Identifier(StaminaMod.MODID,"textures/gui/panel/panel_dark.png");
+    private static final Identifier scroll_panel= new Identifier(StaminaMod.MODID,"textures/gui/panel/dark_sprite.png");
+    private static final Identifier description_sprite= new Identifier(StaminaMod.MODID,"textures/gui/description_sprite.png");
     BackgroundPainter SOUL= createLightDarkVariants((createNinePatch(BACKGROUND)), createNinePatch(BACKGROUND));
     WPlainPanel root = new WPlainPanel();
-
+    WText description_text = new WText(description_temp,Color.WHITE.toRgb());
     slotselect str= new slotselect();
     slotselect str2= new slotselect();
     slotselect str3= new slotselect();
@@ -56,7 +62,8 @@ public class AbiltyGui extends LightweightGuiDescription {
         AbilityPanel plainPanel = new AbilityPanel();
         WScrollPanel scrollPanel = new WScrollPanel(plainPanel);
         scrollPanel.setScrollingHorizontally(TriState.FALSE);
-
+        WSprite description = new WSprite(description_sprite);
+        WSprite sprite = new WSprite(SLOT_TEMP);
 
 
 
@@ -66,19 +73,19 @@ public class AbiltyGui extends LightweightGuiDescription {
 
 
 
-        root.add(str2, 1, 33,32,32);
+        root.add(str2, 49, 1,32,32);
 
 
 
-        root.add(str3, 1, 65,32,32);
+        root.add(str3, 97, 1,32,32);
 
 
 
 //panel at the right
         WSprite panel= new WSprite(scroll_panel);
         root.add(panel, 180, 1,125,200);
-
-
+        root.add(description,1,50,175,150);
+        root.add(description_text,1,50,175,150);
 
 
 
@@ -88,7 +95,11 @@ public class AbiltyGui extends LightweightGuiDescription {
         for(AbilityCore ability: AbilityData.getAbility((IEntityDataSaver) MinecraftClient.getInstance().player))
         {
 
-        abilitybuttondraw(8,1,plainPanel, i);
+        abilitybuttondraw(8,(i)*32+1,plainPanel, i);
+            if(i+1==AbilityData.getAbility((IEntityDataSaver) MinecraftClient.getInstance().player).size()/2)
+            {
+                break;
+            }
         i++;
         }
 
@@ -98,6 +109,8 @@ public class AbiltyGui extends LightweightGuiDescription {
             if(str.isEnabled())
             {
 
+                if((str2.SLOT_TEMP!=SLOT_TEMP&&str3.SLOT_TEMP!=SLOT_TEMP)||SLOT1_temp==0)
+                {
                     System.out.println("clock");
                     str.SLOT_TEMP=SLOT_TEMP;
                     System.out.println(SLOT1_temp+  " S");
@@ -107,8 +120,10 @@ public class AbiltyGui extends LightweightGuiDescription {
 
 
 
-                SLOT_TEMP= SLOT_TEMP_empty;
-                SLOT1_temp =0;
+                    SLOT_TEMP= SLOT_TEMP_empty;
+                    SLOT1_temp =0;
+                }
+
 
             }
         });
@@ -117,33 +132,42 @@ public class AbiltyGui extends LightweightGuiDescription {
         {
             if(str2.isEnabled())
             {
-
-                    System.out.println("clock");
+                if((str3.SLOT_TEMP!=SLOT_TEMP&&str.SLOT_TEMP!=SLOT_TEMP)||SLOT1_temp==0)
+                {
+                    System.out.println(SLOT1_temp);
                     str2.SLOT_TEMP=SLOT_TEMP;
+                    System.out.println(SLOT1_temp+  " S");
                     Equipdata.addability((IEntityDataSaver) MinecraftClient.getInstance().player,SLOT1_temp,"ability2");
 
                     ClientPlayNetworking.send(ModMessages.ABILITYSYNC,new Packets.AbilitySync(SLOT1_temp,"ability2").write());
 
 
-                SLOT_TEMP= SLOT_TEMP_empty;
-                SLOT1_temp =0;
+                    SLOT_TEMP= SLOT_TEMP_empty;
+                    SLOT1_temp =0;
+                }
+
             }
         });
         str3.setOnClick(()->
         {
 
-                System.out.println("clock");
+            if((str.SLOT_TEMP!=SLOT_TEMP&&str2.SLOT_TEMP!=SLOT_TEMP)||SLOT1_temp==0)
+            {
+                System.out.println(SLOT1_temp);
                 str3.SLOT_TEMP=SLOT_TEMP;
+                System.out.println(SLOT1_temp+  " S");
                 Equipdata.addability((IEntityDataSaver) MinecraftClient.getInstance().player,SLOT1_temp,"ability3");
 
 
                 ClientPlayNetworking.send(ModMessages.ABILITYSYNC,new Packets.AbilitySync(SLOT1_temp,"ability3").write());
 
 
-            SLOT_TEMP= SLOT_TEMP_empty;
-            SLOT1_temp =0;
-        });
+                SLOT_TEMP= SLOT_TEMP_empty;
+                SLOT1_temp =0;
+            }
 
+        });
+       // root.add(sprite,(int) MinecraftClient.getInstance().mouse.getX(),(int)MinecraftClient.getInstance().mouse.getY());
        // System.out.println(AbilityData.getAbility((IEntityDataSaver) MinecraftClient.getInstance().player).get(0).ID);
     }
     private void INIT()
@@ -183,19 +207,30 @@ public class AbiltyGui extends LightweightGuiDescription {
         panel.add(ability_buttons,x,y,32,32);
 
         Identifier sprite  =AbilityData.getAbility((IEntityDataSaver) MinecraftClient.getInstance().player).get(j).file;
+        Text name  =AbilityData.getAbility((IEntityDataSaver) MinecraftClient.getInstance().player).get(j).name;
         WSprite ability_sprite= new WSprite(sprite);
-        panel.add(ability_sprite, x, y,32,32);
+        WText name2 = new WText(Text.translatable(name.getString()), Color.WHITE.toRgb());
 
+       // MinecraftClient.getInstance().player.sendMessage(Text.translatable("item.staminamod.flip_attack_sword_learner"),true);
+
+        panel.add(ability_sprite, x, y,32,32);
+        panel.add(name2,x+32,y+2,64,64);
         WSprite abilityplate_sprite= new WSprite(ability_button);
         panel.add(abilityplate_sprite, x, y,105,32);
 
-
         ability_buttons.setOnClick(() -> {
-        SLOT_TEMP= sprite;
-        SLOT1_temp=AbilityData.getAbility((IEntityDataSaver) MinecraftClient.getInstance().player).get(j).ID;
-        System.out.println(SLOT1_temp);
-        ability_buttons.isclick=true;
+
+            if(!str.SLOT_TEMP.equals(sprite) && !str2.SLOT_TEMP.equals(sprite)&&!str3.SLOT_TEMP.equals(sprite))
+            {
+                SLOT_TEMP= sprite;
+                SLOT1_temp=AbilityData.getAbility((IEntityDataSaver) MinecraftClient.getInstance().player).get(j).ID;
+
+                ability_buttons.isclick=true;
+            }
+            description_text.setText( AbilityData.getAbility((IEntityDataSaver) MinecraftClient.getInstance().player).get(j).description);
         });
+
+
 
 
     }

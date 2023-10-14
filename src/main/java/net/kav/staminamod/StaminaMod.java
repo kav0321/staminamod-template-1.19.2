@@ -8,12 +8,18 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.kav.staminamod.Abilities.parryability.parryabilty;
 import net.kav.staminamod.INIT.AbilityManager;
 import net.kav.staminamod.config.ModConfigs;
+import net.kav.staminamod.entity.ModEntities;
 import net.kav.staminamod.event.server.playerdeath;
 import net.kav.staminamod.event.server.server_tick;
 import net.kav.staminamod.items.ModItems;
 import net.kav.staminamod.networking.ModMessages;
+import net.kav.staminamod.particle.ModParticles;
+import net.kav.staminamod.sound.ModSounds;
 import net.kav.staminamod.statusEffect.ModStatusEffects;
+import net.kav.staminamod.util.ModLootTableModifiers;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
+import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +38,8 @@ public class StaminaMod implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 		ModConfigs.registerConfigs();
-		ModItems.registerModItems();
+
+		ModEntities.server();
 		AbilityManager.INITTECHNIC();
 		ModMessages.registerC2SPackets();
 
@@ -40,6 +47,11 @@ public class StaminaMod implements ModInitializer {
 		ServerTickEvents.END_WORLD_TICK.register(new server_tick());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register((ServerLivingEntityEvents.AllowDamage) abilityCoreList.get(1));
 		ModStatusEffects.registerEffects();
+
+		ModParticles.registerParticles();
+		Registry.register(Registry.SOUND_EVENT, ModSounds.DASH_SWORD_ID,ModSounds.MY_SOUND_EVENT);
+		ModLootTableModifiers.modifyLootTables();
+		ModItems.registerModItems();
 		LOGGER.info("Hello Fabric world!");
 	}
 }

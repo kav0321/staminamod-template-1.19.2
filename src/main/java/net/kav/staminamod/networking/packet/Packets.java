@@ -24,7 +24,7 @@ public class Packets {
         }
     }
     public record AbilityAni(int playerId, int index) {
-        public static Identifier ID = new Identifier(StaminaMod.MODID, "attack_animation");
+        public static Identifier ID = new Identifier(StaminaMod.MODID, "attack_an");
 
 
 
@@ -49,7 +49,30 @@ public class Packets {
     }
 
 
+    public record tick_equip(int ability1, int ability2, int ability3) {
+        public static Identifier ID = new Identifier(StaminaMod.MODID, "equip_tick");
 
+
+
+
+
+        public PacketByteBuf write() {
+            PacketByteBuf buffer = PacketByteBufs.create();
+            buffer.writeInt(ability1);
+            buffer.writeInt(ability2);
+            buffer.writeInt(ability3);
+
+            return buffer;
+        }
+
+        public static tick_equip read(PacketByteBuf buffer) {
+            int ability = buffer.readInt();
+            int ability2 = buffer.readInt();
+            int ability3 = buffer.readInt();
+
+            return new tick_equip(ability,ability2,ability3);
+        }
+    }
 
     public record AbilitySync(int id, String slot) {
         public static Identifier ID = new Identifier(StaminaMod.MODID, "attack_animation");

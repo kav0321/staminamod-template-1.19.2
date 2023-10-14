@@ -24,7 +24,7 @@ public class playerdeath implements ServerPlayerEvents.AfterRespawn {
     public void IAbilitytransfer(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive)
     {
         AbilityData.setAbility((IEntityDataSaver) newPlayer,AbilityData.getAbility((IEntityDataSaver) oldPlayer));
-        for(AbilityCore ability: AbilityData.getAbility((IEntityDataSaver) newPlayer))
+        for(AbilityCore ability: AbilityData.getAbility((IEntityDataSaver) oldPlayer))
         {
             PacketByteBuf buffer= PacketByteBufs.create();
             buffer.writeInt(ability.ID);

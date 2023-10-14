@@ -1,8 +1,11 @@
 package net.kav.staminamod.mixin.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.kav.staminamod.INIT.AbilityManager;
 import net.kav.staminamod.StaminaMod;
+import net.kav.staminamod.data.Equipdata;
 import net.kav.staminamod.data.StaminaData;
+import net.kav.staminamod.event.client.client_tick;
 import net.kav.staminamod.util.GlobalStamina;
 import net.kav.staminamod.util.IEntityDataSaver;
 import net.minecraft.client.MinecraftClient;
@@ -21,6 +24,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(InGameHud.class)
 public class RenderOverlayMixin extends DrawableHelper {
     private static final Identifier Stamina_StartFull= new Identifier(StaminaMod.MODID,"textures/gui/stamina/stamina_full.png");
+    private static final Identifier slot = new Identifier(StaminaMod.MODID,"textures/gui/slot/slot.png");
+    private static Identifier slot1 = new Identifier(StaminaMod.MODID,"textures/gui/slot/empty.png");
+    private static  Identifier slot2 = new Identifier(StaminaMod.MODID,"textures/gui/slot/empty.png");
+    private static  Identifier slot3 = new Identifier(StaminaMod.MODID,"textures/gui/slot/empty.png");
+    private static  Identifier cooldown = new Identifier(StaminaMod.MODID,"textures/gui/cooldown/cooldown.png");
     private static final Identifier Stamina_StartEmpty= new Identifier(StaminaMod.MODID,"textures/gui/stamina/stamina_empty.png");
     //private static final Identifier COOLDOWN= new Identifier(Kav_soul_like.MOD_ID,"textures/gui/cooldown.png");
    // private static final Identifier WIDGETS_TEXTURE = new Identifier("textures/gui/widgets.png");
@@ -40,9 +48,11 @@ public class RenderOverlayMixin extends DrawableHelper {
             x=width/2;
             y=heigth;
         }
-
-        if(!client.player.isCreative() && !client.player.isSpectator())
+        Ability(matrixStack,client,x,y);
+        if(!client.player.isCreative() && !client.player.isSpectator() &&!client.player.isSubmergedInWater())
             StaminaBar(matrixStack,client,x,y);
+
+
 
     }
 
@@ -53,6 +63,26 @@ public class RenderOverlayMixin extends DrawableHelper {
         RenderSystem.setShaderColor(1.0F,1.0F,1.0F,1.0F);
         RenderSystem.setShaderTexture(0, identifier);
         DrawableHelper.drawTexture(matrixStack,x-positionx,y-positiony,0,0,v,42,5,42,35);
+
+
+    }
+    private void draw(Identifier identifier, MatrixStack matrixStack, int x, int y, int positionx, int positiony, int v,int width,int height,int textureWidth,int textureHeight)
+    {
+
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F,1.0F,1.0F,1.0F);
+        RenderSystem.setShaderTexture(0, identifier);
+        DrawableHelper.drawTexture(matrixStack,x-positionx,y-positiony,0,0,v,width,height,textureWidth,textureHeight);
+
+
+    }
+    private void draw(Identifier identifier, MatrixStack matrixStack, int x, int y, int positionx, int positiony, int u,int v,int width,int height,int textureWidth,int textureHeight)
+    {
+
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F,1.0F,1.0F,1.0F);
+        RenderSystem.setShaderTexture(0, identifier);
+        DrawableHelper.drawTexture(matrixStack,x-positionx,y-positiony,0,u,v,width,height,textureWidth,textureHeight);
 
 
     }
@@ -84,7 +114,92 @@ public class RenderOverlayMixin extends DrawableHelper {
     public void drawTextures(MatrixStack matrices, int x, int y, int u, int v, int width, int height) {
         DrawableHelper.drawTexture(matrices, x, y,1 , u, v, width, height, 32, 32);
     }
+    private void Ability(MatrixStack matrixStack, MinecraftClient client, int x, int y)
+    {
+        float percentage;
+        float percentage2;
+        float percentage3;
+        int resolution =20;
+        int pixel;
+        int pixel2;
+        int pixel3;
+       if(Equipdata.getability( (IEntityDataSaver) MinecraftClient.getInstance().player,"ability1")!=0)
+       {
 
+           percentage = (client_tick.getTick1*100)/AbilityManager.abiltyregister.get(Equipdata.getability( (IEntityDataSaver) MinecraftClient.getInstance().player,"ability1")).cooldown;
+           //System.out.println(percentage);
+           if(percentage==100)
+           {
+               percentage=0;
+           }
+           pixel= (int) (percentage*resolution)/100;
+
+           slot1= AbilityManager.abiltyregister.get(Equipdata.getability( (IEntityDataSaver) MinecraftClient.getInstance().player,"ability1")).file;
+       }
+       else
+       {
+           pixel=0;
+           slot1=  new Identifier(StaminaMod.MODID,"textures/gui/slot/empty.png");
+       }
+        if(Equipdata.getability( (IEntityDataSaver) MinecraftClient.getInstance().player,"ability2")!=0)
+        {
+            percentage2 = (client_tick.getTick2*100)/AbilityManager.abiltyregister.get(Equipdata.getability( (IEntityDataSaver) MinecraftClient.getInstance().player,"ability2")).cooldown;
+           // System.out.println(percentage2);
+            if(percentage2==100)
+            {
+                percentage2=0;
+            }
+            pixel2= (int) (percentage2*resolution)/100;
+           slot2= AbilityManager.abiltyregister.get(Equipdata.getability( (IEntityDataSaver) MinecraftClient.getInstance().player,"ability2")).file;
+        }
+        else
+        {
+            pixel2=0;
+            slot2=  new Identifier(StaminaMod.MODID,"textures/gui/slot/empty.png");
+        }
+        if(Equipdata.getability( (IEntityDataSaver) MinecraftClient.getInstance().player,"ability3")!=0)
+        {
+            percentage3 = (client_tick.getTick3*100)/AbilityManager.abiltyregister.get(Equipdata.getability( (IEntityDataSaver) MinecraftClient.getInstance().player,"ability3")).cooldown;
+           // System.out.println(percentage3);
+            if(percentage3==100)
+            {
+                percentage3=0;
+            }
+            pixel3= (int) (percentage3*resolution)/100;
+            slot3= AbilityManager.abiltyregister.get(Equipdata.getability( (IEntityDataSaver) MinecraftClient.getInstance().player,"ability3")).file;
+        }
+        else
+        {
+            pixel3=0;
+            slot3=  new Identifier(StaminaMod.MODID,"textures/gui/slot/empty.png");
+        }
+
+        int initial=140;
+        this.draw(slot1, matrixStack, x, y, initial+resolution*2+4, 20,0,resolution,resolution,resolution,resolution);
+
+        this.draw(slot2, matrixStack, x, y, initial+resolution+2, 20,0,resolution,resolution,resolution,resolution);
+
+        this.draw(slot3, matrixStack, x, y, initial, 20,0,resolution,resolution,resolution,resolution);
+
+
+
+
+        this.draw(cooldown, matrixStack, x, y, initial+resolution*2+4, 20,0,(0+pixel),resolution,resolution,resolution,resolution*2);
+
+        this.draw(cooldown, matrixStack, x, y, initial+resolution+2, 20,0,(0+pixel2),resolution,resolution,resolution,resolution*2);
+
+        this.draw(cooldown, matrixStack, x, y, initial, 20,0,(0+pixel3),resolution,resolution,resolution,resolution*2);
+
+
+        this.draw(slot, matrixStack, x, y, initial+resolution*2+4, 20,0,resolution,resolution,resolution,resolution);
+
+        this.draw(slot, matrixStack, x, y, initial+resolution+2, 20,0,resolution,resolution,resolution,resolution);
+
+        this.draw(slot, matrixStack, x, y, initial, 20,0,resolution,resolution,resolution,resolution);
+
+
+
+    }
     private void StaminaBar(MatrixStack matrixStack, MinecraftClient client, int x, int y)
     {
         //get stamina and maxstamina

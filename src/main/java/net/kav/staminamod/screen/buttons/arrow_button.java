@@ -16,7 +16,7 @@ public class arrow_button extends WButton {
 
     Icon icon;
 
-
+    public boolean hover;
     int tick=0;
     @Override
     public void paint(MatrixStack matrices, int x, int y, int mouseX, int mouseY) {
@@ -35,15 +35,17 @@ public class arrow_button extends WButton {
         else if (this.isEnabled()) {
 
             boolean hovered = (mouseX >= 0 && mouseY >= 0 && mouseX < getWidth() && mouseY < getHeight());
+
             icon = new TextureIcon(new Identifier(StaminaMod.MODID,"textures/gui/buttons/arrow_button_empty.png"));
             if (hovered) {
                 icon = new TextureIcon(new Identifier(StaminaMod.MODID,"textures/gui/buttons/arrow_button.png"));
+                hover=hovered;
             }
 
         }
 
         else {
-            System.out.println("sasa");
+
             icon = new TextureIcon(new Identifier(StaminaMod.MODID,"textures/gui/buttons/arrow_button_empty"));
         }
         icon.paint(matrices, x , y, 32);

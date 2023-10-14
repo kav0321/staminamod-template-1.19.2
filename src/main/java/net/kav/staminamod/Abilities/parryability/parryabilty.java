@@ -7,6 +7,7 @@ import net.kav.staminamod.api.AbilityCore;
 import net.kav.staminamod.data.Parrydata;
 import net.kav.staminamod.networking.ModMessages;
 import net.kav.staminamod.util.IEntityDataSaver;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -20,14 +21,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 public class parryabilty extends AbilityCore implements ServerLivingEntityEvents.AllowDamage{
-    public parryabilty(int cooldown, int stamina, int ID, String animationname, Text name, Text description, String filename,float speed) {
-        super(cooldown, stamina, ID, animationname, name, description, filename,speed);
+    public parryabilty(int cooldown, int stamina, int ID, String animationname, Text name, Text description, String filename,float speed, boolean head, boolean body, boolean righthand, boolean lefthand, boolean rightleg, boolean leftleg) {
+        super(cooldown, stamina, ID, animationname, name, description, filename,speed,head,body,righthand,lefthand,rightleg,leftleg);
     }
 
     @Override
     public void ClientSideExecution()
     {
-        super.ClientSideExecution();
+
     }
     @Override
     public void tick(PlayerEntity player)
@@ -54,6 +55,11 @@ public class parryabilty extends AbilityCore implements ServerLivingEntityEvents
     public void ServerSideExecution(MinecraftServer server, ServerPlayerEntity player) {
         Parrydata.setparryattack(((IEntityDataSaver) player),true);
         Parrydata.settick((IEntityDataSaver) player,40);
+    }
+
+    @Override
+    public boolean conditions(PlayerEntity player) {
+        return super.conditions(player);
     }
 
     @Override
