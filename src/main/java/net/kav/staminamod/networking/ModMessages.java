@@ -26,26 +26,45 @@ public class ModMessages {
     public static final Identifier SHIELD = new Identifier(StaminaMod.MODID,"shield");
     public static final Identifier SHIELDING = new Identifier(StaminaMod.MODID,"shielding");
     public static final Identifier LEAVING = new Identifier(StaminaMod.MODID,"leaving");
+    public static final Identifier LEAVING2 = new Identifier(StaminaMod.MODID,"leaving_");
+    public static final Identifier COOLDOWN = new Identifier(StaminaMod.MODID,"cooldown_bad");
+    public static final Identifier COOLDOWNC = new Identifier(StaminaMod.MODID,"cooldown_bad_c");
     public static final Identifier JOIN = new Identifier(StaminaMod.MODID,"joining_ability");
-    public static final Identifier EFFECTS = new Identifier(StaminaMod.MODID,"effects");
+    public static final Identifier EXTRA_STAMINA = new Identifier(StaminaMod.MODID,"effects");
+    public static final Identifier EXTRA_STAMINA_SYN = new Identifier(StaminaMod.MODID,"effects2");
+    public static final Identifier VELOCITY = new Identifier(StaminaMod.MODID,"velocity");
+
+    public static final Identifier DODGE = new Identifier(StaminaMod.MODID,"dodge");
+    public static final Identifier FLIP = new Identifier(StaminaMod.MODID,"flip");
+    public static final Identifier STOMP = new Identifier(StaminaMod.MODID,"stomp");
+    public static final Identifier SWING = new Identifier(StaminaMod.MODID,"swing");
+    public static final Identifier KICK = new Identifier(StaminaMod.MODID,"kick");
+    public static final Identifier PARRY = new Identifier(StaminaMod.MODID,"kick");
+    public static final Identifier ID = new Identifier(StaminaMod.MODID, "attack_an_a");
+    public static final Identifier ANIMATION = new Identifier(StaminaMod.MODID, "attack_animation_abilities");
+    public static final Identifier SWORD_DASH = new Identifier(StaminaMod.MODID,"sword_dash");
     public static void registerC2SPackets()
     {
         ServerPlayNetworking.registerGlobalReceiver(HANDSWING, playerstaminapacketC2S::sendweaponcost);
         ServerPlayNetworking.registerGlobalReceiver(LOWSTAMINA, playerstaminapacketC2S::getlowstamina);
         ServerPlayNetworking.registerGlobalReceiver(INITIALIZEC2S, playerstaminapacketC2S::initialize_variable);
-        ServerPlayNetworking.registerGlobalReceiver(Packets.AbilityAni.ID, playerstaminapacketC2S::ability_animation);
+        ServerPlayNetworking.registerGlobalReceiver(ModMessages.ANIMATION, playerstaminapacketC2S::ability_animation);
         ServerPlayNetworking.registerGlobalReceiver(INITIALIZEC2S_MAXSTAMINA, playerstaminapacketC2S::initialize_variable_stamina);
+        ServerPlayNetworking.registerGlobalReceiver(EXTRA_STAMINA_SYN, playerstaminapacketC2S::initialize_variable_stamina2);
         ServerPlayNetworking.registerGlobalReceiver(SHIELDING, playerstaminapacketC2S::disable_shield);
         ServerPlayNetworking.registerGlobalReceiver(ABILITYSYNC, playerstaminapacketC2S::ability_sync);
         ServerPlayNetworking.registerGlobalReceiver(LEAVING, playerstaminapacketC2S::leaving);
-
+        ServerPlayNetworking.registerGlobalReceiver(LEAVING2, playerstaminapacketC2S::leaving2);
+        ServerPlayNetworking.registerGlobalReceiver(COOLDOWN, playerstaminapacketC2S::cooldown);
     }
+
+
 
     public static void registerS2CPackets()
     {
         ClientPlayNetworking.registerGlobalReceiver(WEAPON_COST, playerstaminapacketS2C::weapon_cost);
 
-        ClientPlayNetworking.registerGlobalReceiver(EFFECTS, playerstaminapacketS2C::ABSORBTION);
+        ClientPlayNetworking.registerGlobalReceiver(EXTRA_STAMINA, playerstaminapacketS2C::ABSORBTION);
 
         ClientPlayNetworking.registerGlobalReceiver(INITIALIZES2C, playerstaminapacketS2C::initializes2c);
         ClientPlayNetworking.registerGlobalReceiver(INITIALIZES2C_MAXSTAMINA, playerstaminapacketS2C::initializes2c_stamina);
@@ -55,6 +74,22 @@ public class ModMessages {
         ClientPlayNetworking.registerGlobalReceiver(ABILITYSYNC2,playerstaminapacketS2C::abilitysync);
         ClientPlayNetworking.registerGlobalReceiver(DEATH_TRANSFER_MAXSTAMINA,playerstaminapacketS2C::death_transfer_maxstamina);
         ClientPlayNetworking.registerGlobalReceiver(JOIN,playerstaminapacketS2C::tick_equip);
-        ClientPlayNetworking.registerGlobalReceiver(Packets.AbilityAni.ID, playerstaminapacketS2C::ability_animation);
+        ClientPlayNetworking.registerGlobalReceiver(ModMessages.ID,playerstaminapacketS2C::ability_animation);
+
+        ClientPlayNetworking.registerGlobalReceiver(Packets.ABILITY_MODCONFIG.ID0, playerstaminapacketS2C::DODGE);
+        ClientPlayNetworking.registerGlobalReceiver(Packets.ABILITY_MODCONFIG.ID90, playerstaminapacketS2C::FLIP);
+        ClientPlayNetworking.registerGlobalReceiver(Packets.ABILITY_MODCONFIG.ID180, playerstaminapacketS2C::STOMP);
+        ClientPlayNetworking.registerGlobalReceiver(Packets.ABILITY_MODCONFIG.ID270, playerstaminapacketS2C::HURRICAN);
+        ClientPlayNetworking.registerGlobalReceiver(Packets.ABILITY_MODCONFIG.ID360, playerstaminapacketS2C::KICK);
+        ClientPlayNetworking.registerGlobalReceiver(Packets.ABILITY_MODCONFIG.ID450, playerstaminapacketS2C::PARRY);
+        ClientPlayNetworking.registerGlobalReceiver(Packets.ABILITY_MODCONFIG.ID540, playerstaminapacketS2C::DASH);
+
+        ClientPlayNetworking.registerGlobalReceiver(SWORD_DASH, playerstaminapacketS2C::SWORD_DASH_ATTACK_M);
+        ClientPlayNetworking.registerGlobalReceiver(STOMP, playerstaminapacketS2C::SPIKE_DMG);
+        ClientPlayNetworking.registerGlobalReceiver(KICK, playerstaminapacketS2C::KICK_K);
+        ClientPlayNetworking.registerGlobalReceiver(PARRY, playerstaminapacketS2C::PARRY_E);
+        ClientPlayNetworking.registerGlobalReceiver(DODGE, playerstaminapacketS2C::D_R);
+        ClientPlayNetworking.registerGlobalReceiver(COOLDOWNC, playerstaminapacketS2C::cooldownc);
+        ClientPlayNetworking.registerGlobalReceiver(VELOCITY, playerstaminapacketS2C::VELOCITY);
     }
 }

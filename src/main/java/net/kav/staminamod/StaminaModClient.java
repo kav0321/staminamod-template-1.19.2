@@ -20,8 +20,10 @@ import net.minecraft.util.registry.Registry;
 public class StaminaModClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        AbilityManager.INITTECHNIC();
         ModMessages.registerS2CPackets();
+        AbilityManager.INITTECHNIC();
+
+       // AbilityManager.INITTECHNIC2();
         KeyInputHandler.register();
         ClientPlayConnectionEvents.JOIN.register(new clientjoin());
         ClientPlayConnectionEvents.DISCONNECT.register(new playerleave());

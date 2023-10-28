@@ -6,37 +6,31 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.kav.staminamod.INIT.AbilityManager;
 import net.kav.staminamod.data.AbilityData;
 import net.kav.staminamod.data.Equipdata;
+import net.kav.staminamod.enchantment.ModEnchantments;
 import net.kav.staminamod.networking.ModMessages;
+import net.kav.staminamod.statusEffect.ModStatusEffects;
 import net.kav.staminamod.util.IEntityDataSaver;
+import net.kav.staminamod.util.IPosture;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 
 public class server_tick  implements ServerTickEvents.EndWorldTick{
+    int tick=0;
     @Override
     public void onEndTick(ServerWorld world) {
+        tick++;
         for(ServerPlayerEntity player: world.getServer().getPlayerManager().getPlayerList())
         {
-            if(player.isSneaking() && player.getMainHandStack().getItem()== Items.DIAMOND)
-            {
 
-                AbilityData.addAbility((IEntityDataSaver) player,AbilityManager.abiltyregister.get(90));
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeInt(90);
-                ServerPlayNetworking.send(player, ModMessages.ABILITY_ADDED, buf);
-            }
 
-            if(player.isSneaking()&& player.getMainHandStack().getItem()== Items.COPPER_INGOT )
-            {
-
-                AbilityData.addAbility((IEntityDataSaver) player,AbilityManager.abiltyregister.get(270));
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeInt(270);
-
-               ServerPlayNetworking.send(player, ModMessages.ABILITY_ADDED, buf);
-            }
-
+            IPosture pl1 = (IPosture) player;
+            System.out.println(pl1.getposture_number());
             if(((IEntityDataSaver) player).getPersistentData().contains("ability1") && Equipdata.getability(((IEntityDataSaver) player),"ability1")!=0)
             {
                 AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) player),"ability1")).tick(player);

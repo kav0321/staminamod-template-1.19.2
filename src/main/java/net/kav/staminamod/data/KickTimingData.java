@@ -6,6 +6,11 @@ import net.minecraft.nbt.NbtCompound;
 public class KickTimingData {
     private static int tick;
     private static boolean did_I_kick;
+    public static void reset(IEntityDataSaver player)
+    {
+        settick(player,0);
+        setDid_I_kick(player,false);
+    }
     public static void settick(IEntityDataSaver player, int amount)
     {
         NbtCompound nbt = player.getPersistentData();

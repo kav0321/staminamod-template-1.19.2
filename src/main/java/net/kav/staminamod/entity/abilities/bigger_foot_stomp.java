@@ -1,5 +1,6 @@
 package net.kav.staminamod.entity.abilities;
 
+import net.kav.staminamod.config.ModConfigs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -49,7 +50,7 @@ public class bigger_foot_stomp extends ProjectileEntity implements IAnimatable{
         super.onSpawnPacket(packet);
         if(direc!=null)
         {
-            System.out.println("s");
+            //System.out.println("s");
             this.setYaw(direc.getYaw());
         }
 
@@ -106,12 +107,14 @@ public class bigger_foot_stomp extends ProjectileEntity implements IAnimatable{
 
                             entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,20,10,false,false));
                             entity.setVelocity(Vec3d.ZERO);
+                            entity.damage(DamageSource.mob(direc), ModConfigs.spike_damage);
                         }
                     }
                     else
                     {
                         entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,20,10,false,false));
                         entity.setVelocity(Vec3d.ZERO);
+                        entity.damage(DamageSource.mob(direc),ModConfigs.spike_damage);
                     }
                 }
 

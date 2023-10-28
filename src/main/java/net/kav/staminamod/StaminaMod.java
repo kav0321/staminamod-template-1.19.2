@@ -5,7 +5,11 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.kav.staminamod.Abilities.parryability.parryabilty;
+import net.kav.staminamod.command.staminareset;
+import net.kav.staminamod.config.JsonReader;
+import net.kav.staminamod.enchantment.ModEnchantments;
+import net.kav.staminamod.event.server.entitydamage;
+import net.kav.staminamod.potion.ModPotions;
 import net.kav.staminamod.INIT.AbilityManager;
 import net.kav.staminamod.config.ModConfigs;
 import net.kav.staminamod.entity.ModEntities;
@@ -17,8 +21,6 @@ import net.kav.staminamod.particle.ModParticles;
 import net.kav.staminamod.sound.ModSounds;
 import net.kav.staminamod.statusEffect.ModStatusEffects;
 import net.kav.staminamod.util.ModLootTableModifiers;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.text.Text;
 import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,20 +40,34 @@ public class StaminaMod implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 		ModConfigs.registerConfigs();
-
-		ModEntities.server();
-		AbilityManager.INITTECHNIC();
 		ModMessages.registerC2SPackets();
 
-		ServerPlayerEvents.AFTER_RESPAWN.register(new playerdeath());
+		ModEntities.server();
+
+		AbilityManager.INITTECHNIC();
+
+
 		ServerTickEvents.END_WORLD_TICK.register(new server_tick());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register((ServerLivingEntityEvents.AllowDamage) abilityCoreList.get(1));
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register((ServerLivingEntityEvents.AllowDamage) abilityCoreList.get(7));
+	//	ServerLivingEntityEvents.ALLOW_DAMAGE.register(new entitydamage());
 		ModStatusEffects.registerEffects();
-
+		JsonReader.init();
 		ModParticles.registerParticles();
-		Registry.register(Registry.SOUND_EVENT, ModSounds.DASH_SWORD_ID,ModSounds.MY_SOUND_EVENT);
+		Registry.register(Registry.SOUND_EVENT, ModSounds.DASH_SWORD_ID,ModSounds.DASH_SWORD_EVENT);
+		Registry.register(Registry.SOUND_EVENT, ModSounds.CLASH_SWORD_ID_1,ModSounds.CLASH_SWORD_ONE);
+		Registry.register(Registry.SOUND_EVENT, ModSounds.CLASH_SWORD_ID_2,ModSounds.CLASH_SWORD_TWO);
+		Registry.register(Registry.SOUND_EVENT, ModSounds.CLASH_SWORD_ID_3,ModSounds.CLASH_SWORD_THREE);
+		Registry.register(Registry.SOUND_EVENT, ModSounds.PARRY1_ID,ModSounds.PARRY_ONE);
+		Registry.register(Registry.SOUND_EVENT, ModSounds.PARRY2_ID,ModSounds.PARRY_TWO);
+		Registry.register(Registry.SOUND_EVENT, ModSounds.NO_POSTURE_ID,ModSounds.NO_POSTURE);
 		ModLootTableModifiers.modifyLootTables();
 		ModItems.registerModItems();
+		ModPotions.registerPotions();
+		ModEnchantments.registerModEnchantments();
+		ServerPlayerEvents.AFTER_RESPAWN.register(new playerdeath());
+		//ServerWorldEvents.LOAD.register(new dimensiontransfer());
+		staminareset.init();
 		LOGGER.info("Hello Fabric world!");
 	}
 }

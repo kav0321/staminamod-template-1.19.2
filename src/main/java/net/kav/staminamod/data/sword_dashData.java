@@ -7,6 +7,14 @@ public class sword_dashData {
     private static int tick;
     private static int tick2;
     private static boolean beingattack;
+    public static void reset(IEntityDataSaver player)
+    {
+        settick(player,0);
+        settick2(player,0);
+        settick3(player,0);
+        setparryattack(player,false);
+    }
+
     public static void settick(IEntityDataSaver player, int amount)
     {
         NbtCompound nbt = player.getPersistentData();

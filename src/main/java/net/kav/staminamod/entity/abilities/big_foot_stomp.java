@@ -1,5 +1,6 @@
 package net.kav.staminamod.entity.abilities;
 
+import net.kav.staminamod.config.ModConfigs;
 import net.kav.staminamod.entity.ModEntities;
 import net.kav.staminamod.sound.ModSounds;
 import net.minecraft.entity.Entity;
@@ -90,10 +91,10 @@ public class big_foot_stomp extends ProjectileEntity implements IAnimatable{
             }
             for (LivingEntity entity : getEntitiesNearby(this.getWorld(),1, e -> (e instanceof LivingEntity),this))
             {
-                System.out.println("sas");
+               // System.out.println("sas");
                 if(entity instanceof LivingEntity)
                 {
-                    System.out.println("sas");
+                    //System.out.println("sas");
                     if(owner !=null)
                     {
                         if(entity instanceof PlayerEntity)
@@ -103,14 +104,14 @@ public class big_foot_stomp extends ProjectileEntity implements IAnimatable{
 
                                 entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,20,10,false,false));
                                 entity.setVelocity(Vec3d.ZERO);
-                                entity.damage(DamageSource.mob(direc),4);
+                                entity.damage(DamageSource.mob(direc), ModConfigs.spike_damage);
                             }
                         }
                         else
                         {
                             entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,20,10,false,false));
                             entity.setVelocity(Vec3d.ZERO);
-                            entity.damage(DamageSource.mob(direc),4);
+                            entity.damage(DamageSource.mob(direc),ModConfigs.spike_damage);
                         }
                     }
 

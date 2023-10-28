@@ -6,6 +6,13 @@ import net.minecraft.nbt.NbtCompound;
 public class Parrydata {
     private static int tick;
     private static boolean beingattack;
+
+    public static void reset(IEntityDataSaver player)
+    {
+        settick(player,0);
+        setparryattack(player,false);
+    }
+
     public static void settick(IEntityDataSaver player, int amount)
     {
         NbtCompound nbt = player.getPersistentData();

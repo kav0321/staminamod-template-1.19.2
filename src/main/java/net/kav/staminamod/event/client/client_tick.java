@@ -7,6 +7,7 @@ import net.kav.staminamod.INIT.AbilityManager;
 import net.kav.staminamod.data.Equipdata;
 import net.kav.staminamod.data.StaminaData;
 import net.kav.staminamod.networking.ModMessages;
+import net.kav.staminamod.networking.packet.Packets;
 import net.kav.staminamod.statusEffect.ModStatusEffects;
 import net.kav.staminamod.util.IEntityDataSaver;
 import net.minecraft.client.MinecraftClient;
@@ -15,18 +16,31 @@ import net.minecraft.network.PacketByteBuf;
 
 public class client_tick implements ClientTickEvents.EndWorldTick{
     int x1 = 0;
+    int ticks=0;
     public static int getTick1 = 0;
     public static int getTick2 = 0;
     public static int getTick3 = 0;
+
+
+
+    public static int CURRENTT = 0;
+    public static int CURRENTT2 = 0;
+    public static int CURRENTT3 = 0;
     @Override
     public void onEndTick(ClientWorld world) {
+        ticks++;
         if(getTick1 >-1)
         {
             if(getTick1 ==0)
             {
                 //
             }
-
+           // System.out.println("t");
+            if(ticks%10==0&&getTick1!=0)
+            {
+                ClientPlayNetworking.send(ModMessages.LEAVING2,new Packets.tick_equip(client_tick.getTick1,client_tick.getTick2,client_tick.getTick3).write());
+            }
+            //System.out.println(getTick1);
             getTick1--;
             if(getTick1 ==-1)
             {
@@ -41,6 +55,11 @@ public class client_tick implements ClientTickEvents.EndWorldTick{
             {
 
             }
+            //System.out.println("t");
+            if(ticks%10==0 &&getTick2!=0)
+            {
+                ClientPlayNetworking.send(ModMessages.LEAVING2,new Packets.tick_equip(client_tick.getTick1,client_tick.getTick2,client_tick.getTick3).write());
+            }
 
             getTick2--;
             if(getTick2 ==-1)
@@ -50,13 +69,18 @@ public class client_tick implements ClientTickEvents.EndWorldTick{
 
         }
 
-        if(getTick3 >-1)
+        if(getTick3 >-1&&getTick3!=0)
         {
             if(getTick3 ==0)
             {
 
             }
-
+            //System.out.println("t");
+            if(ticks%20==0&&getTick3!=0)
+            {
+                ClientPlayNetworking.send(ModMessages.LEAVING2,new Packets.tick_equip(client_tick.getTick1,client_tick.getTick2,client_tick.getTick3).write());
+                ticks=0;
+            }
             getTick3--;
             if(getTick3 ==-1)
             {

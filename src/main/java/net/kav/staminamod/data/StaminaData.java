@@ -7,7 +7,10 @@ import net.minecraft.nbt.NbtCompound;
 public class StaminaData {
 
     private static float STAMINA = 0;
-    private static float MAXSTAMINA = 20;
+    private static float DEFAULT_MAXIMUM=25;
+    private static float MAXSTAMINA = 25;
+
+    private static int EXTRA_STAMINA = 0;
     private static float RECOVERYRATE = 0.7f;
 
     public static float getSTAMINA(IEntityDataSaver player) {
@@ -25,11 +28,12 @@ public class StaminaData {
     {
         NbtCompound nbt = player.getPersistentData();
         STAMINA=nbt.getFloat("Stamina");
+        MAXSTAMINA=getMAXSTAMINA(player);
+        EXTRA_STAMINA= getMAXSTAMINAtemp(player);
 
+        if (STAMINA >= MAXSTAMINA+EXTRA_STAMINA) {
 
-        if (STAMINA >= MAXSTAMINA) {
-
-            STAMINA = MAXSTAMINA;
+            STAMINA = MAXSTAMINA+EXTRA_STAMINA;
 
         }
         else
@@ -64,7 +68,7 @@ public class StaminaData {
 
         if(MAXSTAMINA<=0)
         {
-            MAXSTAMINA=20;
+            MAXSTAMINA=DEFAULT_MAXIMUM;
         }
         nbt.putFloat("Maxstamina",MAXSTAMINA);
         return MAXSTAMINA;
@@ -73,27 +77,31 @@ public class StaminaData {
     public static void setMAXSTAMINA(IEntityDataSaver player, float amount)
     {
         NbtCompound nbt = player.getPersistentData();
+        float amounts=(amount<=0)?DEFAULT_MAXIMUM:amount;
 
-        nbt.putFloat("Maxstamina",amount);
+        nbt.putFloat("Maxstamina",amounts);
     }
-    public static void setMAXSTAMINAtemp(IEntityDataSaver player, float amount)
+    public static void increaseMAXSTAMINAtemp(IEntityDataSaver player, int amount)
     {
         NbtCompound nbt = player.getPersistentData();
-
-        nbt.putFloat("Maxstamina_t",amount);
+        EXTRA_STAMINA = nbt.getInt("Maxstamina_t");
+        EXTRA_STAMINA+=amount;
+        nbt.putInt("Maxstamina_t",EXTRA_STAMINA);
     }
-    public static float getMAXSTAMINAtemp(IEntityDataSaver player) {
+
+    public static int getMAXSTAMINAtemp(IEntityDataSaver player) {
         NbtCompound nbt = player.getPersistentData();
 
-        return nbt.getFloat("Maxstamina_t");
+        return nbt.getInt("Maxstamina_t");
     }
+
     public static void incrementMAXSTAMINA(IEntityDataSaver player, float amount)
     {
         NbtCompound nbt = player.getPersistentData();
 
         MAXSTAMINA=nbt.getFloat("Maxstamina");
         MAXSTAMINA+=amount;
-        System.out.println(MAXSTAMINA);
+        //System.out.println(MAXSTAMINA);
         //recovery rate to be ajusted
         nbt.putFloat("Maxstamina",MAXSTAMINA);
         nbt.putFloat("Recoveryrate",RECOVERYRATE);

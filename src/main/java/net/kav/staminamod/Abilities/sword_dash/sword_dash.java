@@ -1,54 +1,37 @@
 package net.kav.staminamod.Abilities.sword_dash;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.Multimap;
 import net.kav.staminamod.api.AbilityCore;
 
 import net.kav.staminamod.api.damagesource.Moddamagesource;
 import net.kav.staminamod.api.multiple_animations;
+import net.kav.staminamod.config.ModConfigs;
 import net.kav.staminamod.data.sword_dashData;
-import net.kav.staminamod.mixin.client.ClientPlayerEntityMixin;
-import net.kav.staminamod.particle.ModParticles;
 import net.kav.staminamod.sound.ModSounds;
 import net.kav.staminamod.util.IEntityDataSaver;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.particle.CloudParticle;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.structure.rule.AxisAlignedLinearPosRuleTest;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.*;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 
 import java.util.*;
-import java.util.function.Predicate;
-
-import static java.lang.Math.*;
-import static java.lang.Math.cos;
 //not completed
 
 public class sword_dash extends AbilityCore implements multiple_animations {
@@ -145,7 +128,7 @@ public class sword_dash extends AbilityCore implements multiple_animations {
 
         }
         if (sword_dashData.getLevel(((IEntityDataSaver) player)) == true && sword_dashData.gettick((IEntityDataSaver) player) == 0) {
-            System.out.println("damn");
+            //System.out.println("damn");
             Vec3d playerlooking = player.getRotationVec(1.0F);
             Vec3d vect = new Vec3d(playerlooking.getX() * 5, playerlooking.getY(), playerlooking.getZ() * 5);
             player.setVelocity(vect);
@@ -167,7 +150,7 @@ public class sword_dash extends AbilityCore implements multiple_animations {
 
 
         ServerWorld serverWorld = (ServerWorld) player.world;
-        serverWorld.playSound(null, player.getBlockPos(), ModSounds.MY_SOUND_EVENT, SoundCategory.PLAYERS, 0.5f, 1.0f);
+        serverWorld.playSound(null, player.getBlockPos(), ModSounds.DASH_SWORD_EVENT, SoundCategory.PLAYERS, 0.5f, 1.0f);
 
 
         double damage = 0;
@@ -184,7 +167,7 @@ public class sword_dash extends AbilityCore implements multiple_animations {
             {
                 main = player.getOffHandStack();
                 slot=EquipmentSlot.OFFHAND;
-                System.out.println("offhand");
+                //System.out.println("offhand");
                 damage+=4;
             }
             else {
@@ -200,13 +183,13 @@ public class sword_dash extends AbilityCore implements multiple_animations {
 
         if (!multimap.isEmpty()) {
             Iterator var11 = multimap.entries().iterator();
-            System.out.println(damage);
+            //System.out.println(damage);
             while(var11.hasNext()) {
                 Map.Entry<EntityAttribute, EntityAttributeModifier> entry = (Map.Entry)var11.next();
                 EntityAttributeModifier entityAttributeModifier = (EntityAttributeModifier)entry.getValue();
                 damage = entityAttributeModifier.getValue();
 
-                System.out.println(damage);
+                //System.out.println(damage);
 
                     if(damage >=0)
                     {
@@ -250,22 +233,22 @@ public class sword_dash extends AbilityCore implements multiple_animations {
 
         // Iterate through the modifiers to find the attack damage
 
-        System.out.println(damage*6);
+        //System.out.println(damage*6);
         if(entity instanceof PlayerEntity)
         {
             if(entity.isBlocking())
             {
-                entity.damage(Moddamagesource.mob(player), (float) damage*2f);
+                entity.damage(Moddamagesource.mob(player), (float) damage* ModConfigs.sword_dash_attack_multiplier/2.5f);
             }
             else
             {
-                entity.damage(Moddamagesource.mob(player), (float) damage*6f);
+                entity.damage(Moddamagesource.mob(player), (float) damage*ModConfigs.sword_dash_attack_multiplier);
             }
 
         }
         else
         {
-            entity.damage(Moddamagesource.mob(player), (float) damage*6f);
+            entity.damage(Moddamagesource.mob(player), (float) damage*ModConfigs.sword_dash_attack_multiplier);
         }
 
 
@@ -279,7 +262,7 @@ public class sword_dash extends AbilityCore implements multiple_animations {
     @Override
     public void ServerSideExecution(MinecraftServer server, ServerPlayerEntity player) {
         sword_dashData.setparryattack(((IEntityDataSaver) player),true);
-        sword_dashData.settick((IEntityDataSaver) player,30);
+        sword_dashData.settick((IEntityDataSaver) player,25);
         sword_dashData.settick3((IEntityDataSaver) player,200);
 
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,60,10));
@@ -287,7 +270,7 @@ public class sword_dash extends AbilityCore implements multiple_animations {
     @Override
     public void ClientSideExecution() {
         sword_dashData.setparryattack(((IEntityDataSaver) MinecraftClient.getInstance().player),true);
-        sword_dashData.settick((IEntityDataSaver) MinecraftClient.getInstance().player,30);
+        sword_dashData.settick((IEntityDataSaver) MinecraftClient.getInstance().player,25);
         sword_dashData.settick3((IEntityDataSaver) MinecraftClient.getInstance().player,200);
     }
 
@@ -296,7 +279,13 @@ public class sword_dash extends AbilityCore implements multiple_animations {
 
         if(player.getMainHandStack().getItem() instanceof SwordItem || player.getOffHandStack().getItem() instanceof SwordItem)
         {
+
             return super.conditions(player);
+        }
+        else
+        {
+            this.error =Text.translatable("ability.sword_dash.error_tool");
+            player.sendMessage(error,true);
         }
         return false;
     }

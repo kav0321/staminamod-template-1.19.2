@@ -8,6 +8,7 @@ import net.kav.staminamod.api.AbilityCore;
 import net.kav.staminamod.data.AbilityData;
 import net.kav.staminamod.data.Equipdata;
 import net.kav.staminamod.data.StaminaData;
+import net.kav.staminamod.data.cooldowndata;
 import net.kav.staminamod.networking.ModMessages;
 import net.kav.staminamod.networking.packet.Packets;
 import net.kav.staminamod.util.IEntityDataSaver;
@@ -19,13 +20,15 @@ public class playerdeath implements ServerPlayerEvents.AfterRespawn {
     public void afterRespawn(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive) {
         this.Maxstamina(oldPlayer,newPlayer,alive);
         this.IAbilitytransfer(oldPlayer,newPlayer,alive);
+
     }
 
-    public void IAbilitytransfer(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive)
+    public static void IAbilitytransfer(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive)
     {
         AbilityData.setAbility((IEntityDataSaver) newPlayer,AbilityData.getAbility((IEntityDataSaver) oldPlayer));
         for(AbilityCore ability: AbilityData.getAbility((IEntityDataSaver) oldPlayer))
         {
+
             PacketByteBuf buffer= PacketByteBufs.create();
             buffer.writeInt(ability.ID);
             ServerPlayNetworking.send(newPlayer,ModMessages.INITIALIZEABILITY,buffer);
@@ -37,12 +40,22 @@ public class playerdeath implements ServerPlayerEvents.AfterRespawn {
         ServerPlayNetworking.send(newPlayer,ModMessages.ABILITYSYNC2,new Packets.AbilitySync(Equipdata.getability((IEntityDataSaver) newPlayer,"ability1"),"ability1").write());
         ServerPlayNetworking.send(newPlayer,ModMessages.ABILITYSYNC2,new Packets.AbilitySync(Equipdata.getability((IEntityDataSaver) newPlayer,"ability2"),"ability2").write());
         ServerPlayNetworking.send(newPlayer,ModMessages.ABILITYSYNC2,new Packets.AbilitySync(Equipdata.getability((IEntityDataSaver) newPlayer,"ability3"),"ability3").write());
+
+        ServerPlayNetworking.send(newPlayer,ModMessages.COOLDOWNC,new Packets.cooldown(cooldowndata.getCooldown((IEntityDataSaver) oldPlayer,"ability1"),"ability1").write());
+        ServerPlayNetworking.send(newPlayer,ModMessages.COOLDOWNC,new Packets.cooldown(cooldowndata.getCooldown((IEntityDataSaver) oldPlayer,"ability2"),"ability2").write());
+        ServerPlayNetworking.send(newPlayer,ModMessages.COOLDOWNC,new Packets.cooldown(cooldowndata.getCooldown((IEntityDataSaver) oldPlayer,"ability3"),"ability3").write());
+
     }
-    public void Maxstamina(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive)
+    public static void Maxstamina(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive)
     {
         StaminaData.setMAXSTAMINA((IEntityDataSaver) newPlayer, StaminaData.getMAXSTAMINA((IEntityDataSaver) oldPlayer));
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeFloat(StaminaData.getMAXSTAMINA((IEntityDataSaver) oldPlayer));
         ServerPlayNetworking.send(newPlayer, ModMessages.DEATH_TRANSFER_MAXSTAMINA,buf);
+    }
+    public void Absstamina(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive)
+    {
+
+
     }
 }

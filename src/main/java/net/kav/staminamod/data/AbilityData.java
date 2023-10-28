@@ -14,14 +14,13 @@ public class AbilityData {
     public static List<AbilityCore> Techics= new ArrayList<>();
     public static void setAbility(IEntityDataSaver player,List<AbilityCore> abilityCores)
     {
-        NbtCompound nbtCompound= player.getPersistentData();
-       List<Integer> ID= new ArrayList<>();
+
+
        for(AbilityCore abilities:abilityCores)
        {
-           ID.add(abilities.ID);
+          addAbility(player,abilities);
        }
 
-        nbtCompound.putIntArray("id_abilities",ID);
     }
 
     public static <T extends AbilityCore> void addAbility (IEntityDataSaver player, T abilityCores)
@@ -30,10 +29,7 @@ public class AbilityData {
 
 
         NbtCompound nbtCompound= player.getPersistentData();
-        if(nbtCompound.contains(abilityCores.filename))
-        {
-            return;
-        }
+
 
         nbtCompound.putInt(abilityCores.filename,abilityCores.ID);
 
@@ -46,9 +42,10 @@ public class AbilityData {
         int i =0;
         for(AbilityCore ap: AbilityManager.abilityCoreList)
         {
-            System.out.println( AbilityManager.abilityCoreList.size());
-            if(nbtCompound.contains(ap.filename) && !abilityCores.contains(ap))
+
+            if(nbtCompound.contains(ap.filename))
             {
+                //System.out.println(ap.ID+ " c");
                 abilityCores.add(ap);
             }
             i++;

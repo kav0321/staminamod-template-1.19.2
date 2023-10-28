@@ -4,15 +4,23 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.kav.staminamod.api.AbilityCore;
+import net.kav.staminamod.api.multiple_animations;
+import net.kav.staminamod.config.ModConfigs;
 import net.kav.staminamod.data.Parrydata;
 import net.kav.staminamod.networking.ModMessages;
+import net.kav.staminamod.sound.ModSounds;
 import net.kav.staminamod.util.IEntityDataSaver;
+import net.kav.staminamod.util.IPosture;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.item.ShieldItem;
+import net.minecraft.item.SwordItem;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvents;
@@ -20,7 +28,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class parryabilty extends AbilityCore implements ServerLivingEntityEvents.AllowDamage{
+import static java.lang.Math.abs;
+
+public class parryabilty extends AbilityCore implements ServerLivingEntityEvents.AllowDamage, multiple_animations {
     public parryabilty(int cooldown, int stamina, int ID, String animationname, Text name, Text description, String filename,float speed, boolean head, boolean body, boolean righthand, boolean lefthand, boolean rightleg, boolean leftleg) {
         super(cooldown, stamina, ID, animationname, name, description, filename,speed,head,body,righthand,lefthand,rightleg,leftleg);
     }
@@ -54,49 +64,111 @@ public class parryabilty extends AbilityCore implements ServerLivingEntityEvents
     @Override
     public void ServerSideExecution(MinecraftServer server, ServerPlayerEntity player) {
         Parrydata.setparryattack(((IEntityDataSaver) player),true);
-        Parrydata.settick((IEntityDataSaver) player,40);
+        Parrydata.settick((IEntityDataSaver) player,30);
     }
 
-    @Override
     public boolean conditions(PlayerEntity player) {
-        return super.conditions(player);
+
+        if(player.getOffHandStack().getItem() instanceof SwordItem ||player.getOffHandStack().getItem()==Items.SHIELD ||player.getMainHandStack().getItem() instanceof SwordItem ||player.getMainHandStack().getItem()==Items.SHIELD)
+        {
+            if(player.getOffHandStack().getItem()!= Items.WOODEN_SWORD && player.getMainHandStack().getItem()!=Items.WOODEN_SWORD)
+            {
+
+                return super.conditions(player);
+            }
+            else
+            {
+                this.error =Text.translatable("ability.parry.error_tool_wooden");
+                player.sendMessage(error,true);
+            }
+
+        }
+        else
+        {
+            this.error =Text.translatable("ability.parry.error_tool");
+            player.sendMessage(error,true);
+        }
+        return false;
     }
 
     @Override
     public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
-        if(entity instanceof PlayerEntity)
+        if(entity instanceof PlayerEntity && source.getAttacker() !=null)
         {
-            float playerYaw=entity.getYaw();
-            BlockPos playerPos= entity.getBlockPos();
-
-            double x = entity.getX()+  Math.sin(Math.toRadians(-playerYaw));
-            double y = entity.getY();
-            double z = entity.getZ()+  Math.cos(Math.toRadians(-playerYaw));
-            BlockPos frontPos = new BlockPos(x,y,z);
-
-            if(entity.isBlocking())
+            if(source.getAttacker() instanceof LivingEntity)
             {
-                ServerPlayNetworking.send(((ServerPlayerEntity) entity), ModMessages.SHIELD, PacketByteBufs.empty());
-            }
-            else if(Parrydata.getLevel(((IEntityDataSaver) entity)))
-            {
-
-                if(source.getAttacker() instanceof LivingEntity)
+                if(!entity.canSee(source.getAttacker()) && abs(entity.getMaxHealth()-((LivingEntity) source.getAttacker()).getMaxHealth())>30)
                 {
-                    double distanceSquared = source.getAttacker().getPos().squaredDistanceTo(x, y, z);
-                    if(distanceSquared<=1.0)
-                    {
-                        ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS,200,10));
-                        ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,200,10));
-                        ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS,200,10));
-                        source.getAttacker().damage(DamageSource.player((PlayerEntity) entity),0.1f);
-                        source.getAttacker().playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE,1.0f,1.0f);
-                        Parrydata.setparryattack(((IEntityDataSaver) entity),false);
-                    }
-
+                    return true;
                 }
+                float playerYaw=entity.getYaw();
+                BlockPos playerPos= entity.getBlockPos();
+
+                double x = entity.getX()+  Math.sin(Math.toRadians(-playerYaw));
+                double y = entity.getY();
+                double z = entity.getZ()+  Math.cos(Math.toRadians(-playerYaw));
+                BlockPos frontPos = new BlockPos(x,y,z);
+
+               if(Parrydata.getLevel(((IEntityDataSaver) entity)))
+                {
+
+                    if(source.getAttacker() instanceof LivingEntity)
+                    {
+                        double distanceSquared = source.getAttacker().getPos().squaredDistanceTo(x, y, z);
+
+
+                        if(distanceSquared<=1.0 )
+                        {
+                            IPosture entity1= (IPosture) source.getAttacker();
+                            entity1.incrementposture_float(-15f);
+                            Vec3d playerDirection = entity.getRotationVector();
+                            Vec3d direction = playerDirection.normalize();
+                            ((LivingEntity) source.getAttacker()).takeKnockback(0.2,-direction.getX(),-direction.getZ());
+
+                            if(entity1.getposture_number()<=0)
+                            {
+                               // ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, ModConfigs.parry_duration,ModConfigs.parry_amplifier));
+                                ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,ModConfigs.parry_duration,ModConfigs.parry_amplifier));
+                                ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS,ModConfigs.parry_duration,ModConfigs.parry_amplifier));
+                               // source.getAttacker().damage(DamageSource.player((PlayerEntity) entity),0.1f);
+                                source.getAttacker().playSound(ModSounds.PARRY_TWO,1.0f,1.0f);
+                                source.getAttacker().playSound(ModSounds.NO_POSTURE,1.0f,1.0f);
+                                Parrydata.setparryattack(((IEntityDataSaver) entity),false);
+                                entity1.setposture_float(entity1.getmaxposture());
+                                return false;
+                            }
+                            ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,20,10));
+                            source.getAttacker().playSound(ModSounds.PARRY_ONE,1.0f,1.0f);
+                            Parrydata.setparryattack(((IEntityDataSaver) entity),false);
+                            return false;
+                        }
+
+                    }
+                }
+
             }
+
+
         }
         return true;
+    }
+
+
+    @Override
+    public String getanimation_number() {
+        if((MinecraftClient.getInstance().player.getMainHandStack().getItem() instanceof SwordItem ||MinecraftClient.getInstance().player.getMainHandStack().getItem() instanceof ShieldItem) && !(MinecraftClient.getInstance().player.getOffHandStack().getItem() instanceof SwordItem ||MinecraftClient.getInstance().player.getOffHandStack().getItem() instanceof ShieldItem))
+        {
+            return this.animationname;
+        }
+        if(!(MinecraftClient.getInstance().player.getMainHandStack().getItem() instanceof SwordItem ||MinecraftClient.getInstance().player.getMainHandStack().getItem() instanceof ShieldItem) && (MinecraftClient.getInstance().player.getOffHandStack().getItem() instanceof SwordItem ||MinecraftClient.getInstance().player.getOffHandStack().getItem() instanceof ShieldItem))
+        {
+            return this.animationname+"right";
+        }
+
+        if((MinecraftClient.getInstance().player.getMainHandStack().getItem() instanceof SwordItem ||MinecraftClient.getInstance().player.getMainHandStack().getItem() instanceof ShieldItem) && (MinecraftClient.getInstance().player.getOffHandStack().getItem() instanceof SwordItem ||MinecraftClient.getInstance().player.getOffHandStack().getItem() instanceof ShieldItem))
+        {
+            return this.animationname;
+        }
+        return "";
     }
 }

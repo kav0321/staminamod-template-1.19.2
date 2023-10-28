@@ -15,25 +15,6 @@ import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 public class playerleave implements ClientPlayConnectionEvents.Disconnect{
     @Override
     public void onPlayDisconnect(ClientPlayNetworkHandler handler, MinecraftClient client) {
-        PlayerEntity player= MinecraftClient.getInstance().player;
-        Parrydata.settick((IEntityDataSaver) player,0);
-        Parrydata.setparryattack((IEntityDataSaver) player,false);
 
-        KickTimingData.setDid_I_kick((IEntityDataSaver) player,false);
-        KickTimingData.settick((IEntityDataSaver) player,0);
-
-        sword_dashData.settick((IEntityDataSaver) player,0);
-        sword_dashData.settick2((IEntityDataSaver) player,0);
-        sword_dashData.settick3((IEntityDataSaver) player,0);
-        sword_dashData.setparryattack((IEntityDataSaver) player,false);
-
-
-
-        StompData.settick((IEntityDataSaver) player,0);
-        StompData.setDid_I_kick((IEntityDataSaver) player,false);
-
-        flipdata.setDid_I_flip((IEntityDataSaver) player,false);
-        flipdata.settick((IEntityDataSaver) player,0);
-        ClientPlayNetworking.send(ModMessages.LEAVING,new Packets.tick_equip(client_tick.getTick1,client_tick.getTick2,client_tick.getTick3).write());
     }
 }

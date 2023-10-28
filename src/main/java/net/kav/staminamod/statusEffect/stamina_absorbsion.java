@@ -16,53 +16,58 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import java.awt.*;
 
 public class stamina_absorbsion extends StatusEffect {
+
     protected stamina_absorbsion() {
         super(
                 StatusEffectCategory.BENEFICIAL, Color.GREEN.getRGB()
         );
+
     }
 
 
     @Override
     public void onRemoved(LivingEntity entity, AttributeContainer attributes, int amplifier) {
+
         if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
-            PacketByteBuf buf = PacketByteBufs.create();
+
+                PlayerEntity player = (PlayerEntity) entity;
+                PacketByteBuf buf = PacketByteBufs.create();
 
 
-            float maxstamina= StaminaData.getMAXSTAMINAtemp((IEntityDataSaver) player);
-            float reminder= StaminaData.getMAXSTAMINA((IEntityDataSaver) player)-maxstamina;
-            buf.writeInt((int) -reminder);
-            ServerPlayNetworking.send((ServerPlayerEntity) entity, ModMessages.EFFECTS,buf);
 
-            StaminaData.incrementMAXSTAMINA((IEntityDataSaver) entity, -reminder);
+                buf.writeInt(-(amplifier * 5 + 5));
+                ServerPlayNetworking.send((ServerPlayerEntity) entity, ModMessages.EXTRA_STAMINA,buf);
+                StaminaData.increaseMAXSTAMINAtemp((IEntityDataSaver) player,-(amplifier * 5 + 5));
+
+
+
+
         }
         super.onRemoved(entity, attributes, amplifier);
     }
 
     @Override
     public void onApplied(LivingEntity entity, AttributeContainer attributes, int amplifier) {
-
         if (entity instanceof PlayerEntity) {
-            if(entity.world.isClient())
+
+            if(!entity.getActiveStatusEffects().equals(ModStatusEffects.stamina_debuff))
             {
-                System.out.println("ngas");
-            }
-        }
-
-            if (entity instanceof PlayerEntity) {
-                System.out.println("sae");
-
                 PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeInt((amplifier * 2 + 5));
+                int temp =(amplifier * 5 + 5);
+                buf.writeInt(temp);
                 PlayerEntity player = (PlayerEntity) entity;
 
-                StaminaData.setMAXSTAMINAtemp((IEntityDataSaver) player,StaminaData.getMAXSTAMINA((IEntityDataSaver) player));
+                StaminaData.increaseMAXSTAMINAtemp((IEntityDataSaver) player,temp);
 
-                ServerPlayNetworking.send((ServerPlayerEntity) player, ModMessages.EFFECTS,buf);
-
-                StaminaData.incrementMAXSTAMINA((IEntityDataSaver) entity, (amplifier * 2 + 5));
+                ServerPlayNetworking.send((ServerPlayerEntity) player, ModMessages.EXTRA_STAMINA,buf);
             }
+
+
+
+
+        }
+
+
 
 
         super.onApplied(entity, attributes, amplifier);

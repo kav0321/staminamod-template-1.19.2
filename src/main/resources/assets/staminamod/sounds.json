@@ -4,5 +4,41 @@
     "sounds": [
       "staminamod:dash_sword"
     ]
+  },
+  "blockone": {
+    "subtitle": "staminamod.blockone",
+    "sounds": [
+      "staminamod:blockone"
+    ]
+  },
+  "blocktwo": {
+    "subtitle": "staminamod.blocktwo",
+    "sounds": [
+      "staminamod:blocktwo"
+    ]
+  },
+  "blockthree": {
+    "subtitle": "staminamod.blockthree",
+    "sounds": [
+      "staminamod:blockthree"
+    ]
+  },
+  "parryone": {
+    "subtitle": "staminamod.parryone",
+    "sounds": [
+      "staminamod:parryone"
+    ]
+  },
+  "parrytwo": {
+    "subtitle": "staminamod.parrytwo",
+    "sounds": [
+      "staminamod:parrytwo"
+    ]
+  },
+  "zero_posture": {
+    "subtitle": "staminamod.zero_posture",
+    "sounds": [
+      "staminamod:zero_posture"
+    ]
   }
 }

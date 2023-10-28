@@ -8,7 +8,9 @@ import net.kav.staminamod.entity.abilities.bigger_foot_stomp;
 import net.kav.staminamod.entity.abilities.client.big_foot_stomp_renderer;
 import net.kav.staminamod.entity.abilities.client.bigger_foot_stomp_renderer;
 import net.kav.staminamod.entity.abilities.client.foot_stomp_renderer;
+import net.kav.staminamod.entity.abilities.client.hurrican_entity_renderer;
 import net.kav.staminamod.entity.abilities.foot_stomp;
+import net.kav.staminamod.entity.abilities.hurrican_entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -20,6 +22,11 @@ import net.minecraft.util.registry.Registry;
 import software.bernie.geckolib3.GeckoLib;
 
 public class ModEntities {
+
+    public static EntityType<hurrican_entity> HITBOX = Registry.register(
+            Registry.ENTITY_TYPE, new Identifier(StaminaMod.MODID, "hurrican_s"),
+            FabricEntityTypeBuilder.create(SpawnGroup.MISC, hurrican_entity::new)
+                    .dimensions(EntityDimensions.fixed(0.4f, 2f)).build());
     public static EntityType<foot_stomp> STOMP = Registry.register(
             Registry.ENTITY_TYPE, new Identifier(StaminaMod.MODID, "stomp_attack"),
             FabricEntityTypeBuilder.create(SpawnGroup.MISC, foot_stomp::new)
@@ -50,5 +57,6 @@ public class ModEntities {
         EntityRendererRegistry.register(ModEntities.STOMP, foot_stomp_renderer::new);
         EntityRendererRegistry.register(ModEntities.STOMP2, big_foot_stomp_renderer::new);
         EntityRendererRegistry.register(ModEntities.STOMP3, bigger_foot_stomp_renderer::new);
+        EntityRendererRegistry.register(ModEntities.HITBOX, hurrican_entity_renderer::new);
     }
 }

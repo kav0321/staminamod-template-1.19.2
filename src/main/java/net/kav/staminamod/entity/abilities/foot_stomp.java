@@ -1,5 +1,6 @@
 package net.kav.staminamod.entity.abilities;
 
+import net.kav.staminamod.config.ModConfigs;
 import net.kav.staminamod.entity.ModEntities;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
@@ -57,7 +58,7 @@ public class foot_stomp extends ProjectileEntity implements IAnimatable {
         super.onSpawnPacket(packet);
         if(direc!=null)
         {
-            System.out.println("s");
+            //System.out.println("s");
             this.setYaw(direc.getYaw());
         }
 
@@ -118,11 +119,13 @@ public class foot_stomp extends ProjectileEntity implements IAnimatable {
 
                                 entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,20,10,false,false));
                                 entity.setVelocity(Vec3d.ZERO);
+                                entity.damage(DamageSource.mob(direc),ModConfigs.spike_damage);
                             }
                         }
                         else {
                             entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,20,10,false,false));
                             entity.setVelocity(Vec3d.ZERO);
+                            entity.damage(DamageSource.mob(direc), ModConfigs.spike_damage);
                         }
                     }
 
@@ -175,10 +178,10 @@ public class foot_stomp extends ProjectileEntity implements IAnimatable {
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        System.out.println("sas");
+        //System.out.println("sas");
        if(entityHitResult.getEntity() instanceof LivingEntity)
        {
-           System.out.println("sas");
+          // System.out.println("sas");
            LivingEntity entity = (LivingEntity) entityHitResult.getEntity();
            if(owner !=null)
            {

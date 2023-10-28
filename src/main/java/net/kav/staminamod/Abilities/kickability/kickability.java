@@ -1,6 +1,7 @@
 package net.kav.staminamod.Abilities.kickability;
 
 import net.kav.staminamod.api.AbilityCore;
+import net.kav.staminamod.config.ModConfigs;
 import net.kav.staminamod.data.KickTimingData;
 import net.kav.staminamod.util.IEntityDataSaver;
 import net.minecraft.client.MinecraftClient;
@@ -58,7 +59,7 @@ public class kickability extends AbilityCore {
                         // Calculate the direction vector from the player to the entity
 
                         Vec3d direction = playerDirection.normalize();
-                        entity.takeKnockback(2,-direction.getX(),-direction.getZ());
+                        entity.takeKnockback(ModConfigs.kick_knockback,-direction.getX(),-direction.getZ());
                         // Teleport the entity to the push position
                         entity.damage(DamageSource.player(player),0.5f);
 

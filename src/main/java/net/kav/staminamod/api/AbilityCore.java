@@ -30,6 +30,7 @@ public abstract class AbilityCore implements IAbility{
     public Identifier file;
     public Text name;
     public Text description;
+    public Text error;
     public float speed;
 
     public boolean head;
@@ -69,12 +70,14 @@ public abstract class AbilityCore implements IAbility{
         return world.getEntitiesByClass(LivingEntity.class, entity.getBoundingBox().expand(Math.sin(Math.toRadians(-yaw)) * expandDistance, 0, Math.cos(Math.toRadians(-yaw)) * expandDistance)
                 .expand(attackRange, attackRange, attackRange), filter.and(e -> e != entity));
     }
-    public List<LivingEntity> getEntitiesNearby(World world, double expandDistance , Predicate<LivingEntity> filter, LivingEntity entity)
+
+    public List<Entity> getEntitiesNearby(World world, double expandDistance, Predicate<Entity> filter, Entity entity)
     {
         double yaw = entity.getYaw();
 
-        return world.getEntitiesByClass(LivingEntity.class, entity.getBoundingBox().expand(expandDistance, expandDistance, expandDistance), filter.and(e -> e != entity));
+        return world.getEntitiesByClass(Entity.class, entity.getBoundingBox().expand(expandDistance, expandDistance, expandDistance), filter.and(e -> e != entity));
     }
+
     public List<LivingEntity> getEntitiesNearby(BlockPos pos, World world, double radius , Predicate<LivingEntity> filter, LivingEntity entity)
     {
 

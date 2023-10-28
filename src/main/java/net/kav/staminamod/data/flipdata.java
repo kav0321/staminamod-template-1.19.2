@@ -6,6 +6,11 @@ import net.minecraft.nbt.NbtCompound;
 public class flipdata {
     private static int tick;
     private static boolean did_I_flip;
+    public static void reset(IEntityDataSaver player)
+    {
+        settick(player,0);
+        setDid_I_flip(player,false);
+    }
     public static void settick(IEntityDataSaver player, int amount)
     {
         NbtCompound nbt = player.getPersistentData();

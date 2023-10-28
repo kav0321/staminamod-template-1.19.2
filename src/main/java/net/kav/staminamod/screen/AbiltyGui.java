@@ -111,9 +111,9 @@ public class AbiltyGui extends LightweightGuiDescription {
 
                 if((str2.SLOT_TEMP!=SLOT_TEMP&&str3.SLOT_TEMP!=SLOT_TEMP)||SLOT1_temp==0)
                 {
-                    System.out.println("clock");
+                    //System.out.println("clock");
                     str.SLOT_TEMP=SLOT_TEMP;
-                    System.out.println(SLOT1_temp+  " S");
+                    //System.out.println(SLOT1_temp+  " S");
                     Equipdata.addability((IEntityDataSaver) MinecraftClient.getInstance().player,SLOT1_temp,"ability1");
 
                     ClientPlayNetworking.send(ModMessages.ABILITYSYNC,new Packets.AbilitySync(SLOT1_temp,"ability1").write());
@@ -134,9 +134,9 @@ public class AbiltyGui extends LightweightGuiDescription {
             {
                 if((str3.SLOT_TEMP!=SLOT_TEMP&&str.SLOT_TEMP!=SLOT_TEMP)||SLOT1_temp==0)
                 {
-                    System.out.println(SLOT1_temp);
+                    //System.out.println(SLOT1_temp);
                     str2.SLOT_TEMP=SLOT_TEMP;
-                    System.out.println(SLOT1_temp+  " S");
+                    //System.out.println(SLOT1_temp+  " S");
                     Equipdata.addability((IEntityDataSaver) MinecraftClient.getInstance().player,SLOT1_temp,"ability2");
 
                     ClientPlayNetworking.send(ModMessages.ABILITYSYNC,new Packets.AbilitySync(SLOT1_temp,"ability2").write());
@@ -153,9 +153,9 @@ public class AbiltyGui extends LightweightGuiDescription {
 
             if((str.SLOT_TEMP!=SLOT_TEMP&&str2.SLOT_TEMP!=SLOT_TEMP)||SLOT1_temp==0)
             {
-                System.out.println(SLOT1_temp);
+               // System.out.println(SLOT1_temp);
                 str3.SLOT_TEMP=SLOT_TEMP;
-                System.out.println(SLOT1_temp+  " S");
+                //System.out.println(SLOT1_temp+  " S");
                 Equipdata.addability((IEntityDataSaver) MinecraftClient.getInstance().player,SLOT1_temp,"ability3");
 
 

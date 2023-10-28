@@ -24,7 +24,7 @@ public class Packets {
         }
     }
     public record AbilityAni(int playerId, int index) {
-        public static Identifier ID = new Identifier(StaminaMod.MODID, "attack_an");
+
 
 
 
@@ -47,7 +47,24 @@ public class Packets {
             return new AbilityAni(playerId,index);
         }
     }
+    public record vec3d(double x, double y, double z) {
+        public PacketByteBuf write() {
+            PacketByteBuf buffer = PacketByteBufs.create();
+            buffer.writeDouble(x);
+            buffer.writeDouble(y);
+            buffer.writeDouble(z);
 
+            return buffer;
+        }
+
+        public static vec3d read(PacketByteBuf buffer) {
+            double x = buffer.readDouble();
+            double y = buffer.readDouble();
+            double z = buffer.readDouble();
+
+            return new vec3d(x,y,z);
+        }
+    }
 
     public record tick_equip(int ability1, int ability2, int ability3) {
         public static Identifier ID = new Identifier(StaminaMod.MODID, "equip_tick");
@@ -96,6 +113,68 @@ public class Packets {
             String slot = buffer.readString();
 
             return new AbilitySync(id,slot);
+        }
+    }
+
+
+    public record ABILITY_MODCONFIG(int stamina, int cooldown) {
+        public static Identifier ID0 = new Identifier(StaminaMod.MODID, "dodgea");
+        public static Identifier ID90 = new Identifier(StaminaMod.MODID, "flipa");
+        public static Identifier ID180 = new Identifier(StaminaMod.MODID, "foota");
+        public static Identifier ID270 = new Identifier(StaminaMod.MODID, "hurricana");
+        public static Identifier ID360 = new Identifier(StaminaMod.MODID, "kicka");
+        public static Identifier ID450 = new Identifier(StaminaMod.MODID, "parrya");
+        public static Identifier ID540= new Identifier(StaminaMod.MODID, "sword_dasha");
+        public PacketByteBuf write() {
+            PacketByteBuf buffer = PacketByteBufs.create();
+            buffer.writeInt(stamina);
+            buffer.writeInt(cooldown);
+
+            return buffer;
+        }
+
+        public static ABILITY_MODCONFIG read(PacketByteBuf buffer) {
+            int stamina = buffer.readInt();
+
+            int cooldown = buffer.readInt();
+
+            return new ABILITY_MODCONFIG(stamina,cooldown);
+        }
+    }
+
+    public record parry_re(int duration, int amplitude) {
+        public PacketByteBuf write() {
+            PacketByteBuf buffer = PacketByteBufs.create();
+            buffer.writeInt(duration);
+            buffer.writeInt(amplitude);
+
+            return buffer;
+        }
+
+        public static parry_re read(PacketByteBuf buffer) {
+            int duration = buffer.readInt();
+
+            int amplitude = buffer.readInt();
+
+            return new parry_re(duration,amplitude);
+        }
+    }
+    public record cooldown(int cooldown, String slot) {
+        public PacketByteBuf write() {
+            PacketByteBuf buffer = PacketByteBufs.create();
+            buffer.writeInt(cooldown);
+
+            buffer.writeString(slot);
+
+            return buffer;
+        }
+
+        public static cooldown read(PacketByteBuf buffer) {
+            int cooldown = buffer.readInt();
+
+            String slot = buffer.readString();
+
+            return new cooldown(cooldown,slot);
         }
     }
 }

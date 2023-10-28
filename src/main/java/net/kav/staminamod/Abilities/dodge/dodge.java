@@ -3,6 +3,7 @@ package net.kav.staminamod.Abilities.dodge;
 import net.kav.staminamod.api.AbilityCore;
 import net.kav.staminamod.api.dodging;
 import net.kav.staminamod.api.multiple_animations;
+import net.kav.staminamod.config.ModConfigs;
 import net.kav.staminamod.data.sword_dashData;
 import net.kav.staminamod.util.IEntityDataSaver;
 import net.minecraft.client.MinecraftClient;
@@ -86,7 +87,7 @@ public class dodge extends AbilityCore implements multiple_animations {
         double xfinal=2*sin(-alpha);
         double zfinal=2*cos(-alpha);
 
-        MinecraftClient.getInstance().player.setVelocity(new Vec3d(xfinal*1.3,0,zfinal*1.3));
+        MinecraftClient.getInstance().player.setVelocity(new Vec3d(xfinal* ModConfigs.dodge_range,0,zfinal*ModConfigs.dodge_range));
     }
 
     @Override
@@ -135,7 +136,7 @@ public class dodge extends AbilityCore implements multiple_animations {
         double xfinal=2*sin(-alpha);
         double zfinal=2*cos(-alpha);
 
-        player.setVelocity(new Vec3d(xfinal*1.3,0,zfinal*1.3));
+        player.setVelocity(new Vec3d(xfinal*ModConfigs.dodge_range,0,zfinal*ModConfigs.dodge_range));
     }
 
     @Override
@@ -151,8 +152,8 @@ public class dodge extends AbilityCore implements multiple_animations {
 
     @Override
     public String getanimation_number() {
-        System.out.println( MinecraftClient.getInstance().player.forwardSpeed);//back is neg
-        System.out.println( MinecraftClient.getInstance().player.sidewaysSpeed);//right is neg
+        //System.out.println( MinecraftClient.getInstance().player.forwardSpeed);//back is neg
+        //System.out.println( MinecraftClient.getInstance().player.sidewaysSpeed);//right is neg
         //  MinecraftClient.getInstance().player.setVelocity(new Vec3d(xfinal,0,zfinal));
         boolean forward= MinecraftClient.getInstance().player.forwardSpeed>0 &&MinecraftClient.getInstance().player.sidewaysSpeed==0;
         boolean left= MinecraftClient.getInstance().player.sidewaysSpeed>0 &&MinecraftClient.getInstance().player.forwardSpeed==0;
