@@ -36,7 +36,7 @@ Here are a few examples of what the JSON files might look like:
 Zombie
 
 
-`{
+```{
   "name": "minecraft:zombie",
   "posture": 21
-}`
+}```
