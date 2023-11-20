@@ -99,7 +99,20 @@ public class playerstaminapacketS2C {
             rightLeg1.setEnabled(!rightLeg);
             leftLeg1.setEnabled(!leftLeg);
 
-           animationContainer.addModifierBefore(new SpeedModifier(AbilityManager.abiltyregister.get(packet.index()).speed));
+            if(AbilityManager.abiltyregister.get(packet.index()) instanceof multiple_animations)
+            {
+                //animationL=   PlayerAnimationRegistry.getAnimation(new Identifier(StaminaMod.MODID, ((multiple_animations) AbilityManager.abiltyregister.get(packet.index())).getanimation_number()));
+                String name =((multiple_animations) AbilityManager.abiltyregister.get(packet.index())).getanimation_number();
+                System.out.println("seped");
+                animationContainer.addModifierBefore(new SpeedModifier(AbilityManager.abiltyregister.get(packet.index()).getspeed(name)));
+                //animationContainer.addModifierBefore(new SpeedModifier());
+            }
+            else
+            {
+                animationContainer.addModifierBefore(new SpeedModifier(AbilityManager.abiltyregister.get(packet.index()).getspeed(AbilityManager.abiltyregister.get(packet.index()).animationname)));
+            }
+            //((multiple_animations) AbilityManager.abiltyregister.get(packet.index())).getanimation_number()
+
            animationContainer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(7, Ease.LINEAR), new KeyframeAnimationPlayer(animationL));
 
             animationContainer.setAnimation(new firstperson(animationL));
@@ -192,8 +205,11 @@ public class playerstaminapacketS2C {
 
     public static void ABSORBTION(MinecraftClient client, ClientPlayNetworkHandler Handler, PacketByteBuf buf, PacketSender respondSender)
     {
-
-        StaminaData.increaseMAXSTAMINAtemp((IEntityDataSaver) client.player, buf.readInt());
+        if(client.player!=null)
+        {
+            StaminaData.increaseMAXSTAMINAtemp((IEntityDataSaver) client.player, buf.readInt());
+        }
+       // StaminaData.increaseMAXSTAMINAtemp((IEntityDataSaver) client.player, buf.readInt());
     }
     public static void ABSORBTION2(MinecraftClient client, ClientPlayNetworkHandler Handler, PacketByteBuf buf, PacketSender respondSender)
     {

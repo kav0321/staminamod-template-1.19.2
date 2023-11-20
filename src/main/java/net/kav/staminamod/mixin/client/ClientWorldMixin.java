@@ -3,6 +3,7 @@ package net.kav.staminamod.mixin.client;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.kav.staminamod.networking.ModMessages;
+import net.kav.staminamod.networking.packet.playerstaminapacketS2C;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
@@ -20,7 +21,7 @@ public class ClientWorldMixin {
             // Your code here to handle client-side rendering or data syncing when the player spawns in a new dimension.
             PacketByteBuf bufm = PacketByteBufs.empty();
 
-
+            playerstaminapacketS2C.modified=false;
             ClientPlayNetworking.send(ModMessages.INITIALIZEC2S,bufm);
             PacketByteBuf bufs = PacketByteBufs.empty();
 

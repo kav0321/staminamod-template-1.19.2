@@ -174,7 +174,7 @@ public class playerstaminapacketC2S {
     }
     public static void initialize_variable_stamina2(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
         int temp= (int) StaminaData.getMAXSTAMINAtemp(((IEntityDataSaver) player));
-        //System.out.println(temp);
+        System.out.println(temp);
         PacketByteBuf buffer2 = PacketByteBufs.create();
         buffer2.writeInt(temp);
         ServerPlayNetworking.send(player,ModMessages.EXTRA_STAMINA,buffer2);

@@ -30,7 +30,7 @@ public class server_tick  implements ServerTickEvents.EndWorldTick{
 
 
             IPosture pl1 = (IPosture) player;
-            System.out.println(pl1.getposture_number());
+
             if(((IEntityDataSaver) player).getPersistentData().contains("ability1") && Equipdata.getability(((IEntityDataSaver) player),"ability1")!=0)
             {
                 AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) player),"ability1")).tick(player);

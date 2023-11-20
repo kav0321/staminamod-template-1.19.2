@@ -31,7 +31,7 @@ public abstract class AbilityCore implements IAbility{
     public Text name;
     public Text description;
     public Text error;
-    public float speed;
+    protected float speed;
 
     public boolean head;
     public boolean body;
@@ -69,6 +69,17 @@ public abstract class AbilityCore implements IAbility{
 
         return world.getEntitiesByClass(LivingEntity.class, entity.getBoundingBox().expand(Math.sin(Math.toRadians(-yaw)) * expandDistance, 0, Math.cos(Math.toRadians(-yaw)) * expandDistance)
                 .expand(attackRange, attackRange, attackRange), filter.and(e -> e != entity));
+    }
+    public List<LivingEntity> getEntitiesNearby(World world, double expandDistance, Predicate<LivingEntity> filter, LivingEntity entity)
+    {
+        double yaw = entity.getYaw();
+
+        return world.getEntitiesByClass(LivingEntity.class, entity.getBoundingBox().expand( expandDistance, expandDistance, expandDistance)
+                , filter.and(e -> e != entity));
+    }
+    public float getspeed(String name)
+    {
+        return speed;
     }
 
     public List<Entity> getEntitiesNearby(World world, double expandDistance, Predicate<Entity> filter, Entity entity)
@@ -114,7 +125,13 @@ public abstract class AbilityCore implements IAbility{
 
     @Override
     public boolean conditions(PlayerEntity player)
-    {
+    {   if(player.hasVehicle())
+        {
+            this.error =Text.translatable("ability.parry.vehicule");
+            player.sendMessage(error,true);
+        }
+
+
         if(StaminaData.getSTAMINA((IEntityDataSaver) player)>stamina/2)
         {
             return true;

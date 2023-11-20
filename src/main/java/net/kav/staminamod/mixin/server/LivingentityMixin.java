@@ -29,28 +29,44 @@ public abstract class LivingentityMixin implements IPosture {
         tick++;
         if(tick%60==0)
         {
-            incrementposture_float(1);
+            incrementposture_float(0.5f);
         }
     }
-
+   // writeCustomDataToNbt
 
     @Inject(method = "initDataTracker", at = @At("HEAD"))
     private void injectWriteMethod(CallbackInfo info) {
         EntityType<?> entityType = ((LivingEntity)(Object)this).getType();
         Identifier entityId = Registry.ENTITY_TYPE.getId(entityType);
         String nameentity = entityId.toString();
-        float posture=20f;
+        float posture= 17f;
+
         for(String name: entityposture.entityname)
         {
             if(name.equals(nameentity))
             {
                 posture=entityposture.getposture(name);
+                //System.out.println(posture+ " for "+name);
             }
+
         }
         ((LivingEntity)(Object)this).getDataTracker().startTracking(POSTURE, Float.valueOf(posture));
 
     }
+    @Inject(method = "writeCustomDataToNbt", at = @At("HEAD"))
+    private void writeCustomDataToNbt(NbtCompound nbt,CallbackInfo info) {
 
+        nbt.putFloat("Posture", this.getposture_number());
+    }
+
+    @Inject(method = "readCustomDataFromNbt", at = @At("HEAD"))
+    private void readCustomDataFromNbt(NbtCompound nbt,CallbackInfo info) {
+    if(nbt.contains("Posture"))
+    {
+        this.setposture_float(nbt.getFloat("Posture"));
+    }
+
+    }
     @Override
     public TrackedData<Float> getposture() {
         return POSTURE;

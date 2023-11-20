@@ -7,12 +7,14 @@ public class sword_dashData {
     private static int tick;
     private static int tick2;
     private static boolean beingattack;
+    private static boolean swing;
     public static void reset(IEntityDataSaver player)
     {
         settick(player,0);
         settick2(player,0);
         settick3(player,0);
         setparryattack(player,false);
+        setswing( player,false);
     }
 
     public static void settick(IEntityDataSaver player, int amount)
@@ -93,6 +95,20 @@ public class sword_dashData {
 
 
 
+    public static void setswing(IEntityDataSaver player, boolean amount)
+    {
+        NbtCompound nbt = player.getPersistentData();
+        swing=amount;
+        nbt.putBoolean("swingq",swing);
+
+    }
+    public static boolean getswing(IEntityDataSaver player)
+    {
+        NbtCompound nbt = player.getPersistentData();
+        swing=nbt.getBoolean("swingq");
+
+        return swing;
+    }
 
 
 

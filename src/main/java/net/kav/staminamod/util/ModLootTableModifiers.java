@@ -98,26 +98,26 @@ public class ModLootTableModifiers {
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
-                        .with(ItemEntry.builder(ModItems.PARRY_LEANER))
-                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())
-                        .rolls(ConstantLootNumberProvider.create(1))
-                        .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
                         .with(ItemEntry.builder(ModItems.DODGE_LEANER))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())
+                    .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
+                        .with(ItemEntry.builder(ModItems.GUARD_COUNTER))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
                 tableBuilder.pool(poolBuilder.build());
             }
 
             if(IGLOO_STRUCTURE_CHEST_ID.equals(id)) {
                 LootPool.Builder poolBuilder = LootPool.builder()
-                        .rolls(ConstantLootNumberProvider.create(1))
+                        .rolls(ConstantLootNumberProvider.create(2  ))
                         .conditionally(RandomChanceLootCondition.builder(0.9f)) // Drops 100% of the time
                         .with(ItemEntry.builder(ModItems.KICK_LEANER))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())
-                        .rolls(ConstantLootNumberProvider.create(1))
+                        .rolls(ConstantLootNumberProvider.create(2))
                         .conditionally(RandomChanceLootCondition.builder(0.9f)) // Drops 100% of the time
-                        .with(ItemEntry.builder(ModItems.PARRY_LEANER))
+                        .with(ItemEntry.builder(ModItems.GUARD_COUNTER))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())
-                        .rolls(ConstantLootNumberProvider.create(1))
+                        .rolls(ConstantLootNumberProvider.create(2))
                         .conditionally(RandomChanceLootCondition.builder(0.9f)) // Drops 100% of the time
                         .with(ItemEntry.builder(ModItems.DODGE_LEANER))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());;
@@ -132,6 +132,10 @@ public class ModLootTableModifiers {
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
                         .with(ItemEntry.builder(ModItems.DODGE_LEANER))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
+                        .with(ItemEntry.builder(ModItems.GUARD_COUNTER))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
                 tableBuilder.pool(poolBuilder.build());
             }
@@ -148,6 +152,14 @@ public class ModLootTableModifiers {
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
                         .with(ItemEntry.builder(ModItems.SWING))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
+                        .with(ItemEntry.builder(ModItems.GUARD_COUNTER))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
+                        .with(ItemEntry.builder(ModItems.SHIELD_CURSHER))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
                 tableBuilder.pool(poolBuilder.build());
             }
@@ -165,6 +177,14 @@ public class ModLootTableModifiers {
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
                         .with(ItemEntry.builder(ModItems.SWING))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())
+                        .rolls(ConstantLootNumberProvider.create(2))
+                        .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
+                        .with(ItemEntry.builder(ModItems.GUARD_COUNTER))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())
+                        .rolls(ConstantLootNumberProvider.create(2))
+                        .conditionally(RandomChanceLootCondition.builder(0.5f)) // Drops 100% of the time
+                        .with(ItemEntry.builder(ModItems.SHIELD_CURSHER))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
                 tableBuilder.pool(poolBuilder.build());
             }
@@ -232,7 +252,11 @@ public class ModLootTableModifiers {
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
                         .with(ItemEntry.builder(ModItems.DASH_LEANER))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())                  .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
+                        .with(ItemEntry.builder(ModItems.SHIELD_CURSHER))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
+
                 tableBuilder.pool(poolBuilder.build());
             }
 
@@ -249,6 +273,10 @@ public class ModLootTableModifiers {
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
                         .with(ItemEntry.builder(ModItems.PARRY_LEANER))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
+                        .with(ItemEntry.builder(ModItems.SHIELD_CURSHER))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
                 tableBuilder.pool(poolBuilder.build());
             }
@@ -266,6 +294,10 @@ public class ModLootTableModifiers {
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
                         .with(ItemEntry.builder(ModItems.SWING))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
+                        .with(ItemEntry.builder(ModItems.GUARD_COUNTER))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
                 tableBuilder.pool(poolBuilder.build());
             }
@@ -282,7 +314,7 @@ public class ModLootTableModifiers {
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
-                        .with(ItemEntry.builder(ModItems.PARRY_LEANER))
+                        .with(ItemEntry.builder(ModItems.GUARD_COUNTER))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
                 tableBuilder.pool(poolBuilder.build());
             }
@@ -354,6 +386,10 @@ public class ModLootTableModifiers {
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
                         .with(ItemEntry.builder(ModItems.SWING))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
+                        .with(ItemEntry.builder(ModItems.SHIELD_CURSHER))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
                 tableBuilder.pool(poolBuilder.build());
             }
@@ -371,6 +407,10 @@ public class ModLootTableModifiers {
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
                         .with(ItemEntry.builder(ModItems.SWING))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
+                        .with(ItemEntry.builder(ModItems.SHIELD_CURSHER))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
                 tableBuilder.pool(poolBuilder.build());
             }
@@ -388,6 +428,10 @@ public class ModLootTableModifiers {
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
                         .with(ItemEntry.builder(ModItems.SWING))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build())
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(1f)) // Drops 100% of the time
+                        .with(ItemEntry.builder(ModItems.SHIELD_CURSHER))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
                 tableBuilder.pool(poolBuilder.build());
             }

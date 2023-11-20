@@ -9,6 +9,7 @@ import net.kav.staminamod.data.cooldowndata;
 import net.kav.staminamod.event.client.client_tick;
 import net.kav.staminamod.util.GlobalStamina;
 import net.kav.staminamod.util.IEntityDataSaver;
+import net.kav.staminamod.util.IPosture;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
@@ -26,6 +27,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class RenderOverlayMixin extends DrawableHelper {
     private static final Identifier POSTURER= new Identifier(StaminaMod.MODID,"textures/gui/posture/posture_right.png");
     private static final Identifier POSTUREL= new Identifier(StaminaMod.MODID,"textures/gui/posture/posture_left.png");
+
+    private static final Identifier POSTURER2= new Identifier(StaminaMod.MODID,"textures/gui/posture/posture_right2.png");
+    private static final Identifier POSTUREL2= new Identifier(StaminaMod.MODID,"textures/gui/posture/posture_left1.png");
     private static final Identifier POSTUREM= new Identifier(StaminaMod.MODID,"textures/gui/posture/middle.png");
     private static final Identifier Stamina_StartFull= new Identifier(StaminaMod.MODID,"textures/gui/stamina/stamina_full.png");
     private static final Identifier stamina_extra= new Identifier(StaminaMod.MODID,"textures/gui/stamina/golden_stamina.png");
@@ -55,10 +59,15 @@ public class RenderOverlayMixin extends DrawableHelper {
             y=heigth;
            // System.out.println(StaminaData.getMAXSTAMINAtemp((IEntityDataSaver) client.player));
             Ability(matrixStack,client,x,y);
+            IPosture pos = (IPosture) client.player;
+            if(!client.player.isCreative() && !client.player.isSpectator() && pos.getposture_number()!=pos.getmaxposture())
+            {
+                posture(matrixStack,client,x,y);
+            }
             if(!client.player.isCreative() && !client.player.isSpectator() &&!client.player.isSubmergedInWater())
             {
                 StaminaBar(matrixStack,client,x,y);
-                posture(matrixStack,client,x,y);
+
             }
         }
 
@@ -89,6 +98,16 @@ public class RenderOverlayMixin extends DrawableHelper {
 
     }
     private void drawpostureR(Identifier identifier, MatrixStack matrixStack, int x, int y, int positionx, int positiony,int u, int v,int width)
+    {
+
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F,1.0F,1.0F,1.0F);
+        RenderSystem.setShaderTexture(0, identifier);
+        DrawableHelper.drawTexture(matrixStack,x-positionx,y-positiony,0,u,v,width,3,70,3);
+
+
+    }
+    private void drawpostureL(Identifier identifier, MatrixStack matrixStack, int x, int y, int positionx, int positiony,int u, int v,int width)
     {
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -160,12 +179,18 @@ public class RenderOverlayMixin extends DrawableHelper {
     {
         if(!(client.player.isCreative())&&!(client.player.isSpectator()))
         {
-            int xpos=50+15;
-            int shift=20;
-            this.drawpostureR(POSTURER,matrixStack,x,y,xpos-35-shift,55-shift,55,0,35);
-           // this.drawposture(POSTUREL,matrixStack,x,y,xpos,55,0,35);
+            int xpos=20+15;
+            int shift=-20;
+            IPosture pl1 = (IPosture) MinecraftClient.getInstance().player;
+            //System.out.println(pl1.getposture_number()+ "c");
+
+            float posture=pl1.getposture_number();
+            this.drawpostureR(POSTURER,matrixStack,x,y, 0,75, (int) (35f*posture/(pl1.getmaxposture())+35),0,35);
+            this.drawpostureL(POSTUREL,matrixStack,x,y, 34,75, (int) -(35f*posture/(pl1.getmaxposture())),0,35);
             //this.drawposture(POSTUREL,matrixStack,x,y,xpos,55,0,-70);
-            this.drawmiddle(POSTUREM,matrixStack,x,y,xpos-35,55,0);
+            this.drawpostureR(POSTURER2,matrixStack,x,y, 0,75, 35 ,0,35);
+            this.drawpostureL(POSTUREL2,matrixStack,x,y, 34,75, 0,0,35);
+            this.drawmiddle(POSTUREM,matrixStack,x,y, 0,75,0);
         }
     }
     private void Ability(MatrixStack matrixStack, MinecraftClient client, int x, int y)

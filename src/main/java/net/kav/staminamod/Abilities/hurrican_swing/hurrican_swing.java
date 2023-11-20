@@ -5,6 +5,7 @@ import net.kav.staminamod.api.AbilityCore;
 import net.kav.staminamod.data.KickTimingData;
 import net.kav.staminamod.data.StaminaData;
 import net.kav.staminamod.data.hurrican_swing_data;
+import net.kav.staminamod.data.sword_dashData;
 import net.kav.staminamod.entity.ModEntities;
 import net.kav.staminamod.entity.abilities.hurrican_entity;
 import net.kav.staminamod.util.IEntityDataSaver;
@@ -29,12 +30,19 @@ public class hurrican_swing extends AbilityCore {
 
     @Override
     public void tick(PlayerEntity player) {
+        if(sword_dashData.getLevel(((IEntityDataSaver) player)) == true)
+        {
+
+            hurrican_swing_data.settick((IEntityDataSaver) player,0);
+            return;
+        }
 
         if(hurrican_swing_data.gettrigger((IEntityDataSaver) player))
         {
             if(player.world.isClient && hurrican_swing_data.gettick((IEntityDataSaver) player)%30==0)
             {
                 StaminaData.decrementSTAMINA((IEntityDataSaver) player,8);
+
             }
                 if(!player.world.isClient())
                 {
@@ -50,7 +58,11 @@ public class hurrican_swing extends AbilityCore {
             {
                 hurrican_swing_data.settick((IEntityDataSaver) player,0);
             }
-            player.setVelocity(Vec3d.ZERO);
+            if(sword_dashData.gettick3((IEntityDataSaver) player)==0)
+            {
+                player.setVelocity(Vec3d.ZERO);
+            }
+
             if(hurrican_swing_data.gettick((IEntityDataSaver) player)==0)
             {
 
@@ -63,14 +75,14 @@ public class hurrican_swing extends AbilityCore {
     @Override
     public void ClientSideExecution() {
         hurrican_swing_data.settrigger((IEntityDataSaver) MinecraftClient.getInstance().player,true);
-        hurrican_swing_data.settick((IEntityDataSaver) MinecraftClient.getInstance().player,132);
+        hurrican_swing_data.settick((IEntityDataSaver) MinecraftClient.getInstance().player, (int) (132f/1.1f));
 
     }
 
     @Override
     public void ServerSideExecution(MinecraftServer server, ServerPlayerEntity player) {
         hurrican_swing_data.settrigger((IEntityDataSaver) player,true);
-        hurrican_swing_data.settick((IEntityDataSaver) player,132);
+        hurrican_swing_data.settick((IEntityDataSaver) player, (int) (132/1.1));
         World world = player.getWorld();
         hurrican_entity hurrican = new hurrican_entity(ModEntities.HITBOX, world);
         hurrican.owner= player;
@@ -111,7 +123,11 @@ public class hurrican_swing extends AbilityCore {
 
         if(player.getMainHandStack().getItem() instanceof SwordItem || player.getMainHandStack().getItem() instanceof ToolItem)
         {
-            return super.conditions(player);
+            if(player.isOnGround())
+            {
+                return super.conditions(player);
+            }
+
         }
         else
         {

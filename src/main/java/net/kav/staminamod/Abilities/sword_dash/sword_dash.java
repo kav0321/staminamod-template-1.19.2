@@ -6,6 +6,7 @@ import net.kav.staminamod.api.AbilityCore;
 import net.kav.staminamod.api.damagesource.Moddamagesource;
 import net.kav.staminamod.api.multiple_animations;
 import net.kav.staminamod.config.ModConfigs;
+import net.kav.staminamod.data.hurrican_swing_data;
 import net.kav.staminamod.data.sword_dashData;
 import net.kav.staminamod.sound.ModSounds;
 import net.kav.staminamod.util.IEntityDataSaver;
@@ -29,6 +30,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.*;
 
 import java.util.*;
@@ -44,24 +46,39 @@ public class sword_dash extends AbilityCore implements multiple_animations {
     }
 
     @Override
+    public float getspeed(String name)
+    {
+        //System.out.println("s "+name);
+        if(name.equals("quick_swing"))
+        {
+            //System.out.println("s");
+            return speed*1.6f;
+        }
+        else
+        {
+            return speed;
+        }
+    }
+    @Override
     public void tick(PlayerEntity player) {
 
 
         if (sword_dashData.gettick2((IEntityDataSaver) player) > 0) {
-            sword_dashData.decreasetick2((IEntityDataSaver) player, 1);
-
-            if (sword_dashData.gettick2((IEntityDataSaver) player) == 0) {
-                if (!player.world.isClient()) {
-                    if (players.containsKey(player)) {
-
-                        for (LivingEntity entity : players.get(player)) {
-                            damage_entity(player, entity);
-                        }
-                        players.remove(player);
+            if (!player.world.isClient()) {
+                for (LivingEntity entity : getEntitiesNearby(player.getWorld(), 1.5,1, e -> (e instanceof LivingEntity), player)) {
+                    if (player.canSee(entity)) {
+                        damage_entity(player,entity);
                     }
+
+
                 }
 
             }
+            sword_dashData.decreasetick2((IEntityDataSaver) player, 1);
+
+
+
+
         }
 
         if (sword_dashData.gettick3((IEntityDataSaver) player) > 0 && !player.world.isClient) {
@@ -101,7 +118,7 @@ public class sword_dash extends AbilityCore implements multiple_animations {
         }
 
 
-        if (sword_dashData.gettick3((IEntityDataSaver) player) < 110 && sword_dashData.gettick3((IEntityDataSaver) player) > 10) {
+      /*  if (sword_dashData.gettick3((IEntityDataSaver) player) < 110 && sword_dashData.gettick3((IEntityDataSaver) player) > 10) {
             for (float f = 0.0F; f < 1F; f = (float) (f + 0.13D)) {
                 int x = (int) MathHelper.lerp(f, player.getPos().getX(), player.getPos().x + player.getRotationVec(1).x * 6);
                 int y = (int) MathHelper.lerp(f, player.getPos().getY(), player.getPos().y + player.getRotationVec(1).y * 2);
@@ -126,11 +143,21 @@ public class sword_dash extends AbilityCore implements multiple_animations {
 
 
 
-        }
+        }*/
         if (sword_dashData.getLevel(((IEntityDataSaver) player)) == true && sword_dashData.gettick((IEntityDataSaver) player) == 0) {
             //System.out.println("damn");
             Vec3d playerlooking = player.getRotationVec(1.0F);
-            Vec3d vect = new Vec3d(playerlooking.getX() * 5, playerlooking.getY(), playerlooking.getZ() * 5);
+            Vec3d vect;
+            if(sword_dashData.getswing((IEntityDataSaver) player))
+            {
+                vect  = new Vec3d(playerlooking.getX() * 6, playerlooking.getY()+1, playerlooking.getZ() *6);
+                sword_dashData.setswing((IEntityDataSaver) player,false);
+            }else
+            {
+                vect  = new Vec3d(playerlooking.getX() * 6, playerlooking.getY(), playerlooking.getZ() *6);
+
+            }
+
             player.setVelocity(vect);
             //second delay for dmg
             sword_dashData.settick2((IEntityDataSaver) player, 160);
@@ -233,22 +260,22 @@ public class sword_dash extends AbilityCore implements multiple_animations {
 
         // Iterate through the modifiers to find the attack damage
 
-        //System.out.println(damage*6);
+        System.out.println((float) damage*ModConfigs.sword_dash_attack_multiplier/2.5f);
         if(entity instanceof PlayerEntity)
         {
             if(entity.isBlocking())
             {
-                entity.damage(Moddamagesource.mob(player), (float) damage* ModConfigs.sword_dash_attack_multiplier/2.5f);
+                entity.damage(Moddamagesource.mob(player), (float) damage* ModConfigs.sword_dash_attack_multiplier/4.5f);
             }
             else
             {
-                entity.damage(Moddamagesource.mob(player), (float) damage*ModConfigs.sword_dash_attack_multiplier);
+                entity.damage(Moddamagesource.mob(player), (float) damage*ModConfigs.sword_dash_attack_multiplier/2.5f);
             }
 
         }
         else
         {
-            entity.damage(Moddamagesource.mob(player), (float) damage*ModConfigs.sword_dash_attack_multiplier);
+            entity.damage(Moddamagesource.mob(player), (float) damage*ModConfigs.sword_dash_attack_multiplier/2.5f);
         }
 
 
@@ -261,14 +288,33 @@ public class sword_dash extends AbilityCore implements multiple_animations {
     }
     @Override
     public void ServerSideExecution(MinecraftServer server, ServerPlayerEntity player) {
+        if(hurrican_swing_data.gettrigger((IEntityDataSaver) player))
+        {
+            sword_dashData.setparryattack(((IEntityDataSaver) player),true);
+            sword_dashData.settick((IEntityDataSaver) player,10);
+            sword_dashData.settick3((IEntityDataSaver) player,30);
+            player.removeStatusEffect(StatusEffects.SLOWNESS);
+            hurrican_swing_data.settrigger((IEntityDataSaver) player,false);
+            sword_dashData.setswing((IEntityDataSaver) player,true);
+            return;
+        }
+
         sword_dashData.setparryattack(((IEntityDataSaver) player),true);
         sword_dashData.settick((IEntityDataSaver) player,25);
         sword_dashData.settick3((IEntityDataSaver) player,200);
 
-        player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,60,10));
+       // player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,60,10));
     }
     @Override
     public void ClientSideExecution() {
+        if(hurrican_swing_data.gettrigger((IEntityDataSaver) MinecraftClient.getInstance().player))
+        {
+            sword_dashData.setparryattack(((IEntityDataSaver) MinecraftClient.getInstance().player),true);
+            sword_dashData.settick((IEntityDataSaver) MinecraftClient.getInstance().player,10);
+            sword_dashData.settick3((IEntityDataSaver) MinecraftClient.getInstance().player,30);
+            //hurrican_swing_data.settrigger((IEntityDataSaver)  MinecraftClient.getInstance().player,false);
+            return;
+        }
         sword_dashData.setparryattack(((IEntityDataSaver) MinecraftClient.getInstance().player),true);
         sword_dashData.settick((IEntityDataSaver) MinecraftClient.getInstance().player,25);
         sword_dashData.settick3((IEntityDataSaver) MinecraftClient.getInstance().player,200);
@@ -293,6 +339,14 @@ public class sword_dash extends AbilityCore implements multiple_animations {
     @Override
     public String getanimation_number() {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
+
+        if(hurrican_swing_data.gettrigger((IEntityDataSaver) player))
+        {
+            //hurrican_swing_data.settrigger((IEntityDataSaver)  MinecraftClient.getInstance().player,false);
+
+            return "quick_swing";
+        }
+
         if(player.getOffHandStack().isEmpty() && !player.getMainHandStack().isEmpty())
         {
             return this.filename;
@@ -305,6 +359,7 @@ public class sword_dash extends AbilityCore implements multiple_animations {
         {
             return this.filename;
         }
+
 
         return null;
     }

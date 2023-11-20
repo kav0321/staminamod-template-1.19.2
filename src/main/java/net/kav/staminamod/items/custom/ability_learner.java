@@ -32,7 +32,11 @@ public class ability_learner extends Item {
         this.id=ID;
     }
 
-
+    @Override
+    public boolean hasGlint(ItemStack stack)
+    {
+        return true;
+    }
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);

@@ -7,6 +7,7 @@ import net.kav.staminamod.Abilities.foot_stomp.stomp;
 import net.kav.staminamod.Abilities.hurrican_swing.hurrican_swing;
 import net.kav.staminamod.Abilities.kickability.kickability;
 import net.kav.staminamod.Abilities.parryability.parryabilty;
+import net.kav.staminamod.Abilities.shield_offensive_attacks.shield_crush;
 import net.kav.staminamod.Abilities.sword_dash.sword_dash;
 import net.kav.staminamod.api.AbilityCore;
 import net.kav.staminamod.config.ModConfigs;
@@ -34,8 +35,9 @@ public class AbilityManager {
         abilityCoreList.add(new sword_dash(ModConfigs.sword_cooldown,ModConfigs.sword_dash,360,"dash", Text.translatable("ability.dash"),Text.translatable("ability.dash.description"),"dash",1f,true,false,false,false,false,false));
         abilityCoreList.add(new stomp(ModConfigs.foot_stomp_cooldown,ModConfigs.foot_stomp_stamina,450,"stomp", Text.translatable("ability.stomp"),Text.translatable("ability.stomp.description"),"stomp",1f,true,false,false,false,false,false));
         abilityCoreList.add(new flip_attack_sword(ModConfigs.flip_attack_sword_cooldown,ModConfigs.flip_attack_sword_stamina,540,"flip_attack_sword", Text.translatable("ability.flip_attack_sword"),Text.translatable("ability.flip_attack_sword.description"),"flip_attack_sword",1f,true,false,false,false,false,false));
-        abilityCoreList.add(new hurrican_swing(ModConfigs.hurrican_swing_cooldown,ModConfigs.hurrican_swing_stamina,630,"hurrican_swing", Text.translatable("ability.hurrican_swing"),Text.translatable("ability.hurrican_swing.description"),"hurrican_swing",1f,true,false,false,false,false,false));
-        abilityCoreList.add(new guard_counter(6,1,720,"guard_counter", Text.translatable("ability.guard_counter"),Text.translatable("ability.guard_counter.description"),"guard_counter",2f,true,false,false,false,false,false));
+        abilityCoreList.add(new hurrican_swing(ModConfigs.hurrican_swing_cooldown,ModConfigs.hurrican_swing_stamina,630,"hurrican_swing", Text.translatable("ability.hurrican_swing"),Text.translatable("ability.hurrican_swing.description"),"hurrican_swing",1.1f,false,false,false,false,false,false));
+        abilityCoreList.add(new guard_counter(6,5,720,"guard_counter", Text.translatable("ability.guard_counter"),Text.translatable("ability.guard_counter.description"),"guard_counter",2f,true,false,false,false,false,false));
+        abilityCoreList.add(new shield_crush(300,10,810,"shield_cursher", Text.translatable("ability.shield_cursher"),Text.translatable("ability.shield_cursher.description"),"shield_cursher",2f,false,false,false,false,false,false));
 
 
         for(int i =0;i<abilityCoreList.size();i++)

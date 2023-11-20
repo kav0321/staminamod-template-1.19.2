@@ -73,13 +73,13 @@ public class ModConfigs {
         configs.addKeyValuePair(new Pair<>("matrix.foot_stomp_cooldown", 1000), "Default Foot Stomp Cooldown in ticks");
         configs.addKeyValuePair(new Pair<>("matrix.hurrican_swing_cooldown", 1000), "Default Hurrican Swing Cooldown in ticks");
         configs.addKeyValuePair(new Pair<>("matrix.kick_cooldown", 300), "Default Kick Cooldown in ticks");
-        configs.addKeyValuePair(new Pair<>("matrix.parry_cooldown", 300), "Default Parry Cooldown in ticks");
+        configs.addKeyValuePair(new Pair<>("matrix.parry_cooldown", 150), "Default Parry Cooldown in ticks");
         configs.addKeyValuePair(new Pair<>("matrix.sword_cooldown", 500), "Default Sword Dash Cooldown in ticks");
 
         configs.addKeyValuePair(new Pair<>("matrix.sword_dash_attack_multiplier", 6f), "Default Sword Dash Attack Multiplier. It scale with your weapon damage");
         configs.addKeyValuePair(new Pair<>("matrix.spike_damage", 4f), "Default Spike Attack Damage. How much Damage the foot stomp does");
         configs.addKeyValuePair(new Pair<>("matrix.kick_knockback", 2f), "Default kick knockback");
-        configs.addKeyValuePair(new Pair<>("matrix.parry_duration", 200), "Default Parry Duration. How long are your enemies paralysed");
+        configs.addKeyValuePair(new Pair<>("matrix.parry_duration", 60), "Default Parry Duration. How long are your enemies paralysed");
         configs.addKeyValuePair(new Pair<>("matrix.parry_amplifier", 10), "Default Parry Amplifier. Amplifier of the effect from being paralyse which include blindless, weekness and slowness");
         configs.addKeyValuePair(new Pair<>("matrix.dodge_range", 1.3f), "Default Parry Stamina");
 
@@ -108,14 +108,14 @@ public class ModConfigs {
         foot_stomp_cooldown=CONFIG.getOrDefault("matrix.foot_stomp_cooldown", 1000);
         hurrican_swing_cooldown=CONFIG.getOrDefault("matrix.hurrican_swing_cooldown", 1000);
         kick_cooldown=CONFIG.getOrDefault("matrix.kick_cooldown", 300);
-        parry_cooldown=CONFIG.getOrDefault("matrix.parry_cooldown", 300);
+        parry_cooldown=CONFIG.getOrDefault("matrix.parry_cooldown", 150);
         sword_cooldown=CONFIG.getOrDefault("matrix.sword_cooldown", 500);
 
 
         sword_dash_attack_multiplier=CONFIG.getOrDefault("matrix.sword_dash_attack_multiplier", 6f);
         spike_damage=CONFIG.getOrDefault("matrix.spike_damage", 4f);
         kick_knockback=CONFIG.getOrDefault("matrix.kick_knockback", 2f);
-        parry_duration=CONFIG.getOrDefault("matrix.parry_duration", 200);
+        parry_duration=CONFIG.getOrDefault("matrix.parry_duration", 60);
         parry_amplifier=CONFIG.getOrDefault("matrix.parry_amplifier", 10);
         dodge_range= CONFIG.getOrDefault("matrix.dodge_range", 1.3f);
 

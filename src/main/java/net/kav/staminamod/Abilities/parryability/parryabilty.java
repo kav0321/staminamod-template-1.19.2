@@ -23,6 +23,8 @@ import net.minecraft.item.ShieldItem;
 import net.minecraft.item.SwordItem;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -138,7 +140,8 @@ public class parryabilty extends AbilityCore implements ServerLivingEntityEvents
                                 return false;
                             }
                             ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,20,10));
-                            source.getAttacker().playSound(ModSounds.PARRY_ONE,1.0f,1.0f);
+                            ServerWorld world = (ServerWorld) entity.getWorld();
+                            world.playSound(entity.getX(),entity.getY(),entity.getZ(),ModSounds.PARRY_ONE, SoundCategory.MASTER,1.0f,1.0f,true);
                             Parrydata.setparryattack(((IEntityDataSaver) entity),false);
                             return false;
                         }

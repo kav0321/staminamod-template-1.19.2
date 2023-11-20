@@ -29,10 +29,13 @@ import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 
@@ -50,6 +53,7 @@ public class guard_counter extends AbilityCore implements ServerLivingEntityEven
 
     @Override
     public void tick(PlayerEntity player) {
+
 
             if(guarddata.gettick((IEntityDataSaver) player)<=0)
             {
@@ -71,13 +75,15 @@ public class guard_counter extends AbilityCore implements ServerLivingEntityEven
     @Override
     public void ClientSideExecution() {
         guarddata.setparryguard(((IEntityDataSaver) MinecraftClient.getInstance().player), true);
-        guarddata.settick((IEntityDataSaver) MinecraftClient.getInstance().player,35);
+        guarddata.settick((IEntityDataSaver) MinecraftClient.getInstance().player,25);
+        MinecraftClient.getInstance().player.setVelocity(Vec3d.ZERO);
     }
 
     @Override
     public void ServerSideExecution(MinecraftServer server, ServerPlayerEntity player) {
         guarddata.setparryguard(((IEntityDataSaver) player), true);
-        guarddata.settick((IEntityDataSaver) player,35);
+        guarddata.settick((IEntityDataSaver) player,25);
+        player.setVelocity(Vec3d.ZERO);
     }
 
     @Override
@@ -106,7 +112,9 @@ public class guard_counter extends AbilityCore implements ServerLivingEntityEven
                         if(distanceSquared<=2)
                         {
                             IPosture entity1= (IPosture) source.getAttacker();
+                            IPosture entity2= (IPosture) entity;
                             entity1.incrementposture_float(-1f);
+                            entity2.incrementposture_float(-0.1f);
                             Random random = new Random();
                             int choice = random.nextInt(3);
                             if (choice == 0) {
@@ -127,7 +135,15 @@ public class guard_counter extends AbilityCore implements ServerLivingEntityEven
                                 ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS,ModConfigs.parry_duration,ModConfigs.parry_amplifier));
                                // source.getAttacker().damage(DamageSource.player((PlayerEntity) entity),0.1f);
                                 entity1.setposture_float(entity1.getmaxposture());
-                                source.getAttacker().playSound(ModSounds.NO_POSTURE,1.0f,1.0f);
+                                ServerWorld world = (ServerWorld) entity.getWorld();
+                                world.playSound(entity.getX(),entity.getY(),entity.getZ(),ModSounds.NO_POSTURE, SoundCategory.MASTER,1.0f,1.0f,true);
+
+                            }
+                            else if(entity2.getposture_number()==0)
+                            {
+                                ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,ModConfigs.parry_duration,ModConfigs.parry_amplifier));
+                                ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS,ModConfigs.parry_duration,ModConfigs.parry_amplifier));
+                                entity2.setposture_float(entity2.getmaxposture());
                             }
                             return false;
                         }
@@ -188,7 +204,9 @@ public class guard_counter extends AbilityCore implements ServerLivingEntityEven
                         if(entity1.getposture_number()==0 && source.getAttacker()!=null)
                         {
                             entity1.setposture_float(entity1.getmaxposture());
-                            source.getAttacker().playSound(ModSounds.NO_POSTURE,1.0f,1.0f);
+                            ServerWorld world = (ServerWorld) entity.world;
+                            world.playSound(null, entity.getBlockPos(), ModSounds.NO_POSTURE, SoundCategory.PLAYERS, 1f, 0.5f);
+                            //world.playSound(ModSounds.NO_POSTURE,1.0f,1.0f);
                            // entity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, ModConfigs.parry_duration,ModConfigs.parry_amplifier));
                             entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,ModConfigs.parry_duration,ModConfigs.parry_amplifier));
                             entity.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS,ModConfigs.parry_duration,ModConfigs.parry_amplifier));

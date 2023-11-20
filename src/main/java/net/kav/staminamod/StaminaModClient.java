@@ -12,7 +12,9 @@ import net.kav.staminamod.event.client.clientjoin;
 import net.kav.staminamod.event.client.playerleave;
 import net.kav.staminamod.networking.ModMessages;
 import net.kav.staminamod.particle.ModParticles;
+import net.kav.staminamod.particle.abilities.BlastWaveP;
 import net.kav.staminamod.particle.abilities.dash_particle;
+import net.kav.staminamod.particle.abilities.shockwaveparticle;
 import net.kav.staminamod.sound.ModSounds;
 import net.minecraft.client.particle.ParticleFactory;
 import net.minecraft.util.registry.Registry;
@@ -25,11 +27,13 @@ public class StaminaModClient implements ClientModInitializer {
 
        // AbilityManager.INITTECHNIC2();
         KeyInputHandler.register();
-        ClientPlayConnectionEvents.JOIN.register(new clientjoin());
+       // ClientPlayConnectionEvents.JOIN.register(new clientjoin());
         ClientPlayConnectionEvents.DISCONNECT.register(new playerleave());
         ClientTickEvents.END_WORLD_TICK.register(new client_tick());
         //Registry.register(Registry.SOUND_EVENT, ModSounds.DASH_SWORD_ID,ModSounds.MY_SOUND_EVENT);
         ParticleFactoryRegistry.getInstance().register(ModParticles.CITRINE_PARTICLE, dash_particle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.SHOCKWAVE, shockwaveparticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.BLASTWAVE, BlastWaveP.Factory::new);
         ModEntities.registerEntityclient();
     }
 }

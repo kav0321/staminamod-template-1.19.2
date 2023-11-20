@@ -1,22 +1,22 @@
 {
-	"required": true,
-	"package": "net.kav.staminamod.mixin",
-	"compatibilityLevel": "JAVA_17",
-	"mixins": [
-      "server.ModEntityDataSaverMixin",
-		"server.BrewingRecipeRegistryMixin",
-		"server.ArmorEquipMixin",
-		"server.WitchEntityMixin",
-		"server.LivingentityMixin"
-
-	],
-	"client": [
-		"client.RenderOverlayMixin",
-		"client.doAttackMixin",
-		"client.ClientPlayerEntityMixin",
-		"client.ClientWorldMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "package": "net.kav.staminamod.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "server.ArmorEquipMixin",
+    "server.BrewingRecipeRegistryMixin",
+    "server.LivingentityMixin",
+    "server.ModEntityDataSaverMixin",
+    "server.WitchEntityMixin"
+  ],
+  "client": [
+    "client.ClientPlayerEntityMixin",
+    "client.ClientPlayerMixin",
+    "client.ClientWorldMixin",
+    "client.doAttackMixin",
+    "client.RenderOverlayMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }

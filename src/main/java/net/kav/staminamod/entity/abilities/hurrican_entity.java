@@ -1,13 +1,19 @@
 package net.kav.staminamod.entity.abilities;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.kav.staminamod.api.shock_wave_api;
 import net.kav.staminamod.config.ModConfigs;
+import net.kav.staminamod.data.hurrican_swing_data;
 import net.kav.staminamod.data.sword_dashData;
 import net.kav.staminamod.entity.ModEntities;
 import net.kav.staminamod.entity.abstract_entity;
 import net.kav.staminamod.networking.ModMessages;
 import net.kav.staminamod.networking.packet.Packets;
+import net.kav.staminamod.particle.ModParticles;
+import net.kav.staminamod.particle.explosion;
 import net.kav.staminamod.util.IEntityDataSaver;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -63,12 +69,17 @@ public class hurrican_entity extends abstract_entity implements IAnimatable {
     @Override
     public void setVelocity(double x, double y, double z, float speed, float divergence) {
         super.setVelocity(x, y, z, speed, divergence);
+        if(owner==null)
+        {
+            this.discard();
+        }
 
     }
 
     @Override
     public void tick()
     {
+       // world.(world, this.getX(), this.getY(), this.getZ(), 3, false, true);
         if(owner==null)
         {
             this.discard();
@@ -80,78 +91,102 @@ public class hurrican_entity extends abstract_entity implements IAnimatable {
             {
                 this.discard();
             }
-            int range = (owner.getMainHandStack().getItem() instanceof SwordItem && this.owner!=null)? 2:1;
-            for (int i = 0; i < 360; i++) {
-                if (i % 80 == 0) {
-                    if (i % 90 == 0) {
-                        int randomx = new Random().nextInt(0, 1);
-                        int randomy = new Random().nextInt(0, 2);
-                        int randomz = new Random().nextInt(0, 1);
-                        ServerWorld world = (ServerWorld) this.getWorld();
-                        DustParticleEffect whiteDustEffect = new DustParticleEffect(new Vec3f(1.0f, 1.0f, 1.0f), 1.0f);
-                        world.spawnParticles(whiteDustEffect,            // Use DUST particle type
-                                this.getX() + randomx, this.getY() + 3, this.getZ() + randomz, // Specify the position
-                                1,               // Number of particles to spawn
-                                0, 0, 0,         // Offset from the specified position
-                                0.01            // Particle scale
-                        );
+            else
+            {
+                int range = (owner.getMainHandStack().getItem() instanceof SwordItem && this.owner!=null)? 2:1;
+                for (int i = 0; i < 360; i++) {
+                    if (i % 80 == 0) {
+                        if (i % 90 == 0) {
+                            int randomx = new Random().nextInt(0, 1);
+                            int randomy = new Random().nextInt(0, 2);
+                            int randomz = new Random().nextInt(0, 1);
+                            ServerWorld world = (ServerWorld) this.getWorld();
+                            if (EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, this.owner.getMainHandStack()) > 0)
+                            {
 
+                                world.spawnParticles(ParticleTypes.FLAME,            // Use DUST particle type
+                                        this.getX() + randomx, this.getY() + 3, this.getZ() + randomz, // Specify the position
+                                        1,               // Number of particles to spawn
+                                        0, 0, 0,         // Offset from the specified position
+                                        0.01            // Particle scale
+                                );
+                            }
+                            DustParticleEffect whiteDustEffect = new DustParticleEffect(new Vec3f(1.0f, 1.0f, 1.0f), 1.0f);
+                      
+                            world.spawnParticles(whiteDustEffect,            // Use DUST particle type
+                                    this.getX() + randomx, this.getY() + 3, this.getZ() + randomz, // Specify the position
+                                    1,               // Number of particles to spawn
+                                    0, 0, 0,         // Offset from the specified position
+                                    0.01            // Particle scale
+                            );
+
+
+                        }
                     }
-                }
 
                     if (i % 40 == 0) {
                         int randomx = new Random().nextInt(0, 1);
                         int randomy = new Random().nextInt(0, 2);
                         int randomz = new Random().nextInt(0, 1);
                         ServerWorld world = (ServerWorld) this.getWorld();
-                        world.spawnParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE,
-                                this.getX() + randomx, this.getY(), this.getZ() + randomz, 1,
-                                0, 0, 0, 0.01);
+                      //  world.spawnParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE,
+                              //  this.getX() + randomx, this.getY(), this.getZ() + randomz, 1,
+                               // 0, 0, 0, 0.01);
 
                     }
 
 
-            }
-            //System.out.println("Entity position: " + this.getX() + ", " + this.getY() + ", " + this.getZ());
-            for (Entity entity : getEntitiesNearby(this.getWorld(),2, e -> (e instanceof Entity),this))
-            {
-                if(owner==null)
+                }
+                //System.out.println("Entity position: " + this.getX() + ", " + this.getY() + ", " + this.getZ());
+                for (Entity entity : getEntitiesNearby(this.getWorld(),2, e -> (e instanceof Entity),this))
+                {
+                    if(owner==null)
+                    {
+                        this.discard();
+                    }
+
+                    if(entity!=owner)
+                    {
+                        if(entity instanceof PlayerEntity)
+                        {
+                            ServerPlayNetworking.send((ServerPlayerEntity) entity, ModMessages.VELOCITY,new Packets.vec3d(this.getVelocity().add(entity.getVelocity()).x,this.getVelocity().add(entity.getVelocity()).y,this.getVelocity().add(entity.getVelocity()).z).write());
+                        }
+                        if (EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, this.owner.getMainHandStack()) > 0)
+                        {
+                            entity.setOnFireFor(5);
+                        }
+                        entity.setVelocity(this.getVelocity().add(entity.getVelocity()));
+                    }
+
+                }
+
+                int max=(hurrican_swing_data.gettrigger((IEntityDataSaver) owner))?70:130;
+                if(owner!=null && tick<max/1.2)
+                {
+                    tick++;
+                    //System.out.println(tick+ "s");
+                    this.updatePositions(owner,range,30/1.1,tick);
+                }
+                else
                 {
                     this.discard();
                 }
 
-                            if(entity!=owner)
-                            {
-                                if(entity instanceof PlayerEntity)
-                                {
-                                    ServerPlayNetworking.send((ServerPlayerEntity) entity, ModMessages.VELOCITY,new Packets.vec3d(this.getVelocity().add(entity.getVelocity()).x,this.getVelocity().add(entity.getVelocity()).y,this.getVelocity().add(entity.getVelocity()).z).write());
-                                }
-                                entity.setVelocity(this.getVelocity().add(entity.getVelocity()));
-                            }
+                if(tick%(27)==0 && tick<=max/1.1)
+                {
+                    ServerWorld world1 = (ServerWorld) this.world;
 
+                    world1.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1f, 0.2f);
+                }
+
+                if(tick>134/1.1f)
+                {
+                    this.updatePositions(owner,range*2,10,tick);
+                    this.discard();
+                }
+            }
             }
 
-
-            if(owner!=null)
-            {
-                tick++;
-                //System.out.println(tick+ "s");
-                this.updatePositions(owner,range,20,tick);
-            }
-            else
-            {
-                this.discard();
-            }
-            if(tick%30==0 && tick<=110)
-            {
-                ServerWorld world1 = (ServerWorld) this.world;
-                world1.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1f, 0.2f);
-            }
-            if(tick>134)
-            {
-                this.discard();
-            }
-        }
 
     }
 
@@ -196,7 +231,7 @@ public class hurrican_entity extends abstract_entity implements IAnimatable {
     }
     public void updatePositions(PlayerEntity player, double radius, double ticksPerRevolution, int tickCounter) {
         double angle = (2.0 * Math.PI * (tick % ticksPerRevolution)) / ticksPerRevolution;
-
+        angle = -angle;
         double xOffset = Math.sin(angle) * radius;
         double zOffset = Math.cos(angle) * radius;
 
@@ -217,6 +252,7 @@ public class hurrican_entity extends abstract_entity implements IAnimatable {
         this.setVelocity(motionX * factor, 0, motionZ * factor);
 
     }
+
     @Override
     protected boolean isBurning() {
         return false;
