@@ -23,7 +23,7 @@ To add or modify a new mob's posture setting, create a new JSON file in the enti
   "posture": <value>
 }
 
-posture: This numerical value represents the mob's posture. You can adjust this value to change how the mod interprets the mob's posture.
+'posture': This numerical value represents the mob's posture. You can adjust this value to change how the mod interprets the mob's posture.
 
 
 
