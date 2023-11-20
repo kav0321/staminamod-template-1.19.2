@@ -4,7 +4,7 @@
 Welcome to the Stamina Mod for Minecraft!
 
 # How It Works
-The Stamina Mod operates by modifying the posture of Minecraft mobs. 
+The Stamina Mod adds a new stamina bar and posture bar. 
 
 # Directory Structure
 To modify a mob's posture, navigate to the following directory in the data pack:
