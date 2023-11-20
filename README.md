@@ -39,4 +39,4 @@ Zombie
 ```{
   "name": "minecraft:zombie",
   "posture": 21
-}```
+}
