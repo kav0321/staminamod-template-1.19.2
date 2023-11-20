@@ -31,7 +31,7 @@ posture: This numerical value represents the mob's posture. You can adjust this 
 
 Use the above JSON structure to define the mob's name and posture.
 Examples
-Here are a few examples of what the JSON files might look like:
+Here is an example of what the JSON files might look like:
 
 Zombie
 
