@@ -17,7 +17,7 @@ Inside this directory, you will put your JSON files for each mob.
 Each mob has its own JSON file, structured as follows:
 To add or modify a new mob's posture setting, create a new JSON file in the entityposture directory.
 
-
+```json
 {
   "name": "modid:<mob_name>",
   "posture": <value>
