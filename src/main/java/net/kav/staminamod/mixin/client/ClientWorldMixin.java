@@ -21,7 +21,7 @@ public class ClientWorldMixin {
             // Your code here to handle client-side rendering or data syncing when the player spawns in a new dimension.
             PacketByteBuf bufm = PacketByteBufs.empty();
 
-            playerstaminapacketS2C.modified=false;
+
             ClientPlayNetworking.send(ModMessages.INITIALIZEC2S,bufm);
             PacketByteBuf bufs = PacketByteBufs.empty();
 

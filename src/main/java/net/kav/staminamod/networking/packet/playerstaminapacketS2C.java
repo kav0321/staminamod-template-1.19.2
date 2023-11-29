@@ -35,7 +35,7 @@ public class playerstaminapacketS2C {
     public static void death_transfer_maxstamina(MinecraftClient client, ClientPlayNetworkHandler Handler, PacketByteBuf buf, PacketSender respondSender)
     {
         StaminaData.setMAXSTAMINA((IEntityDataSaver) client.player,buf.readFloat());
-        playerstaminapacketS2C.modified=false;
+
     }
     public static void tick_equip(MinecraftClient client, ClientPlayNetworkHandler Handler, PacketByteBuf buf, PacketSender respondSender)
     {
@@ -45,7 +45,7 @@ public class playerstaminapacketS2C {
         client_tick.getTick2=packet.ability2();
         client_tick.getTick3=packet.ability3();
     }
-    public static boolean modified = false;
+   // public static boolean modified = false;
     public static void ability_animation(MinecraftClient client, ClientPlayNetworkHandler Handler, PacketByteBuf buf, PacketSender respondSender)
     {
         final var packet = Packets.AbilityAni.read(buf);
@@ -60,23 +60,11 @@ public class playerstaminapacketS2C {
 
             var animationContainer = ((IModAnimatedPlayer) entity).modid_getModAnimation();
             KeyframeAnimation animationL;
-            if(AbilityManager.abiltyregister.get(packet.index()) instanceof multiple_animations)
-            {
-                animationL=   PlayerAnimationRegistry.getAnimation(new Identifier(StaminaMod.MODID, ((multiple_animations) AbilityManager.abiltyregister.get(packet.index())).getanimation_number()));
-                //System.out.println(((multiple_animations) AbilityManager.abiltyregister.get(packet.index())).getanimation_number());
-            }
-            else
-            {
-                animationL=   PlayerAnimationRegistry.getAnimation(new Identifier(StaminaMod.MODID, AbilityManager.abiltyregister.get(packet.index()).animationname));
-            }
+            animationL=   PlayerAnimationRegistry.getAnimation(new Identifier(StaminaMod.MODID, packet.name()));
 
 
-            if (modified ) {
-                animationContainer.removeModifier(0);
-            }
 
 
-            modified = true;
 
             //System.out.println(AbilityManager.abiltyregister.get(packet.index()).animationname);
             var builder = animationL.mutableCopy();
@@ -99,23 +87,11 @@ public class playerstaminapacketS2C {
             rightLeg1.setEnabled(!rightLeg);
             leftLeg1.setEnabled(!leftLeg);
 
-            if(AbilityManager.abiltyregister.get(packet.index()) instanceof multiple_animations)
-            {
-                //animationL=   PlayerAnimationRegistry.getAnimation(new Identifier(StaminaMod.MODID, ((multiple_animations) AbilityManager.abiltyregister.get(packet.index())).getanimation_number()));
-                String name =((multiple_animations) AbilityManager.abiltyregister.get(packet.index())).getanimation_number();
-                System.out.println("seped");
-                animationContainer.addModifierBefore(new SpeedModifier(AbilityManager.abiltyregister.get(packet.index()).getspeed(name)));
-                //animationContainer.addModifierBefore(new SpeedModifier());
-            }
-            else
-            {
-                animationContainer.addModifierBefore(new SpeedModifier(AbilityManager.abiltyregister.get(packet.index()).getspeed(AbilityManager.abiltyregister.get(packet.index()).animationname)));
-            }
-            //((multiple_animations) AbilityManager.abiltyregister.get(packet.index())).getanimation_number()
+           //((multiple_animations) AbilityManager.abiltyregister.get(packet.index())).getanimation_number()
 
            animationContainer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(7, Ease.LINEAR), new KeyframeAnimationPlayer(animationL));
 
-            animationContainer.setAnimation(new firstperson(animationL));
+           animationContainer.setAnimation(new firstperson(animationL));
 
         });
     }

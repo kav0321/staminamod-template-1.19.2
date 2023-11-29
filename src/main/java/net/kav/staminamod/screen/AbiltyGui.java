@@ -172,6 +172,7 @@ public class AbiltyGui extends LightweightGuiDescription {
     }
     private void INIT()
     {
+
         slotselection[0]=slot;
         if(AbilityManager.abiltyregister!=null)
         {

@@ -49,7 +49,7 @@ public class playerstaminapacketC2S {
 
 
 
-        final var forwardBuffer = new Packets.AbilityAni(player.getId(), packet.index());
+        final var forwardBuffer = new Packets.AbilityAni(player.getId(), packet.index() ,packet.name());
         AbilityManager.abiltyregister.get(packet.index()).ServerSideExecution(server,player);
         for(PlayerEntity player1: server.getPlayerManager().getPlayerList())
         {

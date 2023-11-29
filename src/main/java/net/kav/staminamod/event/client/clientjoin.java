@@ -19,7 +19,7 @@ public class clientjoin implements ClientPlayConnectionEvents.Join{
 
         ClientPlayNetworking.send(ModMessages.INITIALIZEC2S,bufm);
         PacketByteBuf bufs = PacketByteBufs.empty();
-        playerstaminapacketS2C.modified=false;
+
 
         ClientPlayNetworking.send(ModMessages.INITIALIZEC2S_MAXSTAMINA,bufs);
         ClientPlayNetworking.send(ModMessages.EXTRA_STAMINA_SYN,PacketByteBufs.empty());

@@ -59,6 +59,9 @@ public class sword_dash extends AbilityCore implements multiple_animations {
             return speed;
         }
     }
+
+
+
     @Override
     public void tick(PlayerEntity player) {
 

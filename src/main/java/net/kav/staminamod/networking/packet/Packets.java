@@ -23,7 +23,7 @@ public class Packets {
             return new stamina_location(x,y);
         }
     }
-    public record AbilityAni(int playerId, int index) {
+    public record AbilityAni(int playerId, int index, String name) {
 
 
 
@@ -35,7 +35,7 @@ public class Packets {
             buffer.writeInt(playerId);
 
             buffer.writeInt(index);
-
+            buffer.writeString(name);
             return buffer;
         }
 
@@ -43,8 +43,8 @@ public class Packets {
             int playerId = buffer.readInt();
 
             int index = buffer.readInt();
-
-            return new AbilityAni(playerId,index);
+            String name =  buffer.readString();
+            return new AbilityAni(playerId,index,name);
         }
     }
     public record vec3d(double x, double y, double z) {

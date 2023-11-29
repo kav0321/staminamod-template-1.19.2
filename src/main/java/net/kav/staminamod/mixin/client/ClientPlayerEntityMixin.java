@@ -7,7 +7,11 @@ import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import net.kav.staminamod.util.IModAnimatedPlayer;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.encryption.PlayerPublicKey;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,16 +19,28 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractClientPlayerEntity.class)
-public class ClientPlayerEntityMixin implements IModAnimatedPlayer {
+public abstract class ClientPlayerEntityMixin extends PlayerEntity implements IModAnimatedPlayer {
 
     //Unique annotation will rename private methods/fields if needed to avoid collisions.
     @Unique
     private final ModifierLayer<IAnimation> modAnimationContainer = new ModifierLayer<>();
 
+    public ClientPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile, @Nullable PlayerPublicKey publicKey) {
+        super(world, pos, yaw, gameProfile, publicKey);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+    }
+
     /**
      * Add the animation registration to the end of the constructor
      * Or you can use {@link dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess#REGISTER_ANIMATION_EVENT} event for this
      */
+
+
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void init(ClientWorld world, GameProfile profile, PlayerPublicKey publicKey, CallbackInfo ci) {
         //Mixin does not know (yet) that this will be merged with AbstractClientPlayerEntity

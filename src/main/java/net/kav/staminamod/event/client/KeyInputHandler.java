@@ -194,12 +194,22 @@ public class KeyInputHandler {
                 if(AbilityManager.abiltyregister.get(id).conditions(MinecraftClient.getInstance().player))
                 {
                     AbilityManager.abiltyregister.get(id).ClientSideExecution();
+                    String name;
+                    if(AbilityManager.abiltyregister.get(id) instanceof multiple_animations)
+                    {
+                        multiple_animations  mu = (multiple_animations) AbilityManager.abiltyregister.get(id);
+                        name = mu.getanimation_number();
+                    }
+                    else
+                    {
+                        name =AbilityManager.abiltyregister.get(id).animationname;
+                    }
 
 
                     client_tick.setGetTick(ability_slot,0);
                     ClientPlayNetworking.send(
                             ModMessages.ANIMATION,
-                            new Packets.AbilityAni(MinecraftClient.getInstance().player.getId(), id).write());
+                            new Packets.AbilityAni(MinecraftClient.getInstance().player.getId(), id, name).write());
                     AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),ability_slot)).staminaconsume();
 
                     client_tick.setGetTick(ability_slot,AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),ability_slot)).cooldown+1);

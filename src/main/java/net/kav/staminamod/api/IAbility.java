@@ -12,7 +12,7 @@ public interface IAbility {
     void tick(PlayerEntity player);
     void staminaconsume();
     void ClientSideExecution();
-    void NBTsave(IEntityDataSaver player);
+    void NBTsave(IEntityDataSaver player, float cooldown);
     void NBTLoad(IEntityDataSaver player);
     void ServerSideExecution(MinecraftServer server, ServerPlayerEntity player);
     boolean conditions(PlayerEntity player);

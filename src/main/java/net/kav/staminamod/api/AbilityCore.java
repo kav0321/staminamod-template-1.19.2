@@ -7,6 +7,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 
 public abstract class AbilityCore implements IAbility{
     public int cooldown;
+    public int cooldowncurrent;
     public int stamina;
     public int ID;
     public String animationname;
@@ -110,8 +112,10 @@ public abstract class AbilityCore implements IAbility{
     public abstract void ClientSideExecution();
     @Deprecated
     @Override
-    public void NBTsave(IEntityDataSaver player) {
-
+    public void NBTsave(IEntityDataSaver player,float cooldown) {
+        NbtCompound save = player.getPersistentData();
+        String name = Integer.toString(this.ID);
+        save.putFloat(name,cooldown);
     }
 
     @Deprecated
@@ -138,5 +142,6 @@ public abstract class AbilityCore implements IAbility{
         }
         return false;
     }
+
 
 }

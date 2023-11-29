@@ -24,6 +24,7 @@ public class BlastWaveP extends SpriteBillboardParticle {
         this.maxAge = 15;
         this.sprites = sprites;
         this.setSpriteForAge(sprites);
+
     }
 
 

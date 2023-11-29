@@ -161,11 +161,11 @@ public class parryabilty extends AbilityCore implements ServerLivingEntityEvents
     public String getanimation_number() {
         if((MinecraftClient.getInstance().player.getMainHandStack().getItem() instanceof SwordItem ||MinecraftClient.getInstance().player.getMainHandStack().getItem() instanceof ShieldItem) && !(MinecraftClient.getInstance().player.getOffHandStack().getItem() instanceof SwordItem ||MinecraftClient.getInstance().player.getOffHandStack().getItem() instanceof ShieldItem))
         {
-            return this.animationname;
+            return this.animationname+"right";
         }
         if(!(MinecraftClient.getInstance().player.getMainHandStack().getItem() instanceof SwordItem ||MinecraftClient.getInstance().player.getMainHandStack().getItem() instanceof ShieldItem) && (MinecraftClient.getInstance().player.getOffHandStack().getItem() instanceof SwordItem ||MinecraftClient.getInstance().player.getOffHandStack().getItem() instanceof ShieldItem))
         {
-            return this.animationname+"right";
+            return this.animationname;
         }
 
         if((MinecraftClient.getInstance().player.getMainHandStack().getItem() instanceof SwordItem ||MinecraftClient.getInstance().player.getMainHandStack().getItem() instanceof ShieldItem) && (MinecraftClient.getInstance().player.getOffHandStack().getItem() instanceof SwordItem ||MinecraftClient.getInstance().player.getOffHandStack().getItem() instanceof ShieldItem))
