@@ -61,6 +61,9 @@ public class StaminaMod implements ModInitializer {
 		Registry.register(Registry.SOUND_EVENT, ModSounds.PARRY1_ID,ModSounds.PARRY_ONE);
 		Registry.register(Registry.SOUND_EVENT, ModSounds.PARRY2_ID,ModSounds.PARRY_TWO);
 		Registry.register(Registry.SOUND_EVENT, ModSounds.NO_POSTURE_ID,ModSounds.NO_POSTURE);
+		Registry.register(Registry.SOUND_EVENT, ModSounds.SONIC_BOOM_FLY,ModSounds.SONIC_BOOM_FLYING);
+		Registry.register(Registry.SOUND_EVENT, ModSounds.SLAM_FLY,ModSounds.SLAM_FLYING);
+
 		ModLootTableModifiers.modifyLootTables();
 		ModItems.registerModItems();
 		ModPotions.registerPotions();

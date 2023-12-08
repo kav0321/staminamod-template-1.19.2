@@ -15,6 +15,7 @@ repositories {
 		name "KosmX's maven"
 		url 'https://maven.kosmx.dev/'
 	}
+
 	maven {
 		name = "CottonMC"
 		url = "https://server.bbkr.space/artifactory/libs-release"

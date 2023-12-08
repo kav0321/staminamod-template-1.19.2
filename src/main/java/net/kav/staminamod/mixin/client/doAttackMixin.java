@@ -2,12 +2,14 @@ package net.kav.staminamod.mixin.client;
 
 import net.kav.staminamod.event.client.AttackOveride;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.mob.WitchEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,10 +27,11 @@ public class doAttackMixin {
     public void doAttack(CallbackInfo info)
     {
 
-        if (((MinecraftClient)(Object)this).crosshairTarget.getType() == BLOCK &&
-                isGrassBlock(((BlockHitResult) ((MinecraftClient) (Object) this).crosshairTarget).getBlockPos())) {
+        if (((MinecraftClient)(Object)this).crosshairTarget.getType() == HitResult.Type.BLOCK &&
+                isNonCollidingBlock(((BlockHitResult) ((MinecraftClient) (Object) this).crosshairTarget).getBlockPos())) {
             AttackOveride.attacks();
-        } else
+        }
+        else
         {
             switch (((MinecraftClient)(Object)this).crosshairTarget.getType()) {
 
@@ -59,4 +62,8 @@ public class doAttackMixin {
         // You can access this.attackCooldown, this.crosshairTarget, etc.
         System.out.println("he");
     }*/
+    public boolean isNonCollidingBlock(BlockPos pos) {
+        BlockState state = MinecraftClient.getInstance().world.getBlockState(pos);
+        return state.getCollisionShape(MinecraftClient.getInstance().world, pos).isEmpty();
+    }
 }

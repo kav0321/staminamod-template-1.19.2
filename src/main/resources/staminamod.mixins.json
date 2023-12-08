@@ -14,7 +14,9 @@
     "client.ClientPlayerMixin",
     "client.ClientWorldMixin",
     "client.doAttackMixin",
-    "client.RenderOverlayMixin"
+    "client.RenderOverlayMixin",
+    "client.CameraAccessor",
+    "client.MixinGameRenderer"
   ],
   "injectors": {
     "defaultRequire": 1

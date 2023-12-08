@@ -32,6 +32,17 @@ public class ModConfigs {
     public static int parry_stamina;
     public static int sword_dash;
 
+    public static float PlayerPosture;
+    public static float posturerecovery_per_tick;
+    public static float attacker_posture_reduction_when_guard_counter;
+    public static float blocker_posture_reduction_when_guard_counter;
+    public static float explosions_posture;
+    public static float falling_block;
+    public static float attack_player_sword;
+    public static float attack_player_axe;
+
+    public static float mob_attack;
+
     public static int dodge_cooldown;
     public static int flip_attack_sword_cooldown;
     public static int foot_stomp_cooldown;
@@ -39,6 +50,19 @@ public class ModConfigs {
     public static int kick_cooldown;
     public static int parry_cooldown;
     public static int sword_cooldown;
+
+    public static int counter_parry_stamina;
+    public static int counter_parrty_cooldown;
+
+    public static int shield_offensive_attacks_stamina;
+    public static int shield_offensive_attacks_cooldown;
+    public static float radius_shield;
+
+
+    public static int mega_dash_stamina;
+    public static int mega_dash_cooldown;
+    public static float radius_dash;
+
 
 
     public static void registerConfigs() {
@@ -82,8 +106,20 @@ public class ModConfigs {
         configs.addKeyValuePair(new Pair<>("matrix.parry_duration", 60), "Default Parry Duration. How long are your enemies paralysed");
         configs.addKeyValuePair(new Pair<>("matrix.parry_amplifier", 10), "Default Parry Amplifier. Amplifier of the effect from being paralyse which include blindless, weekness and slowness");
         configs.addKeyValuePair(new Pair<>("matrix.dodge_range", 1.3f), "Default Parry Stamina");
+        configs.addKeyValuePair(new Pair<>("matrix.player_posture", 17), "Default Player Posture");
+        configs.addKeyValuePair(new Pair<>("matrix.posturerecovery_per_tick", 0.5f), "Default much posture to receive per 60 ticks");
+        configs.addKeyValuePair(new Pair<>("matrix.attacker_posture_reduction_when_guard_counter", -1f), "Default How much posture damage to deal to attack when blocking with weapons");
+     //   configs.addKeyValuePair(new Pair<>("matrix.attacker_guard_counter", -1f), "Default How much damage to deal to attack when blocking with weapons");
+        configs.addKeyValuePair(new Pair<>("matrix.blocker_posture_reduction_when_guard_counter", -0.1f), "Default How much posture damage to deal to attack when blocking with weapons");
 
         //configs.addKeyValuePair(new Pair<>("matrix.defaultmaxistamina", 25f), "Default Maximum Stamina");
+        configs.addKeyValuePair(new Pair<>("matrix.explosions_posture", -10f), "Default Explosion posture damage");
+        configs.addKeyValuePair(new Pair<>("matrix.falling_block", -12f), "Default falling block posture damage");
+        configs.addKeyValuePair(new Pair<>("matrix.attack_player_sword", -0.8f), "Default How much posture damage is deal when attack from sword (player entity source attacker)");
+        //   configs.addKeyValuePair(new Pair<>("matrix.attacker_guard_counter", -1f), "Default How much damage to deal to attack when blocking with weapons");
+        configs.addKeyValuePair(new Pair<>("matrix.attack_player_axe", -5f), "Default How much posture damage is deal when attack from axe (player entity source attacker)");
+
+        configs.addKeyValuePair(new Pair<>("matrix.mob_attack", -0.8f), "Default How much posture damage is deal when attack from mob");
 
     }
 
@@ -120,7 +156,15 @@ public class ModConfigs {
         dodge_range= CONFIG.getOrDefault("matrix.dodge_range", 1.3f);
 
 
-
+        PlayerPosture= CONFIG.getOrDefault("matrix.player_posture", 17);
+        posturerecovery_per_tick=CONFIG.getOrDefault("matrix.posturerecovery_per_tick", 0.5f);
+        attacker_posture_reduction_when_guard_counter=CONFIG.getOrDefault("matrix.attacker_posture_reduction_when_guard_counter", -1f);
+        blocker_posture_reduction_when_guard_counter=CONFIG.getOrDefault("matrix.blocker_posture_reduction_when_guard_counter", -0.1f);
         //System.out.println("All " + configs.getConfigsList().size() + " have been set properly");
+        explosions_posture=CONFIG.getOrDefault("matrix.explosions_posture", -10f);
+        falling_block=CONFIG.getOrDefault("matrix.falling_block", -12f);
+        attack_player_sword=CONFIG.getOrDefault("matrix.attack_player_sword", -0.8f);
+        attack_player_axe=CONFIG.getOrDefault("matrix.attack_player_axe", -5f);
+        mob_attack=CONFIG.getOrDefault("matrix.mob_attack", -0.8f);
     }
 }

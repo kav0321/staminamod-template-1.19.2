@@ -3,6 +3,7 @@ package net.kav.staminamod.Abilities.foot_stomp;
 import net.kav.staminamod.api.AbilityCore;
 import net.kav.staminamod.data.KickTimingData;
 import net.kav.staminamod.data.StompData;
+import net.kav.staminamod.data.mega_dashdata;
 import net.kav.staminamod.entity.ModEntities;
 import net.kav.staminamod.entity.abilities.foot_stomp;
 import net.kav.staminamod.util.IEntityDataSaver;
@@ -24,8 +25,7 @@ public class stomp extends AbilityCore {
 
     @Override
     public void tick(PlayerEntity player) {
-        if(!player.world.isClient())
-        {
+
             if(StompData.getDid_I_kick((IEntityDataSaver) player))
             {
                 if(StompData.gettick((IEntityDataSaver) player)>0)
@@ -38,25 +38,34 @@ public class stomp extends AbilityCore {
                 }
                 if(StompData.gettick((IEntityDataSaver) player)==1)
                 {
-                    foot_stomp stomp = new foot_stomp(ModEntities.STOMP,player.getWorld());
-                    stomp.setYaw(player.getYaw());
-                    stomp.owner=player.getUuid();
-                    stomp.direc=player;
-
-                    Vec3d vec3d= player.getRotationVec(1);
-                    stomp.setPosition(player.getX() + vec3d.x * 1.1, player.getY(), player.getZ() + vec3d.z * 1.1);
-                    stomp.refreshPositionAndAngles(player.getX() + vec3d.x * 1.1, player.getY(), player.getZ() + vec3d.z * 1.1, player.getYaw(), 0);
-
-                    player.world.spawnEntity(stomp);
-
-                    stomp.direc=player;
                     if(!player.world.isClient())
                     {
-                        ServerWorld world1 = (ServerWorld) player.world;
-                        world1.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 0.2f, 0.1f);
+                        if(mega_dashdata.getbeingadash2((IEntityDataSaver) player))
+                        {
+
+                        }
+                        else
+                        {
+                            foot_stomp stomp = new foot_stomp(ModEntities.STOMP,player.getWorld());
+                            stomp.setYaw(player.getYaw());
+                            stomp.owner=player.getUuid();
+                            stomp.direc=player;
+
+                            Vec3d vec3d= player.getRotationVec(1);
+                            stomp.setPosition(player.getX() + vec3d.x * 1.1, player.getY(), player.getZ() + vec3d.z * 1.1);
+                            stomp.refreshPositionAndAngles(player.getX() + vec3d.x * 1.1, player.getY(), player.getZ() + vec3d.z * 1.1, player.getYaw(), 0);
+
+                            player.world.spawnEntity(stomp);
+
+                            stomp.direc=player;
+
+                            ServerWorld world1 = (ServerWorld) player.world;
+                            world1.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 0.2f, 0.1f);
+                        }
+
                     }
                 }
-            }
+
         }
     }
 

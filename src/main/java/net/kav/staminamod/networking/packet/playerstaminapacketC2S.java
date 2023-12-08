@@ -66,7 +66,7 @@ public class playerstaminapacketC2S {
         Parrydata.reset((IEntityDataSaver) player);
         StompData.reset((IEntityDataSaver) player);
         sword_dashData.reset((IEntityDataSaver) player);
-
+        mega_dashdata.reset((IEntityDataSaver) player);
         ServerPlayNetworking.send(player,ModMessages.INITIALIZES2C,new Packets.stamina_location(ModConfigs.X,ModConfigs.Y).write());
         for(AbilityCore ability: AbilityData.getAbility((IEntityDataSaver) player))
         {

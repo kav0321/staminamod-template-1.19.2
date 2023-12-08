@@ -133,16 +133,33 @@ public class parryabilty extends AbilityCore implements ServerLivingEntityEvents
                                 ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,ModConfigs.parry_duration,ModConfigs.parry_amplifier));
                                 ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS,ModConfigs.parry_duration,ModConfigs.parry_amplifier));
                                // source.getAttacker().damage(DamageSource.player((PlayerEntity) entity),0.1f);
-                                source.getAttacker().playSound(ModSounds.PARRY_TWO,1.0f,1.0f);
-                                source.getAttacker().playSound(ModSounds.NO_POSTURE,1.0f,1.0f);
+                                if(!entity.getWorld().isClient())
+                                {
+                                    //((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,20,10));
+                                    ServerWorld world = (ServerWorld) source.getAttacker().getWorld();
+                                  //  source.getAttacker().playSound(ModSounds.PARRY_TWO,1.0f,1.0f);
+                                   // world.playSound(entity.getX(),entity.getY(),entity.getZ(),ModSounds.PARRY_TWO, SoundCategory.MASTER,1.0f,1.0f,true);
+                                    //world.playSound(entity.getX(),entity.getY(),entity.getZ(),ModSounds.NO_POSTURE, SoundCategory.MASTER,1.0f,1.0f,true);
+                                    world.playSound(null,entity.getBlockPos(), ModSounds.NO_POSTURE, SoundCategory.MASTER,1.0f,1.0f);
+                                    world.playSound(null,entity.getBlockPos(), ModSounds.PARRY_TWO, SoundCategory.MASTER,1.0f,1.0f);
+
+
+                                }
+
+                               // source.getAttacker().playSound(ModSounds.NO_POSTURE,1.0f,1.0f);
                                 Parrydata.setparryattack(((IEntityDataSaver) entity),false);
                                 entity1.setposture_float(entity1.getmaxposture());
                                 return false;
                             }
-                            ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,20,10));
-                            ServerWorld world = (ServerWorld) entity.getWorld();
-                            world.playSound(entity.getX(),entity.getY(),entity.getZ(),ModSounds.PARRY_ONE, SoundCategory.MASTER,1.0f,1.0f,true);
-                            Parrydata.setparryattack(((IEntityDataSaver) entity),false);
+                            if(!entity.getWorld().isClient())
+                            {
+                                ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,20,10));
+                                ServerWorld world = (ServerWorld) entity.getWorld();
+                               // world.playSound(entity.getX(),entity.getY(),entity.getZ(),ModSounds.PARRY_ONE, SoundCategory.MASTER,1.0f,1.0f,true);
+                                world.playSound(null,entity.getBlockPos(), ModSounds.PARRY_ONE, SoundCategory.MASTER,1.0f,1.0f);
+                                Parrydata.setparryattack(((IEntityDataSaver) entity),false);
+                            }
+
                             return false;
                         }
 

@@ -12,9 +12,7 @@ import net.kav.staminamod.event.client.clientjoin;
 import net.kav.staminamod.event.client.playerleave;
 import net.kav.staminamod.networking.ModMessages;
 import net.kav.staminamod.particle.ModParticles;
-import net.kav.staminamod.particle.abilities.BlastWaveP;
-import net.kav.staminamod.particle.abilities.dash_particle;
-import net.kav.staminamod.particle.abilities.shockwaveparticle;
+import net.kav.staminamod.particle.abilities.*;
 import net.kav.staminamod.sound.ModSounds;
 import net.minecraft.client.particle.ParticleFactory;
 import net.minecraft.util.registry.Registry;
@@ -34,6 +32,8 @@ public class StaminaModClient implements ClientModInitializer {
         ParticleFactoryRegistry.getInstance().register(ModParticles.CITRINE_PARTICLE, dash_particle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ModParticles.SHOCKWAVE, shockwaveparticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ModParticles.BLASTWAVE, BlastWaveP.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.IMPACT1, impact1.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.FLY_BLAST, fly_blast.Factory::new);
         ModEntities.registerEntityclient();
     }
 }

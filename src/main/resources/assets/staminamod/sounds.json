@@ -40,5 +40,17 @@
     "sounds": [
       "staminamod:zero_posture"
     ]
+  },
+  "sonic_boom_fly": {
+    "subtitle": "staminamod.sonic_boom_fly",
+    "sounds": [
+      "staminamod:sonic_boom_fly"
+    ]
+  },
+  "stomp_landing": {
+    "subtitle": "staminamod.stomp_landing",
+    "sounds": [
+      "staminamod:stomp_landing"
+    ]
   }
 }

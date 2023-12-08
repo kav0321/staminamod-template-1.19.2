@@ -91,15 +91,7 @@ public abstract class AbilityCore implements IAbility{
         return world.getEntitiesByClass(Entity.class, entity.getBoundingBox().expand(expandDistance, expandDistance, expandDistance), filter.and(e -> e != entity));
     }
 
-    public List<LivingEntity> getEntitiesNearby(BlockPos pos, World world, double radius , Predicate<LivingEntity> filter, LivingEntity entity)
-    {
 
-// Calculate the bounding box based on the radius and center BlockPos
-        Box boundingBox = new Box(pos).expand(radius);
-
-// Get a list of nearby entities that match the predicate
-        return new ArrayList<>(world.getEntitiesByClass(LivingEntity.class, boundingBox, filter.and(e -> e != entity)));
-    }
     @Override
     public abstract void tick(PlayerEntity player);
 

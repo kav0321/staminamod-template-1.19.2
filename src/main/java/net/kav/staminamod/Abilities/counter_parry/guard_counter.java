@@ -42,6 +42,7 @@ import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 import java.util.Random;
 
 import static java.lang.Math.abs;
+import static net.kav.staminamod.config.ModConfigs.*;
 
 public class guard_counter extends AbilityCore implements ServerLivingEntityEvents.AllowDamage, multiple_animations {
 
@@ -111,10 +112,11 @@ public class guard_counter extends AbilityCore implements ServerLivingEntityEven
                         double distanceSquared = source.getAttacker().getPos().squaredDistanceTo(x, y, z);
                         if(distanceSquared<=2)
                         {
+
                             IPosture entity1= (IPosture) source.getAttacker();
                             IPosture entity2= (IPosture) entity;
-                            entity1.incrementposture_float(-1f);
-                            entity2.incrementposture_float(-0.1f);
+                            entity1.incrementposture_float(attacker_posture_reduction_when_guard_counter);
+                            entity2.incrementposture_float(blocker_posture_reduction_when_guard_counter);
                             Random random = new Random();
                             int choice = random.nextInt(3);
                             if (choice == 0) {
@@ -136,7 +138,8 @@ public class guard_counter extends AbilityCore implements ServerLivingEntityEven
                                // source.getAttacker().damage(DamageSource.player((PlayerEntity) entity),0.1f);
                                 entity1.setposture_float(entity1.getmaxposture());
                                 ServerWorld world = (ServerWorld) entity.getWorld();
-                                world.playSound(entity.getX(),entity.getY(),entity.getZ(),ModSounds.NO_POSTURE, SoundCategory.MASTER,1.0f,1.0f,true);
+                                world.playSound(null,entity.getBlockPos(), ModSounds.NO_POSTURE, SoundCategory.MASTER,1.0f,1.0f);
+                                //world.playSound(entity.getX(),entity.getY(),entity.getZ(),ModSounds.NO_POSTURE, SoundCategory.MASTER,1.0f,1.0f,true);
 
                             }
                             else if(entity2.getposture_number()==0)
@@ -157,7 +160,7 @@ public class guard_counter extends AbilityCore implements ServerLivingEntityEven
                         if(source.isExplosive())
                         {
 
-                            entity1.incrementposture_float(-10f);
+                            entity1.incrementposture_float(explosions_posture);
                             EntityType<?> entityType = entity.getType();
                             Identifier entityId = Registry.ENTITY_TYPE.getId(entityType);
                             //System.out.println(entity1.getmaxposture()+" "+entity1.getposture_number()+" "+entityId.toString());
@@ -165,7 +168,7 @@ public class guard_counter extends AbilityCore implements ServerLivingEntityEven
                         else if(source.isFallingBlock())
                         {
 
-                            entity1.incrementposture_float(-12f);
+                            entity1.incrementposture_float(falling_block);
                             EntityType<?> entityType = entity.getType();
                             Identifier entityId = Registry.ENTITY_TYPE.getId(entityType);
                             // System.out.println(entity1.getmaxposture()+" "+entity1.getposture_number()+" "+entityId.toString());
@@ -176,13 +179,13 @@ public class guard_counter extends AbilityCore implements ServerLivingEntityEven
                             {
                                 if(((PlayerEntity) source.getAttacker()).getMainHandStack().getItem() instanceof SwordItem)
                                 {
-                                    entity1.incrementposture_float(-0.8f);
+                                    entity1.incrementposture_float(attack_player_sword);
                                     EntityType<?> entityType = entity.getType();
                                     Identifier entityId = Registry.ENTITY_TYPE.getId(entityType);
                                 }
                                 else  if(((PlayerEntity) source.getAttacker()).getMainHandStack().getItem() instanceof AxeItem)
                                 {
-                                    entity1.incrementposture_float(-5f);
+                                    entity1.incrementposture_float(attack_player_axe);
                                     EntityType<?> entityType = entity.getType();
                                     Identifier entityId = Registry.ENTITY_TYPE.getId(entityType);
                                 }
@@ -191,7 +194,7 @@ public class guard_counter extends AbilityCore implements ServerLivingEntityEven
                             {
                                 if(!(source.getAttacker() instanceof ProjectileEntity) )
                                 {
-                                    entity1.incrementposture_float(-0.8f);
+                                    entity1.incrementposture_float(mob_attack);
                                     EntityType<?> entityType = entity.getType();
                                     Identifier entityId = Registry.ENTITY_TYPE.getId(entityType);
                                 }
@@ -229,7 +232,7 @@ public class guard_counter extends AbilityCore implements ServerLivingEntityEven
                 if(source.isExplosive())
                 {
 
-                    entity1.incrementposture_float(-10f);
+                    entity1.incrementposture_float(explosions_posture);
                     EntityType<?> entityType = entity.getType();
                     Identifier entityId = Registry.ENTITY_TYPE.getId(entityType);
                     //System.out.println(entity1.getmaxposture()+" "+entity1.getposture_number()+" "+entityId.toString());
@@ -237,7 +240,7 @@ public class guard_counter extends AbilityCore implements ServerLivingEntityEven
                 else if(source.isFallingBlock())
                 {
 
-                    entity1.incrementposture_float(-12f);
+                    entity1.incrementposture_float(falling_block);
                     EntityType<?> entityType = entity.getType();
                     Identifier entityId = Registry.ENTITY_TYPE.getId(entityType);
                     // System.out.println(entity1.getmaxposture()+" "+entity1.getposture_number()+" "+entityId.toString());
@@ -255,7 +258,7 @@ public class guard_counter extends AbilityCore implements ServerLivingEntityEven
                     }
                     else
                     {
-                        entity1.incrementposture_float(-1f);
+                        entity1.incrementposture_float(-0.8f);
                         EntityType<?> entityType = entity.getType();
                         Identifier entityId = Registry.ENTITY_TYPE.getId(entityType);
                     }

@@ -9,10 +9,12 @@ import net.kav.staminamod.data.StaminaData;
 import net.kav.staminamod.networking.ModMessages;
 import net.kav.staminamod.networking.packet.Packets;
 import net.kav.staminamod.statusEffect.ModStatusEffects;
+import net.kav.staminamod.util.CameraShakeUtil;
 import net.kav.staminamod.util.IEntityDataSaver;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.PacketByteBuf;
+import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 
 public class client_tick implements ClientTickEvents.EndWorldTick{
     int x1 = 0;
@@ -28,6 +30,10 @@ public class client_tick implements ClientTickEvents.EndWorldTick{
     public static int CURRENTT3 = 0;
     @Override
     public void onEndTick(ClientWorld world) {
+        if(MinecraftClient.getInstance().player.isSneaking())
+        {
+            //CameraShakeUtil.startShake(5, 100);
+        }
         ticks++;
         if(getTick1 >-1)
         {

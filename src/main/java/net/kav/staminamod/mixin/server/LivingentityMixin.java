@@ -1,5 +1,6 @@
 package net.kav.staminamod.mixin.server;
 
+import net.kav.staminamod.config.ModConfigs;
 import net.kav.staminamod.util.IPosture;
 import net.kav.staminamod.util.ModEntityAttributes;
 import net.kav.staminamod.util.entityposture;
@@ -19,6 +20,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static net.kav.staminamod.config.ModConfigs.posturerecovery_per_tick;
+
 @Mixin(LivingEntity.class)
 public abstract class LivingentityMixin implements IPosture {
     int tick=0;
@@ -29,7 +32,7 @@ public abstract class LivingentityMixin implements IPosture {
         tick++;
         if(tick%60==0)
         {
-            incrementposture_float(0.5f);
+            incrementposture_float(Math.abs(posturerecovery_per_tick));
         }
     }
    // writeCustomDataToNbt
@@ -39,14 +42,14 @@ public abstract class LivingentityMixin implements IPosture {
         EntityType<?> entityType = ((LivingEntity)(Object)this).getType();
         Identifier entityId = Registry.ENTITY_TYPE.getId(entityType);
         String nameentity = entityId.toString();
-        float posture= 17f;
+        float posture= ModConfigs.PlayerPosture;
 
         for(String name: entityposture.entityname)
         {
             if(name.equals(nameentity))
             {
                 posture=entityposture.getposture(name);
-                //System.out.println(posture+ " for "+name);
+                System.out.println(posture+ " for "+name);
             }
 
         }

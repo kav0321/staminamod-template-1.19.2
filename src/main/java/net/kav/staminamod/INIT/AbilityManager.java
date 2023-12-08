@@ -6,6 +6,7 @@ import net.kav.staminamod.Abilities.flip_attack_sword.flip_attack_sword;
 import net.kav.staminamod.Abilities.foot_stomp.stomp;
 import net.kav.staminamod.Abilities.hurrican_swing.hurrican_swing;
 import net.kav.staminamod.Abilities.kickability.kickability;
+import net.kav.staminamod.Abilities.mega_dash.mega_dash;
 import net.kav.staminamod.Abilities.parryability.parryabilty;
 import net.kav.staminamod.Abilities.shield_offensive_attacks.shield_crush;
 import net.kav.staminamod.Abilities.sword_dash.sword_dash;
@@ -38,6 +39,7 @@ public class AbilityManager {
         abilityCoreList.add(new hurrican_swing(ModConfigs.hurrican_swing_cooldown,ModConfigs.hurrican_swing_stamina,630,"hurrican_swing", Text.translatable("ability.hurrican_swing"),Text.translatable("ability.hurrican_swing.description"),"hurrican_swing",1.1f,false,false,false,false,false,false));
         abilityCoreList.add(new guard_counter(6,5,720,"guard_counter", Text.translatable("ability.guard_counter"),Text.translatable("ability.guard_counter.description"),"guard_counter",2f,true,false,false,false,false,false));
         abilityCoreList.add(new shield_crush(300,10,810,"shield_cursher", Text.translatable("ability.shield_cursher"),Text.translatable("ability.shield_cursher.description"),"shield_cursher",2f,false,false,false,false,false,false));
+        abilityCoreList.add(new mega_dash(60,10,900,"mega_dash", Text.translatable("ability.mega_dash"),Text.translatable("ability.mega_dash.description"),"mega_dash",2f,false,false,false,false,false,false));
 
 
         for(int i =0;i<abilityCoreList.size();i++)
