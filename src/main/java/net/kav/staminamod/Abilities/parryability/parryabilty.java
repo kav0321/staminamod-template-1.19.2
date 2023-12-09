@@ -31,6 +31,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 import static java.lang.Math.abs;
+import static net.kav.staminamod.config.ModConfigs.parry_posture_dmg;
 
 public class parryabilty extends AbilityCore implements ServerLivingEntityEvents.AllowDamage, multiple_animations {
     public parryabilty(int cooldown, int stamina, int ID, String animationname, Text name, Text description, String filename,float speed, boolean head, boolean body, boolean righthand, boolean lefthand, boolean rightleg, boolean leftleg) {
@@ -122,7 +123,8 @@ public class parryabilty extends AbilityCore implements ServerLivingEntityEvents
                         if(distanceSquared<=1.0 )
                         {
                             IPosture entity1= (IPosture) source.getAttacker();
-                            entity1.incrementposture_float(-15f);
+                            System.out.println(parry_posture_dmg);
+                            entity1.incrementposture_float(parry_posture_dmg);
                             Vec3d playerDirection = entity.getRotationVector();
                             Vec3d direction = playerDirection.normalize();
                             ((LivingEntity) source.getAttacker()).takeKnockback(0.2,-direction.getX(),-direction.getZ());

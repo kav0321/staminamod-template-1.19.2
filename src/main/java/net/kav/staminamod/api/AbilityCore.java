@@ -8,19 +8,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public abstract class AbilityCore implements IAbility{
     public int cooldown;
@@ -33,7 +28,7 @@ public abstract class AbilityCore implements IAbility{
     public Text name;
     public Text description;
     public Text error;
-    protected float speed;
+    protected float length;
 
     public boolean head;
     public boolean body;
@@ -41,7 +36,8 @@ public abstract class AbilityCore implements IAbility{
     public boolean lefthand;
     public boolean leftleg;
     public boolean rightleg;
-    public AbilityCore(int cooldown,int stamina, int ID, String animationname,Text name, Text description,String filename,float speed,boolean head, boolean body,boolean righthand, boolean lefthand, boolean rightleg, boolean leftleg)
+
+    public AbilityCore(int cooldown,int stamina, int ID, String animationname,Text name, Text description,String filename,float length,boolean head, boolean body,boolean righthand, boolean lefthand, boolean rightleg, boolean leftleg)
     {
         this.cooldown= cooldown;
         this.stamina =stamina;
@@ -50,7 +46,7 @@ public abstract class AbilityCore implements IAbility{
         this.filename= filename;
         this.name=name;
         this.description=description;
-        this.speed =speed;
+        this.length = length;
         file= new Identifier(StaminaMod.MODID,"textures/gui/abilities/"+filename+".png");
         this.head =head;
         this.body=body;
@@ -61,9 +57,9 @@ public abstract class AbilityCore implements IAbility{
 
 
     }
-    public AbilityCore(int cooldown,int stamina, int ID, String animationname,Text name, Text description,String filename,float speed)
+    public AbilityCore(int cooldown,int stamina, int ID, String animationname,Text name, Text description,String filename,float length)
     {
-    this(cooldown,stamina,ID,animationname,name,description,filename,speed,false,false,false,false,false,false);
+    this(cooldown,stamina,ID,animationname,name,description,filename, length,false,false,false,false,false,false);
     }
     public List<LivingEntity> getEntitiesNearby(World world, double expandDistance, double attackRange , Predicate<LivingEntity> filter, LivingEntity entity)
     {
@@ -81,7 +77,7 @@ public abstract class AbilityCore implements IAbility{
     }
     public float getspeed(String name)
     {
-        return speed;
+        return length;
     }
 
     public List<Entity> getEntitiesNearby(World world, double expandDistance, Predicate<Entity> filter, Entity entity)

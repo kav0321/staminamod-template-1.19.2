@@ -209,7 +209,7 @@ public class KeyInputHandler {
                     client_tick.setGetTick(ability_slot,0);
                     ClientPlayNetworking.send(
                             ModMessages.ANIMATION,
-                            new Packets.AbilityAni(MinecraftClient.getInstance().player.getId(), id, name).write());
+                            new Packets.AbilityAni(MinecraftClient.getInstance().player.getId(), id,AbilityManager.abiltyregister.get(id).getspeed(name),name).write());
                     AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),ability_slot)).staminaconsume();
 
                     client_tick.setGetTick(ability_slot,AbilityManager.abiltyregister.get(Equipdata.getability(((IEntityDataSaver) MinecraftClient.getInstance().player),ability_slot)).cooldown+1);

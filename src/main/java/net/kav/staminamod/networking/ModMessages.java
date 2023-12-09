@@ -84,6 +84,12 @@ public class ModMessages {
         ClientPlayNetworking.registerGlobalReceiver(Packets.ABILITY_MODCONFIG.ID450, playerstaminapacketS2C::PARRY);
         ClientPlayNetworking.registerGlobalReceiver(Packets.ABILITY_MODCONFIG.ID540, playerstaminapacketS2C::DASH);
 
+
+        ClientPlayNetworking.registerGlobalReceiver(Packets.ABILITY_MODCONFIG.ID630, playerstaminapacketS2C::GUARD);
+        ClientPlayNetworking.registerGlobalReceiver(Packets.ABILITY_MODCONFIG.ID720, playerstaminapacketS2C::SHIELD);
+        ClientPlayNetworking.registerGlobalReceiver(Packets.ABILITY_MODCONFIG.ID810, playerstaminapacketS2C::MEGA);
+
+
         ClientPlayNetworking.registerGlobalReceiver(SWORD_DASH, playerstaminapacketS2C::SWORD_DASH_ATTACK_M);
         ClientPlayNetworking.registerGlobalReceiver(STOMP, playerstaminapacketS2C::SPIKE_DMG);
         ClientPlayNetworking.registerGlobalReceiver(KICK, playerstaminapacketS2C::KICK_K);

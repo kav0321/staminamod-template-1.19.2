@@ -1,20 +1,10 @@
 package net.kav.staminamod.networking.packet;
 
 
-import dev.kosmx.playerAnim.api.layered.IAnimation;
-import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
-import dev.kosmx.playerAnim.api.layered.ModifierLayer;
-import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
-import dev.kosmx.playerAnim.api.layered.modifier.SpeedModifier;
-import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
-import dev.kosmx.playerAnim.core.util.Ease;
-import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.kav.staminamod.INIT.AbilityManager;
-import net.kav.staminamod.StaminaMod;
-import net.kav.staminamod.api.multiple_animations;
 import net.kav.staminamod.config.ModConfigs;
 import net.kav.staminamod.data.AbilityData;
 import net.kav.staminamod.data.Equipdata;
@@ -24,12 +14,10 @@ import net.kav.staminamod.event.client.client_tick;
 import net.kav.staminamod.networking.ModMessages;
 import net.kav.staminamod.util.GlobalStamina;
 import net.kav.staminamod.util.IEntityDataSaver;
-import net.kav.staminamod.util.IModAnimatedPlayer;
-import net.kav.staminamod.util.firstperson;
+import net.kav.staminamod.util.IModAnimatedPlayerStamina;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
 
 public class playerstaminapacketS2C {
     public static void death_transfer_maxstamina(MinecraftClient client, ClientPlayNetworkHandler Handler, PacketByteBuf buf, PacketSender respondSender)
@@ -50,6 +38,10 @@ public class playerstaminapacketS2C {
     {
         final var packet = Packets.AbilityAni.read(buf);
         client.execute(() -> {
+            var entity = (IModAnimatedPlayerStamina) client.world.getEntityById(packet.playerId());
+            entity.playAttackAnimation2stamina(packet.name(), packet.length(),packet.index());
+        });
+          /* client.execute(() -> {
             var entity = client.world.getEntityById(packet.playerId());
             boolean head = AbilityManager.abiltyregister.get(packet.index()).head;
             boolean torso= AbilityManager.abiltyregister.get(packet.index()).body;
@@ -58,7 +50,7 @@ public class playerstaminapacketS2C {
             boolean rightLeg= AbilityManager.abiltyregister.get(packet.index()).rightleg;
             boolean leftLeg= AbilityManager.abiltyregister.get(packet.index()).leftleg;
 
-            var animationContainer = ((IModAnimatedPlayer) entity).modid_getModAnimation();
+            var animationContainer = ((IModAnimatedPlayerStamina) entity).modid_getModAnimation();
             KeyframeAnimation animationL;
             animationL=   PlayerAnimationRegistry.getAnimation(new Identifier(StaminaMod.MODID, packet.name()));
 
@@ -93,7 +85,7 @@ public class playerstaminapacketS2C {
 
            animationContainer.setAnimation(new firstperson(animationL));
 
-        });
+        });*/
     }
     public static void SWORD_DASH_ATTACK_M(MinecraftClient client, ClientPlayNetworkHandler Handler, PacketByteBuf buf, PacketSender respondSender)
     {
@@ -170,6 +162,28 @@ public class playerstaminapacketS2C {
         final var packet = Packets.ABILITY_MODCONFIG.read(buf);
         ModConfigs.sword_dash= packet.stamina();
         ModConfigs.sword_cooldown=packet.cooldown();
+    }
+
+
+    public static void GUARD(MinecraftClient client, ClientPlayNetworkHandler Handler, PacketByteBuf buf, PacketSender respondSender)
+    {
+        final var packet = Packets.ABILITY_MODCONFIG.read(buf);
+        ModConfigs.counter_parry_stamina= packet.stamina();
+        ModConfigs.counter_parrty_cooldown=packet.cooldown();
+    }
+
+    public static void SHIELD(MinecraftClient client, ClientPlayNetworkHandler Handler, PacketByteBuf buf, PacketSender respondSender)
+    {
+        final var packet = Packets.ABILITY_MODCONFIG.read(buf);
+        ModConfigs.shield_offensive_attacks_stamina= packet.stamina();
+        ModConfigs.shield_offensive_attacks_cooldown=packet.cooldown();
+    }
+
+    public static void MEGA(MinecraftClient client, ClientPlayNetworkHandler Handler, PacketByteBuf buf, PacketSender respondSender)
+    {
+        final var packet = Packets.ABILITY_MODCONFIG.read(buf);
+        ModConfigs.mega_dash_stamina= packet.stamina();
+        ModConfigs.mega_dash_cooldown=packet.cooldown();
     }
 
     public static void abilitysync(MinecraftClient client, ClientPlayNetworkHandler Handler, PacketByteBuf buf, PacketSender respondSender)

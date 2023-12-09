@@ -25,7 +25,7 @@ public class StaminaAbsorptionEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return 2;
+        return 3;
     }
     @Override
     public boolean canAccept(Enchantment other) {

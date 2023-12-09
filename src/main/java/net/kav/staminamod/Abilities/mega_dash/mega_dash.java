@@ -2,11 +2,9 @@ package net.kav.staminamod.Abilities.mega_dash;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.kav.staminamod.INIT.AbilityManager;
+import net.kav.staminamod.StaminaMod;
 import net.kav.staminamod.api.AbilityCore;
-import net.kav.staminamod.data.Equipdata;
-import net.kav.staminamod.data.StompData;
-import net.kav.staminamod.data.mega_dashdata;
-import net.kav.staminamod.data.sword_dashData;
+import net.kav.staminamod.data.*;
 import net.kav.staminamod.event.client.AttackOveride;
 import net.kav.staminamod.networking.ModMessages;
 import net.kav.staminamod.networking.packet.Packets;
@@ -135,6 +133,7 @@ public class mega_dash extends AbilityCore {
             if(player.world.isClient)
             {
                 CameraShakeUtil.startShake(0.5f, 3);
+                StaminaData.decrementSTAMINA((IEntityDataSaver) player,2);
             }
 
             if(StompData.getDid_I_kick(((IEntityDataSaver) player)))
@@ -147,7 +146,7 @@ public class mega_dash extends AbilityCore {
 
                     ClientPlayNetworking.send(
                             ModMessages.ANIMATION,
-                            new Packets.AbilityAni(MinecraftClient.getInstance().player.getId(), this.ID, "mega_dash_stomp").write());
+                            new Packets.AbilityAni(MinecraftClient.getInstance().player.getId(), this.ID, 15,"mega_dash_stomp").write());
 
 
                 }

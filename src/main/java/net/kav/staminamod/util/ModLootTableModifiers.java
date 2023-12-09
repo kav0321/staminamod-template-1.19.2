@@ -82,6 +82,9 @@ public class ModLootTableModifiers {
             = new Identifier("minecraft", "entities/husk");
     private static final Identifier DROWNED
             = new Identifier("minecraft", "entities/drowned");
+
+    private static final Identifier WARDEN
+            = new Identifier("minecraft", "entities/warden");
     private static final Identifier SPIDER_ID
             = new Identifier("minecraft", "entities/spider");
     private static final EntityPredicate.Builder NEEDS_ENTITY_ON_FIRE = EntityPredicate.Builder.create().flags(EntityFlagsPredicate.Builder.create().onFire(false).build());
@@ -524,6 +527,15 @@ public class ModLootTableModifiers {
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(0.0005f))
                         .with(ItemEntry.builder(ModItems.DODGE_LEANER))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1f, 1.0f)).build());
+                tableBuilder.pool(poolBuilder.build());
+            }
+
+            if(WARDEN.equals(id)) {
+                LootPool.Builder poolBuilder = LootPool.builder()
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(1f))
+                        .with(ItemEntry.builder(ModItems.MEGA_DASH))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1f, 1.0f)).build());
                 tableBuilder.pool(poolBuilder.build());
             }

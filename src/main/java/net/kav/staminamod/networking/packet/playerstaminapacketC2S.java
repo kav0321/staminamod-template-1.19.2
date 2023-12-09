@@ -49,7 +49,7 @@ public class playerstaminapacketC2S {
 
 
 
-        final var forwardBuffer = new Packets.AbilityAni(player.getId(), packet.index() ,packet.name());
+        final var forwardBuffer = new Packets.AbilityAni(player.getId(), packet.index(),packet.length() ,packet.name());
         AbilityManager.abiltyregister.get(packet.index()).ServerSideExecution(server,player);
         for(PlayerEntity player1: server.getPlayerManager().getPlayerList())
         {
@@ -95,22 +95,32 @@ public class playerstaminapacketC2S {
 
         ServerPlayNetworking.send(player,Packets.ABILITY_MODCONFIG.ID540, new Packets.ABILITY_MODCONFIG(sword_dash,sword_cooldown).write());
 
+        ServerPlayNetworking.send(player,Packets.ABILITY_MODCONFIG.ID630, new Packets.ABILITY_MODCONFIG(counter_parry_stamina,counter_parrty_cooldown).write());
+        ServerPlayNetworking.send(player,Packets.ABILITY_MODCONFIG.ID720, new Packets.ABILITY_MODCONFIG(shield_offensive_attacks_stamina,shield_offensive_attacks_cooldown).write());
+        ServerPlayNetworking.send(player,Packets.ABILITY_MODCONFIG.ID810, new Packets.ABILITY_MODCONFIG(mega_dash_stamina,mega_dash_cooldown).write());
+
+
         PacketByteBuf bufsda =PacketByteBufs.create();
         PacketByteBuf bufdsd =PacketByteBufs.create();
         PacketByteBuf bufkk =PacketByteBufs.create();
         PacketByteBuf bufdr =PacketByteBufs.create();
+        PacketByteBuf bufrds =PacketByteBufs.create();
+        PacketByteBuf bufrd =PacketByteBufs.create();
 
         bufsda.writeFloat(sword_dash_attack_multiplier);
         bufdsd.writeFloat(spike_damage);
         bufkk.writeFloat(kick_knockback);
         bufdr.writeFloat(dodge_range);
-
+        bufrds.writeFloat(radius_shield);
+        bufrd.writeFloat(radius_dash);
 
         ServerPlayNetworking.send(player,ModMessages.SWORD_DASH,bufsda);
         ServerPlayNetworking.send(player,ModMessages.STOMP,bufdsd);
         ServerPlayNetworking.send(player,ModMessages.KICK, bufkk);
         ServerPlayNetworking.send(player,ModMessages.PARRY, new Packets.parry_re(parry_duration,parry_amplifier).write());
         ServerPlayNetworking.send(player,ModMessages.DODGE, bufdr);
+
+
 
 
         ServerPlayNetworking.send(player,ModMessages.COOLDOWNC,new Packets.cooldown(cooldowndata.getCooldown((IEntityDataSaver) player,"ability1"),"ability1").write());
@@ -219,23 +229,20 @@ public class playerstaminapacketC2S {
 
 
         //////player.sendMessage(Text.of(Float.toString(SoulData.addFloatpoint(((IEntityDataSaver) player), 0f, "Stamina"))),true);
-
+        System.out.println(d);
 
         if(player.isCreative())
         {
             x12=0;
         }
         else
-            x12= (float) (d)+3.3f;
+            x12= (float) d+3.3f;
 
         if(x12>5)
         {
             x12= (float) (-1.1859*pow(x12,2)+20.286*x12-69.792);
         }
-        if(x12<5)
-        {
-            x12=5;
-        }
+
 
         //removed in the server side
 

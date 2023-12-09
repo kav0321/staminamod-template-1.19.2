@@ -28,18 +28,18 @@ public class AbilityManager {
     public static void  INITTECHNIC()
     {
 
-        abilityCoreList.add(new kickability(ModConfigs.kick_cooldown,ModConfigs.kick_stamina,90,"kick", Text.translatable("ability.kick"),Text.translatable("ability.kick.description"),"kick",1,true,false,false,false,false,false));
+        abilityCoreList.add(new kickability(ModConfigs.kick_cooldown,ModConfigs.kick_stamina,90,"kick", Text.translatable("ability.kick"),Text.translatable("ability.kick.description"),"kick",26,true,false,false,false,false,false));
 
 
-        abilityCoreList.add(new parryabilty(ModConfigs.parry_cooldown,ModConfigs.parry_stamina,180,"parry", Text.translatable("ability.parry"),Text.translatable("ability.parry.description"),"parry",1f,true,false,false,false,false,false));
-        abilityCoreList.add(new dodge(ModConfigs.dodge_cooldown, ModConfigs.dodge_stamina,270,"dodge", Text.translatable("ability.dodge"),Text.translatable("ability.dodge.description"),"dodge",1.3f,true,false,false,false,false,false));
-        abilityCoreList.add(new sword_dash(ModConfigs.sword_cooldown,ModConfigs.sword_dash,360,"dash", Text.translatable("ability.dash"),Text.translatable("ability.dash.description"),"dash",1f,true,false,false,false,false,false));
-        abilityCoreList.add(new stomp(ModConfigs.foot_stomp_cooldown,ModConfigs.foot_stomp_stamina,450,"stomp", Text.translatable("ability.stomp"),Text.translatable("ability.stomp.description"),"stomp",1f,true,false,false,false,false,false));
-        abilityCoreList.add(new flip_attack_sword(ModConfigs.flip_attack_sword_cooldown,ModConfigs.flip_attack_sword_stamina,540,"flip_attack_sword", Text.translatable("ability.flip_attack_sword"),Text.translatable("ability.flip_attack_sword.description"),"flip_attack_sword",1f,true,false,false,false,false,false));
-        abilityCoreList.add(new hurrican_swing(ModConfigs.hurrican_swing_cooldown,ModConfigs.hurrican_swing_stamina,630,"hurrican_swing", Text.translatable("ability.hurrican_swing"),Text.translatable("ability.hurrican_swing.description"),"hurrican_swing",1.1f,false,false,false,false,false,false));
-        abilityCoreList.add(new guard_counter(6,5,720,"guard_counter", Text.translatable("ability.guard_counter"),Text.translatable("ability.guard_counter.description"),"guard_counter",2f,true,false,false,false,false,false));
-        abilityCoreList.add(new shield_crush(300,10,810,"shield_cursher", Text.translatable("ability.shield_cursher"),Text.translatable("ability.shield_cursher.description"),"shield_cursher",2f,false,false,false,false,false,false));
-        abilityCoreList.add(new mega_dash(60,10,900,"mega_dash", Text.translatable("ability.mega_dash"),Text.translatable("ability.mega_dash.description"),"mega_dash",2f,false,false,false,false,false,false));
+        abilityCoreList.add(new parryabilty(ModConfigs.parry_cooldown,ModConfigs.parry_stamina,180,"parry", Text.translatable("ability.parry"),Text.translatable("ability.parry.description"),"parry",19,true,false,false,false,false,false));
+        abilityCoreList.add(new dodge(ModConfigs.dodge_cooldown, ModConfigs.dodge_stamina,270,"dodge", Text.translatable("ability.dodge"),Text.translatable("ability.dodge.description"),"dodge",12,true,false,false,false,false,false));
+        abilityCoreList.add(new sword_dash(ModConfigs.sword_cooldown,ModConfigs.sword_dash,360,"dash", Text.translatable("ability.dash"),Text.translatable("ability.dash.description"),"dash",39,true,false,false,false,false,false));
+        abilityCoreList.add(new stomp(ModConfigs.foot_stomp_cooldown,ModConfigs.foot_stomp_stamina,450,"stomp", Text.translatable("ability.stomp"),Text.translatable("ability.stomp.description"),"stomp",19,true,false,false,false,false,false));
+        abilityCoreList.add(new flip_attack_sword(ModConfigs.flip_attack_sword_cooldown,ModConfigs.flip_attack_sword_stamina,540,"flip_attack_sword", Text.translatable("ability.flip_attack_sword"),Text.translatable("ability.flip_attack_sword.description"),"flip_attack_sword",36,true,false,false,false,false,false));
+        abilityCoreList.add(new hurrican_swing(ModConfigs.hurrican_swing_cooldown,ModConfigs.hurrican_swing_stamina,630,"hurrican_swing", Text.translatable("ability.hurrican_swing"),Text.translatable("ability.hurrican_swing.description"),"hurrican_swing",133,false,false,false,false,false,false));
+        abilityCoreList.add(new guard_counter(ModConfigs.counter_parrty_cooldown,ModConfigs.counter_parry_stamina,720,"guard_counter", Text.translatable("ability.guard_counter"),Text.translatable("ability.guard_counter.description"),"guard_counter",10,true,false,false,false,false,false));
+        abilityCoreList.add(new shield_crush(ModConfigs.shield_offensive_attacks_cooldown,ModConfigs.shield_offensive_attacks_stamina,810,"shield_cursher", Text.translatable("ability.shield_cursher"),Text.translatable("ability.shield_cursher.description"),"shield_cursher",32,false,false,false,false,false,false));
+        abilityCoreList.add(new mega_dash(ModConfigs.mega_dash_cooldown,ModConfigs.mega_dash_stamina,900,"mega_dash", Text.translatable("ability.mega_dash"),Text.translatable("ability.mega_dash.description"),"mega_dash",36,false,false,false,false,false,false));
 
 
         for(int i =0;i<abilityCoreList.size();i++)

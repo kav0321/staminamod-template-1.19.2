@@ -177,13 +177,15 @@ public class RenderOverlayMixin extends DrawableHelper {
     }
     private void posture(MatrixStack matrixStack, MinecraftClient client, int x, int y)
     {
+
         if(!(client.player.isCreative())&&!(client.player.isSpectator()))
         {
+
             int xpos=20+15;
             int shift=-20;
             IPosture pl1 = (IPosture) MinecraftClient.getInstance().player;
             //System.out.println(pl1.getposture_number()+ "c");
-
+            System.out.println(pl1.getmaxposture()+" "+pl1.getposture_number());
             float posture=pl1.getposture_number();
             this.drawpostureR(POSTURER,matrixStack,x,y, 0,75, (int) (35f*posture/(pl1.getmaxposture())+35),0,35);
             this.drawpostureL(POSTUREL,matrixStack,x,y, 34,75, (int) -(35f*posture/(pl1.getmaxposture())),0,35);

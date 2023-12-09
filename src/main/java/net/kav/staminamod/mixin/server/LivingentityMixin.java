@@ -10,6 +10,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.WitchEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -82,14 +83,14 @@ public abstract class LivingentityMixin implements IPosture {
 
     @Override
     public void setposture_float(float posture) {
-        ((LivingEntity)(Object)this).getDataTracker().set(POSTURE, Float.valueOf(MathHelper.clamp(posture, 0.0f, 20)));
+        ((LivingEntity)(Object)this).getDataTracker().set(POSTURE, Float.valueOf(MathHelper.clamp(posture, 0.0f, getmaxposture())));
     }
 
 
     @Override
     public void incrementposture_float(float posture) {
         float currentposture= getposture_number();
-        ((LivingEntity)(Object)this).getDataTracker().set(POSTURE, Float.valueOf(MathHelper.clamp(currentposture+posture, 0.0f, 20)));
+        ((LivingEntity)(Object)this).getDataTracker().set(POSTURE, Float.valueOf(MathHelper.clamp(currentposture+posture, 0.0f, getmaxposture())));
     }
 
     @Override
@@ -97,7 +98,8 @@ public abstract class LivingentityMixin implements IPosture {
         EntityType<?> entityType = ((LivingEntity)(Object)this).getType();
         Identifier entityId = Registry.ENTITY_TYPE.getId(entityType);
         String nameentity = entityId.toString();
-        float posture=20f;
+        float posture=ModConfigs.PlayerPosture;
+        System.out.println(ModConfigs.PlayerPosture);
         for(String name: entityposture.entityname)
         {
             if(name.equals(nameentity))

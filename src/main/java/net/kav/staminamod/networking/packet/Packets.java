@@ -23,7 +23,7 @@ public class Packets {
             return new stamina_location(x,y);
         }
     }
-    public record AbilityAni(int playerId, int index, String name) {
+    public record AbilityAni(int playerId, int index,float length, String name) {
 
 
 
@@ -35,6 +35,7 @@ public class Packets {
             buffer.writeInt(playerId);
 
             buffer.writeInt(index);
+            buffer.writeFloat(length);
             buffer.writeString(name);
             return buffer;
         }
@@ -43,8 +44,9 @@ public class Packets {
             int playerId = buffer.readInt();
 
             int index = buffer.readInt();
+            float length = buffer.readFloat();
             String name =  buffer.readString();
-            return new AbilityAni(playerId,index,name);
+            return new AbilityAni(playerId,index,length,name);
         }
     }
     public record vec3d(double x, double y, double z) {
@@ -125,6 +127,11 @@ public class Packets {
         public static Identifier ID360 = new Identifier(StaminaMod.MODID, "kicka");
         public static Identifier ID450 = new Identifier(StaminaMod.MODID, "parrya");
         public static Identifier ID540= new Identifier(StaminaMod.MODID, "sword_dasha");
+
+        public static Identifier ID630= new Identifier(StaminaMod.MODID, "guard");
+        public static Identifier ID720= new Identifier(StaminaMod.MODID, "shield_crusher");
+        public static Identifier ID810= new Identifier(StaminaMod.MODID, "mega_dash");
+
         public PacketByteBuf write() {
             PacketByteBuf buffer = PacketByteBufs.create();
             buffer.writeInt(stamina);
